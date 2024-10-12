@@ -1,22 +1,19 @@
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/autoplay"; // Autoplay 모듈 스타일
-import "../../global.css";
-
-// import required modules
 import { Autoplay, Navigation } from "swiper/modules";
 
-export default function EventBanner() {
+export default function EventSlider() {
   return (
-    <div>
+    <div className='relative'>
       <Swiper
         loop={true}
         slidesPerView={1}
-        navigation={true}
+        navigation={{
+          prevEl: ".custom-prev",
+          nextEl: ".custom-next",
+        }}
         autoplay={{
           delay: 5000, // 2초마다 자동으로 슬라이드
           disableOnInteraction: false, // 유저 상호작용 후에도 자동 슬라이드 계속

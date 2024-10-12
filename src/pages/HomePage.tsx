@@ -1,8 +1,10 @@
+import CommonLayout from "../layouts/CommonLayout";
+
 export default function HomePage() {
   return (
-    <div>
+    <CommonLayout>
       <h1>Home</h1>
       <p>Welcome to the home page</p>
-    </div>
+    </CommonLayout>
   );
 }

@@ -9,6 +9,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   background: #ffd800;
+  color: #190904;
   transition: backgroundcolor 500ms;
 }
 
@@ -21,4 +22,9 @@ body {
 
 body {
   font-family: "Pretendard Variable", sans-serif;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
 }

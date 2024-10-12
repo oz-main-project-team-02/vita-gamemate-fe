@@ -3,7 +3,7 @@ import { IoSearchSharp } from "react-icons/io5";
 
 export default function Header() {
   return (
-    <div className='flex items-center justify-between px-12'>
+    <header className='flex items-center justify-between px-12'>
       <div className='flex gap-6 font-semibold text-primaryTextLight'>
         <Link to={"/"}>
           <div className='hover:text-primaryText'>홈페이지</div>
@@ -27,6 +27,6 @@ export default function Header() {
           <IoSearchSharp />
         </div>
       </div>
-    </div>
+    </header>
   );
 }

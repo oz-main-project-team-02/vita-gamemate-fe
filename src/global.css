@@ -9,6 +9,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   background: #ffd800;
+  color: #190904;
   transition: backgroundcolor 500ms;
 }
 
@@ -21,4 +22,35 @@ body {
 
 body {
   font-family: "Pretendard Variable", sans-serif;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.swiper-button-prev {
+  left: 180px !important;
+}
+
+.swiper-button-next {
+  right: 180px !important;
+}
+
+/* 이전 버튼 */
+.swiper-button-prev::after {
+  font-size: 24px !important; /* 화살표 크기 조정 */
+  color: white !important; /* 버튼 색상 변경 */
+}
+
+/* 다음 버튼 */
+.swiper-button-next::after {
+  font-size: 24px !important; /* 화살표 크기 조정 */
+  color: white !important; /* 버튼 색상 변경 */
+}
+
+.swiper-slide {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }

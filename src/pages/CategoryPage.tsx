@@ -9,6 +9,7 @@ export default function CategoryPage() {
         titleK='리그오브레전드'
         content='다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!'
       />
+      <div className='bg-gray-100'></div>
     </CommonLayout>
   );
 }

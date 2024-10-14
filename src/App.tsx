@@ -12,7 +12,7 @@ import CoinPage from "./pages/CoinPage";
 function App() {
   return (
     <Routes>
-      <Route path='/catagory/:gameId' element={<CategoryPage />} />
+      <Route path='/category/:gameId' element={<CategoryPage />} />
       <Route path='/user/:userId' element={<UserDetailPage />} />
       <Route path='/user/edit-info' element={<EditInfoPage />} />
       <Route path='/user/orders' element={<OrdersPage />} />

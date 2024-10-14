@@ -4,11 +4,10 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
-import lol from "../../assets/imgs/lol.png";
 
-export default function CategorySlider() {
+export default function GameCategorySlider() {
   return (
-    <div className='relative max-w-[672px]'>
+    <div className='mx-auto max-w-[672px] relative'>
       <Swiper
         loop={true}
         slidesPerView={3} // 한 화면에 3개의 슬라이드 표시
@@ -23,21 +22,8 @@ export default function CategorySlider() {
         {/* 각 슬라이드 */}
         {new Array(12).fill(0).map((_, i) => (
           <SwiperSlide key={i}>
-            <div
-              className='relative bg-yellow-100 w-full h-[326px] flex flex-col items-center justify-center rounded-3xl overflow-hidden'
-              style={{
-                backgroundImage: `url(${lol})`, // 배경 이미지 설정
-                backgroundSize: "360px 366px", // 이미지 크기를 322px x 331px으로 설정
-                backgroundRepeat: "no-repeat", // 배경 이미지가 반복되지 않도록 설정
-                backgroundPosition: "-50px",
-              }}
-            >
-              <div className='absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent'></div>
-
-              <div className='relative z-10 text-white mt-[85%]'>
-                <h2 className='text-2xl font-bold'>리그 오브 레전드</h2>
-                <p>League of Legends</p>
-              </div>
+            <div className='relative flex flex-col items-center justify-center w-full h-[326px] rounded-3xl shadow-lg'>
+              <div className='relative '>1</div>
             </div>
           </SwiperSlide>
         ))}

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Footer from "../components/Common/Footer";
 import Header from "../components/Common/Header";
 import FilterList from "../components/EditInfoPage/FilterList";
-import ProfileImg from "../components/EditInfoPage/ProfileImg";
 import TitleIntro from "../components/Common/TitleIntro";
+import ProfileImg from "../components/EditInfoPage/ProfileImg";
+import CommonLayout from "../layouts/CommonLayout";
 
 export default function EditInfoPage() {
   const years = Array.from({ length: 22 }, (_, i) => 1984 + i); // 2020 ~ 2030
@@ -50,14 +51,23 @@ export default function EditInfoPage() {
     console.log(profile)
   }
   return (
-    <>
-      <Header />
-      <div className="w-full h-[4105px]">
-        <TitleIntro titleE = {"MY PROFILE"} titleK = {"프로필 편집"} content = {"멋진 실력을 자랑해주세요!"} />
-        <ProfileImg />
-        <div className="w-[500px] h-[1866px] absolute top-[295px] flex justify-end bg-[#E2E2E2]"><FilterList /></div>
+    <CommonLayout>
+      <div className='w-full h-[4105px]'>
+        {/* <NavBar /> */}
+        <TitleIntro
+          titleE={"MY PROFILE"}
+          titleK={"프로필 편집"}
+          content={"멋진 실력을 자랑해주세요!"}
+        />
+        <div className='w-full h-[1866px] relative bg-gray-100'>
+          <ProfileImg />
+          <div className='w-[30%] h-[1866px] absolute flex justify-end bg-[#E2E2E2]'>
+            <FilterList />
+          </div>
+        </div>
+      </div>
 
-        <form onSubmit={handleSubmit} className="w-[887px] h-[1028px] absolute top-[550px] left-[700px] bg-slate-200">
+      <form onSubmit={handleSubmit} className="w-[887px] h-[1028px] absolute top-[550px] left-[700px] bg-slate-200">
           <button className="w-[305px] h-[60px] rounded-xl absolute top-[-210px] left-[580px] bg-slate-300 font-bold text-[24px]">프로필 사진 올리기</button>
 
           <div>
@@ -110,8 +120,6 @@ export default function EditInfoPage() {
 
           <button type="submit">저장</button>
         </form>
-      </div>
-      <Footer />
-    </>
+    </CommonLayout>
   );
 }

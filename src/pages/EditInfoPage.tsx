@@ -21,12 +21,12 @@ export default function EditInfoPage() {
   });
 
   // 윤년 확인 함수
-  const isLeapYear = (year) => {
+  const isLeapYear = (year: number) => {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   };
 
   // 월에 따른 일 수 계산 함수
-  const getDaysInMonth = (year, month) => {
+  const getDaysInMonth = (year: number, month: number) => {
     if (month === 2) {
       // 2월의 일수는 윤년 여부에 따라 다름
       return isLeapYear(year) ? 29 : 28;
@@ -50,7 +50,6 @@ export default function EditInfoPage() {
   return (
     <CommonLayout>
       <div className='w-full h-[4105px]'>
-        {/* <NavBar /> */}
         <TitleIntro
           titleE={"MY PROFILE"}
           titleK={"프로필 편집"}

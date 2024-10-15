@@ -25,6 +25,7 @@ export default {
         softYellow: "#FFF6B9", // 부드러운 노란색
         purple: "#811AF6", // 보라색
         mintGreen: "#16D6B5", // 민트 그린색
+        deepYellow: "#F4CE14" // 진한 노란색
       },
 
       fontFamily: {

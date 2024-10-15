@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
+import { useModalStore } from "../../config/store";
+import LoginModal from "./LoginModal";
 
 export default function Header() {
+  const { status, setStatus } = useModalStore();
+
+  const handleLoginClick = () => {
+    setStatus("login", true);
+  };
+
+  console.log(status.login);
+
   return (
     <header className='flex items-center justify-between px-12'>
       <div className='flex gap-6 font-semibold text-primaryTextLight'>
@@ -15,7 +25,10 @@ export default function Header() {
       </div>
       <div className='flex gap-6'>
         <div className='flex items-center '>
-          <button className='text-primaryTextLight font-semibold hover:text-primaryText'>
+          <button
+            onClick={handleLoginClick}
+            className='text-primaryTextLight font-semibold hover:text-primaryText'
+          >
             로그인
           </button>
         </div>
@@ -27,6 +40,7 @@ export default function Header() {
           <IoSearchSharp />
         </div>
       </div>
+      {status.login && <LoginModal />}
     </header>
   );
 }

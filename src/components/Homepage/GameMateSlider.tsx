@@ -4,6 +4,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
+import VitaPrice from "../Common/VitaPrice";
 
 export default function GameMateSlider() {
   return (
@@ -22,10 +23,31 @@ export default function GameMateSlider() {
         {/* 각 슬라이드 */}
         {new Array(4).fill(0).map((_, i) => (
           <SwiperSlide key={i}>
-            <div className='relative bg-[#293883] w-full h-[206px] flex flex-col items-center justify-center rounded-3xl'>
-              <div className='relative z-10 text-white'>
-                <h2 className='text-2xl font-bold'>리그 오브 레전드</h2>
-                <p>League of Legends</p>
+            <div className='relative bg-[#293883] w-full h-[206px] flex items-center rounded-3xl px-[10px] gap-4'>
+              <div className='w-[30%] h-[186px] bg-blue-400 rounded-2xl'>
+                <img
+                  src='/src/assets/imgs/user.png'
+                  alt='사용자 이미지'
+                  className='w-full h-full rounded-2xl'
+                />
+              </div>
+              <div className='w-[70%] text-white'>
+                <h2 className='text-2xl font-bold'>닉네임</h2>
+                <p className='font-light text-gray-200 mb-4'>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                </p>
+                <div className='flex gap-4'>
+                  <img
+                    src='/src/assets/imgs/lol.png'
+                    alt=''
+                    className='w-[60px] h-[60px]'
+                  />
+                  <div>
+                    <h2 className='text-2xl font-bold'>리그 오브 레전드</h2>
+                    <VitaPrice />
+                  </div>
+                </div>
               </div>
             </div>
           </SwiperSlide>

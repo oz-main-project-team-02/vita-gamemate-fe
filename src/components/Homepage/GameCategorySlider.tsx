@@ -4,6 +4,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
+import MateCard from "../Common/MateCard";
 
 export default function GameCategorySlider() {
   return (
@@ -22,9 +23,7 @@ export default function GameCategorySlider() {
         {/* 각 슬라이드 */}
         {new Array(12).fill(0).map((_, i) => (
           <SwiperSlide key={i}>
-            <div className='relative flex flex-col items-center justify-center w-full h-[326px] rounded-3xl shadow-lg'>
-              <div className='relative '>1</div>
-            </div>
+            <MateCard />
           </SwiperSlide>
         ))}
       </Swiper>

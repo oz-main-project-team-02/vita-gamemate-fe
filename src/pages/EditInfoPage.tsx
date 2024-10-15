@@ -47,6 +47,7 @@ export default function EditInfoPage() {
     e.preventDefault();
     console.log(profile);
   };
+
   return (
     <CommonLayout>
       <div className='w-full h-[4105px]'>

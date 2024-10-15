@@ -46,8 +46,11 @@ export default function HomePage() {
         <div className='flex justify-center items-center gap-36 h-[760px] bg-gray-100 px-[100px]'>
           <div className='flex flex-col'>
             <div className='mb-8'>
-              <select className='px-5 py-3 bg-gray-200 rounded-xl'>
-                <option value='' disabled selected>
+              <select
+                defaultValue='default'
+                className='px-5 py-3 bg-gray-200 rounded-xl'
+              >
+                <option value='default' disabled>
                   게임을 선택해주세요!
                 </option>
                 <option value='game1'>게임 1</option>

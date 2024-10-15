@@ -8,6 +8,8 @@ import EditInfoPage from "./pages/EditInfoPage";
 import OrdersPage from "./pages/OrdersPage";
 import GameMatePage from "./pages/GameMatePage";
 import CoinPage from "./pages/CoinPage";
+import GoogleCallback from "./pages/GoogleCallback";
+import KakaoCallback from "./pages/KakaoCallback";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
       <Route path='/coin' element={<CoinPage />} />
       <Route path='/' element={<HomePage />} />
       <Route path='*' element={<ErrorPage />} />
+      <Route path='/auth/google/callback' element={<GoogleCallback />} />
+      <Route path='/auth/kakao/callback' element={<KakaoCallback />} />
     </Routes>
   );
 }

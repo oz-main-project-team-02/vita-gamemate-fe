@@ -5,8 +5,14 @@ import { Navigation } from "swiper/modules";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
 import VitaPrice from "../Common/VitaPrice";
+import { dummyGameMates } from "../../mock/dummy";
+import { GAMES } from "../../config/const";
 
 export default function GameMateSlider() {
+  function findGameByGameId(gameId: number) {
+    return GAMES.find((game) => game.id === gameId);
+  }
+
   return (
     <div className='mx-auto max-w-[672px] relative'>
       <Swiper
@@ -21,23 +27,24 @@ export default function GameMateSlider() {
         className='mySwiper'
       >
         {/* 각 슬라이드 */}
-        {new Array(4).fill(0).map((_, i) => (
+        {dummyGameMates.map((mate, i) => (
           <SwiperSlide key={i}>
             <div className='relative bg-[#293883] w-full h-[206px] flex items-center rounded-3xl px-[10px] gap-4'>
               <div className='w-[30%] h-[186px] bg-blue-400 rounded-2xl'>
-                <img src='/src/assets/imgs/user.png' alt='사용자 이미지' className='w-full h-full rounded-2xl' />
+                <img
+                  src={mate.profile_image ? mate.profile_image : "/src/assets/imgs/user.png"}
+                  alt='사용자 이미지'
+                  className='w-full h-full rounded-2xl'
+                />
               </div>
               <div className='w-[70%] text-white'>
-                <h2 className='text-2xl font-bold'>닉네임</h2>
-                <p className='font-light text-gray-200 mb-4'>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit. Nulla
-                </p>
+                <h2 className='text-2xl font-bold'>{mate.nickname}</h2>
+                <p className='font-light text-gray-200 mb-4'>{mate.description}</p>
                 <div className='flex gap-4'>
-                  <img src='/src/assets/imgs/lol.png' alt='' className='w-[60px] h-[60px]' />
+                  <img src={findGameByGameId(mate.game_id)?.img} alt='' className='w-[60px] h-[60px]' />
                   <div>
-                    <h2 className='text-2xl font-bold'>리그 오브 레전드</h2>
-                    <VitaPrice />
+                    <h2 className='text-2xl font-bold'>{findGameByGameId(mate.game_id)?.title}</h2>
+                    <VitaPrice mate={mate} />
                   </div>
                 </div>
               </div>

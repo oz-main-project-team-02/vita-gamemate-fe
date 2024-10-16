@@ -9,6 +9,7 @@ import { GAMES } from "../../config/const";
 
 export default function CategorySlider() {
   const navigate = useNavigate();
+
   const handleCategoryClick = (id: number) => {
     navigate(`/category/${id}`);
   };

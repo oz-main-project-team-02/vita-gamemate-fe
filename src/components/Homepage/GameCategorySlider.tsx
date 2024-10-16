@@ -5,6 +5,7 @@ import { Navigation } from "swiper/modules";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
 import MateCard from "../Common/MateCard";
+import { dummyGameMates } from "../../mock/dummy";
 
 export default function GameCategorySlider() {
   return (
@@ -21,9 +22,9 @@ export default function GameCategorySlider() {
         className='mySwiper'
       >
         {/* 각 슬라이드 */}
-        {new Array(12).fill(0).map((_, i) => (
-          <SwiperSlide key={i}>
-            <MateCard />
+        {dummyGameMates.map((mate) => (
+          <SwiperSlide key={mate.id}>
+            <MateCard mate={mate} />
           </SwiperSlide>
         ))}
       </Swiper>

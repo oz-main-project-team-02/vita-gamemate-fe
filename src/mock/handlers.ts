@@ -1,8 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { GameMate } from "../config/types";
 
-const local = "http://localhost:3000";
-
 const mateData: Record<string, GameMate[]> = {
   "1": [
     {
@@ -375,7 +373,7 @@ const mateData: Record<string, GameMate[]> = {
 };
 
 export const handlers = [
-  http.get(`${local}/api/v1/mates/:gameId?page=1`, ({ params }) => {
+  http.get(`/api/v1/mates/:gameId`, ({ params }) => {
     const { gameId } = params;
 
     if (!mateData[gameId as string]) {

@@ -18,7 +18,7 @@ export default function Header() {
 
   const handleLogoutClick = async () => {
     try {
-      const response = await client.post("/api/v1/users/auth/logout/");
+      const response = await client.get("/api/v1/users/auth/logout/");
 
       if (response.status === 200) {
         localStorage.removeItem("access_token");
@@ -37,11 +37,9 @@ export default function Header() {
       if (access_token) {
         (async () => {
           try {
-            const { data } = await client.post("/api/v1/users/profile/me/", {
-              access_token: access_token,
-            });
+            const { data } = await client.get("/api/v1/users/profile/me/");
             setUser(data);
-            console.log(data);
+            console.log("사용자정보: ", data);
           } catch (error) {
             console.error(error);
           }

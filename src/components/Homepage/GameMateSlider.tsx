@@ -14,8 +14,8 @@ export default function GameMateSlider() {
         slidesPerView={1} // 한 화면에 3개의 슬라이드 표시
         spaceBetween={40}
         navigation={{
-          prevEl: ".custom-prev",
-          nextEl: ".custom-next",
+          prevEl: ".gameMate-prev",
+          nextEl: ".gameMate-next",
         }}
         modules={[Navigation]}
         className='mySwiper'
@@ -25,24 +25,16 @@ export default function GameMateSlider() {
           <SwiperSlide key={i}>
             <div className='relative bg-[#293883] w-full h-[206px] flex items-center rounded-3xl px-[10px] gap-4'>
               <div className='w-[30%] h-[186px] bg-blue-400 rounded-2xl'>
-                <img
-                  src='/src/assets/imgs/user.png'
-                  alt='사용자 이미지'
-                  className='w-full h-full rounded-2xl'
-                />
+                <img src='/src/assets/imgs/user.png' alt='사용자 이미지' className='w-full h-full rounded-2xl' />
               </div>
               <div className='w-[70%] text-white'>
                 <h2 className='text-2xl font-bold'>닉네임</h2>
                 <p className='font-light text-gray-200 mb-4'>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit. Nulla
                 </p>
                 <div className='flex gap-4'>
-                  <img
-                    src='/src/assets/imgs/lol.png'
-                    alt=''
-                    className='w-[60px] h-[60px]'
-                  />
+                  <img src='/src/assets/imgs/lol.png' alt='' className='w-[60px] h-[60px]' />
                   <div>
                     <h2 className='text-2xl font-bold'>리그 오브 레전드</h2>
                     <VitaPrice />
@@ -53,10 +45,10 @@ export default function GameMateSlider() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className='absolute top-1/2 left-[-40px] custom-prev z-10'>
+      <div className='absolute top-1/2 left-[-40px] gameMate-prev z-10'>
         <GrPrevious />
       </div>
-      <div className='absolute top-1/2 right-[-40px] custom-next z-10'>
+      <div className='absolute top-1/2 right-[-40px] gameMate-next z-10'>
         <GrNext />
       </div>
     </div>

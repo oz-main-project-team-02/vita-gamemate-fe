@@ -4,6 +4,8 @@ export interface User {
   email: string;
   gender: string | null;
   description: string | null;
-  birthday: Date | null;
+  birthday: string | null;
   profile_image?: string | null;
+  is_mate: boolean;
+  is_onlien: boolean;
 }

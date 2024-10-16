@@ -11,16 +11,14 @@ export const client = axios.create({
 });
 
 function handleLogout() {
-  Cookies.remove("access_token");
-  Cookies.remove("refresh_token");
+  localStorage.removeItem("access_token");
   useUserStore.getState().reset();
   window.location.href = "/";
 }
 
 client.interceptors.request.use(
   (config) => {
-    const access = Cookies.get("access_token");
-    console.log(access);
+    const access = localStorage.getItem("access_token");
 
     if (access) {
       config.headers["Authorization"] = `Bearer ${access}`;
@@ -49,9 +47,7 @@ client.interceptors.response.use(
           const { data } = await client.post("/api/v1/users/auth/accesstoken/", {
             refresh,
           });
-          Cookies.set("access_token", data.access_token, {
-            expires: 1 / 12,
-          });
+          localStorage.setItem("access_token", data.access_token);
           originalRequest.headers["Authorization"] = `Bearer ${data.access_token}`;
 
           return client(originalRequest);

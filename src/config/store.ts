@@ -39,6 +39,8 @@ export const useUserStore = create<UserStore>((set) => ({
     description: null,
     birthday: null,
     profile_image: null,
+    is_mate: false,
+    is_onlien: false,
   },
   setUser: (user: User) => set({ user }),
   reset: () =>
@@ -51,6 +53,8 @@ export const useUserStore = create<UserStore>((set) => ({
         description: "",
         birthday: null,
         profile_image: null,
+        is_mate: false,
+        is_onlien: false,
       },
     }),
 }));

@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useModalStore } from "../../config/store";
 
-const { VITE_PUBLIC_BASE_URL } = import.meta.env;
-
 export default function LoginModal() {
   const { setModalStatus } = useModalStore();
 
@@ -18,7 +16,7 @@ export default function LoginModal() {
   };
 
   const handleKakaoLoginClick = () => {
-    window.location.href = `${VITE_PUBLIC_BASE_URL}/api/v1/users/kakao/login/`;
+    window.location.href = import.meta.env.VITE_KAKAO_URI;
   };
 
   return (

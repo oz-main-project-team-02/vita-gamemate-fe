@@ -63,7 +63,7 @@ export default function Header() {
       </div>
       <div className='flex gap-6'>
         <div className='flex items-center '>
-          {user?.id !== 0 ? (
+          {localStorage.getItem("access_token") ? (
             <>
               <button className='w-[36px] h-[36px] bg-slate-200 rounded-full flex items-center justify-center mr-6'>
                 <AiOutlineMessage size={24} />

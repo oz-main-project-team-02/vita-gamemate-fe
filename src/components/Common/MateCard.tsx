@@ -7,7 +7,7 @@ export default function MateCard({ mate }: { mate: GameMate }) {
   return (
     <Link to={`/user/${mate.id}`}>
       <div className='relative flex flex-col items-center justify-center w-[206px] h-[288px] rounded-3xl shadow-lg overflow-hidden leading-[1.3]'>
-        {mate.is_onlien && <OnlineFlag />}
+        {mate.is_online && <OnlineFlag />}
         <div className='w-[206px] h-[206px] bg-blue-500 overflow-hidden'>
           <img
             src={mate.profile_image ? mate.profile_image : "/src/assets/imgs/user.png"}

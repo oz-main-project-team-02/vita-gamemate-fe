@@ -10,15 +10,16 @@ import GameMatePage from "./pages/GameMatePage";
 import CoinPage from "./pages/CoinPage";
 import GoogleCallback from "./pages/GoogleCallback";
 import KakaoCallback from "./pages/KakaoCallback";
+import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
   return (
     <Routes>
       <Route path='/category/:gameId' element={<CategoryPage />} />
       <Route path='/user/:userId' element={<UserDetailPage />} />
-      <Route path='/user/edit-info' element={<EditInfoPage />} />
-      <Route path='/user/orders' element={<OrdersPage />} />
-      <Route path='/user/gamemate' element={<GameMatePage />} />
+      <Route path='/user/edit-info' element={<PrivateRoute element={<EditInfoPage />} />} />
+      <Route path='/user/orders' element={<PrivateRoute element={<OrdersPage />} />} />
+      <Route path='/user/gamemate' element={<PrivateRoute element={<GameMatePage />} />} />
       <Route path='/coin' element={<CoinPage />} />
       <Route path='/' element={<HomePage />} />
       <Route path='*' element={<ErrorPage />} />

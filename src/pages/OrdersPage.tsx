@@ -7,7 +7,7 @@ import Response from "../components/OrderPage/Response";
 import { useEffect, useState } from "react";
 
 export default function OrdersPage() {
-  const [selectButton, setSelectButton] = useState('request')
+  const [selectButton, setSelectButton] = useState("request");
 
   useEffect(() => {
     console.log(selectButton); // 상태가 변경될 때마다 출력

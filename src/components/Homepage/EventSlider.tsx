@@ -3,17 +3,19 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/autoplay"; // Autoplay 모듈 스타일
 import { Autoplay, Navigation } from "swiper/modules";
+import { useNavigate } from "react-router-dom";
 
 export default function EventSlider() {
+  const navigate = useNavigate();
+  const handleEventClick = () => {
+    navigate("/event");
+  };
+
   return (
     <div className='relative'>
       <Swiper
         loop={true}
         slidesPerView={1}
-        navigation={{
-          prevEl: ".custom-prev",
-          nextEl: ".custom-next",
-        }}
         autoplay={{
           delay: 5000, // 2초마다 자동으로 슬라이드
           disableOnInteraction: false, // 유저 상호작용 후에도 자동 슬라이드 계속
@@ -24,7 +26,10 @@ export default function EventSlider() {
       >
         {new Array(4).fill(0).map((_, i) => (
           <SwiperSlide key={i}>
-            <div className='w-[950px] h-[360px] flex items-center justify-center gap-32 bg-pink-100 rounded-3xl'>
+            <div
+              className='w-[950px] h-[360px] flex items-center justify-center gap-32 bg-pink-100 rounded-3xl'
+              onClick={handleEventClick}
+            >
               <div>
                 <p>함께하면 더욱 즐거운~</p>
                 <h1 className='text-5xl mb-5'>VITA 셀럽 존</h1>

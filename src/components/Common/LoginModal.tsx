@@ -4,7 +4,7 @@ import { useModalStore } from "../../config/store";
 const { VITE_PUBLIC_BASE_URL } = import.meta.env;
 
 export default function LoginModal() {
-  const { setStatus } = useModalStore();
+  const { setModalStatus } = useModalStore();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -14,7 +14,7 @@ export default function LoginModal() {
   }, []);
 
   const handleBackdropClick = () => {
-    setStatus("login", false);
+    setModalStatus("login", false);
   };
 
   const handleKakaoLoginClick = () => {
@@ -32,30 +32,15 @@ export default function LoginModal() {
       >
         {/* 로고 */}
         <div>
-          <img
-            src='/src/assets/imgs/vitaLogo300.svg'
-            alt='비타 로고'
-            className='w-[60px] h-[60px]'
-          />
+          <img src='/src/assets/imgs/vitaLogo300.svg' alt='비타 로고' className='w-[60px] h-[60px]' />
         </div>
-        <div className='text-center font-bold'>
-          비타에서 게임 메이트와 즐겁게 대화하며 롤 듀오를 즐겨보세요!
-        </div>
+        <div className='text-center font-bold'>비타에서 게임 메이트와 즐겁게 대화하며 롤 듀오를 즐겨보세요!</div>
         <div className='flex flex-col justify-center gap-3'>
-          <button
-            onClick={handleKakaoLoginClick}
-            className='border border-gray-200 rounded-[4px]'
-          >
-            <img
-              src='/src/assets/imgs/google_login.svg'
-              alt='구글 로그인 버튼'
-            />
+          <button onClick={handleKakaoLoginClick} className='border border-gray-200 rounded-[4px]'>
+            <img src='/src/assets/imgs/google_login.svg' alt='구글 로그인 버튼' />
           </button>
           <button onClick={handleKakaoLoginClick}>
-            <img
-              src='/src/assets/imgs/kakao_login.svg'
-              alt='카카오 로그인 버튼'
-            />
+            <img src='/src/assets/imgs/kakao_login.svg' alt='카카오 로그인 버튼' />
           </button>
         </div>
       </div>

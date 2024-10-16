@@ -65,6 +65,9 @@ export default function Header() {
         <div className='flex items-center '>
           {localStorage.getItem("access_token") ? (
             <>
+              <button onClick={handleLogoutClick} className='mx-5'>
+                로그아웃
+              </button>
               <button className='w-[36px] h-[36px] bg-slate-200 rounded-full flex items-center justify-center mr-6'>
                 <AiOutlineMessage size={24} />
               </button>
@@ -76,9 +79,6 @@ export default function Header() {
             <>
               <button onClick={handleLoginClick} className='text-primaryTextLight font-semibold hover:text-primaryText'>
                 로그인
-              </button>
-              <button onClick={handleLogoutClick} className='mx-5'>
-                로그아웃
               </button>
             </>
           )}

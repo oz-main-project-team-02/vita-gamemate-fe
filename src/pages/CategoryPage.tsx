@@ -2,24 +2,28 @@ import { useState } from "react";
 import TitleIntro from "../components/Common/TitleIntro";
 import CommonLayout from "../layouts/CommonLayout";
 import MateCard from "../components/Common/MateCard";
+import { useParams } from "react-router-dom";
+import { GAMES } from "../config/const";
+import ErrorPage from "./ErrorPage";
+import { dummyGameMates } from "../mock/dummy";
 
 export default function CategoryPage() {
   const [sort, setSort] = useState<string>("");
   const [gender, setGender] = useState<string>("");
-  const sortArr = [
-    "추천순",
-    "신규 가입",
-    "최고 평가",
-    "최저 가격",
-    "최고 가격",
-  ];
+  const { gameId } = useParams();
+  const sortArr = ["추천순", "신규 가입", "최고 평가", "최저 가격", "최고 가격"];
   const genderArr = ["모두", "여성", "남성"];
+
+  if (GAMES[Number(gameId) - 1] === undefined) {
+    return <ErrorPage />;
+  }
+
   return (
     <CommonLayout>
       <TitleIntro
-        titleE='LEAGUE OF LEGENDS'
-        titleK='리그오브레전드'
-        content='다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!'
+        titleE={GAMES[Number(gameId) - 1]?.subTitle}
+        titleK={GAMES[Number(gameId) - 1]?.title}
+        content={GAMES[Number(gameId) - 1]?.description}
       />
       <div className='flex'>
         <div className='flex flex-col px-[20px] py-[30px] w-[240px] gap-6 bg-[#e2e2e2] '>
@@ -35,16 +39,9 @@ export default function CategoryPage() {
                   onChange={() => setSort(v)}
                   hidden
                 />
-                <label
-                  htmlFor={`sort${i + 1}`}
-                  className='flex gap-2 mt-3 items-center'
-                >
+                <label htmlFor={`sort${i + 1}`} className='flex gap-2 mt-3 items-center'>
                   <img
-                    src={
-                      sort === v
-                        ? "/src/assets/imgs/radioTrue.svg"
-                        : "/src/assets/imgs/radioFalse.svg"
-                    }
+                    src={sort === v ? "/src/assets/imgs/radioTrue.svg" : "/src/assets/imgs/radioFalse.svg"}
                     alt='라디오 버튼 아이콘'
                   />
                   <span className='text-sm text-[#525566]'>{v}</span>
@@ -65,16 +62,9 @@ export default function CategoryPage() {
                   onChange={() => setGender(v)}
                   hidden
                 />
-                <label
-                  htmlFor={`gender${i + 1}`}
-                  className='flex gap-2 mt-3 items-center'
-                >
+                <label htmlFor={`gender${i + 1}`} className='flex gap-2 mt-3 items-center'>
                   <img
-                    src={
-                      gender === v
-                        ? "/src/assets/imgs/radioTrue.svg"
-                        : "/src/assets/imgs/radioFalse.svg"
-                    }
+                    src={gender === v ? "/src/assets/imgs/radioTrue.svg" : "/src/assets/imgs/radioFalse.svg"}
                     alt='라디오 버튼 아이콘'
                   />
                   <span className='text-sm text-[#525566]'>{v}</span>
@@ -83,23 +73,16 @@ export default function CategoryPage() {
             ))}
           </div>
         </div>
-        <div
-          className='flex flex-col justify-center bg-gray-100 py-11'
-          style={{ width: `calc(100% - 200px)` }}
-        >
+        <div className='flex flex-col justify-center bg-gray-100 py-11' style={{ width: `calc(100% - 200px)` }}>
           <div className='flex flex-wrap max-w-[1120px] gap-[10px] p-[20px]'>
-            {Array(30)
-              .fill(0)
-              .map((_, i) => (
-                <div className='mb-4'>
-                  <MateCard key={i} />
-                </div>
-              ))}
+            {dummyGameMates.map((mate) => (
+              <div key={mate.id} className='mb-4'>
+                <MateCard mate={mate} />
+              </div>
+            ))}
           </div>
           <div className='flex justify-center'>
-            <button className='px-4 py-3 bg-gray-400 rounded-lg text-white shadow-sm'>
-              more
-            </button>
+            <button className='px-4 py-3 bg-gray-400 rounded-lg text-white shadow-sm'>more</button>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import TitleIntro from "../components/Common/TitleIntro";
 import CommonLayout from "../layouts/CommonLayout";
 import MateCard from "../components/Common/MateCard";
 import { useParams } from "react-router-dom";
-import { GAMES } from "../config/const";
+import { getGame } from "../config/const";
 import ErrorPage from "./ErrorPage";
 import { dummyGameMates } from "../mock/dummy";
 
@@ -14,16 +14,16 @@ export default function CategoryPage() {
   const sortArr = ["추천순", "신규 가입", "최고 평가", "최저 가격", "최고 가격"];
   const genderArr = ["모두", "여성", "남성"];
 
-  if (GAMES[Number(gameId) - 1] === undefined) {
+  if (!getGame(Number(gameId))) {
     return <ErrorPage />;
   }
 
   return (
     <CommonLayout>
       <TitleIntro
-        titleE={GAMES[Number(gameId) - 1]?.subTitle}
-        titleK={GAMES[Number(gameId) - 1]?.title}
-        content={GAMES[Number(gameId) - 1]?.description}
+        titleE={getGame(Number(gameId))?.subTitle}
+        titleK={getGame(Number(gameId))?.title}
+        content={getGame(Number(gameId))?.description}
       />
       <div className='flex'>
         <div className='flex flex-col px-[20px] py-[30px] w-[240px] gap-6 bg-[#e2e2e2] '>

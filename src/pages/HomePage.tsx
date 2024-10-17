@@ -5,7 +5,9 @@ import GameCategorySlider from "../components/Homepage/GameCategorySlider";
 import GameMateSlider from "../components/Homepage/GameMateSlider";
 import { Review } from "../config/types";
 import CommonLayout from "../layouts/CommonLayout";
-import { dummyReviews } from "../mock/dummy";
+import { GAMES, getGame } from "../config/const";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 export default function HomePage() {
   const [seletedGameId, setSelectedGameId] = useState<string>("1");
@@ -14,6 +16,15 @@ export default function HomePage() {
     setSelectedGameId(event.target.value);
     console.log(event.target.value);
   };
+
+  const { data: reviews } = useQuery<Review[]>({
+    queryKey: ["reivew", "new"], // 쿼리 키
+    queryFn: async () => {
+      const response = await axios.get(`/api/v1/users/review`);
+      return response.data;
+    },
+  });
+  console.log("reviews", reviews);
 
   return (
     <CommonLayout>
@@ -57,19 +68,20 @@ export default function HomePage() {
           <div className='flex flex-col'>
             <div className='mb-8'>
               <select defaultValue='default' onChange={handleGameChange} className='px-5 py-3 bg-gray-200 rounded-xl'>
-                <option value='default' disabled>
+                <option value='1' disabled>
                   게임을 선택해주세요!
                 </option>
-                <option value='1'>리그 오브 레전드</option>
-                <option value='2'>전략적 팀 전투</option>
-                <option value='3'>배틀그라운드</option>
-                <option value='4'>오버워치</option>
+                {Object.values(GAMES).map((game) => (
+                  <option key={game.id} value={String(game.id)}>
+                    {game.title}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
-              <p className='text-gray-300 text-base'>LEAGUE OF LEGENDS</p>
+              <p className='text-gray-300 text-base'>{getGame(Number(seletedGameId))?.subTitle}</p>
               <h1 className='text-[48px]'>
-                <span className='font-semibold'>리그오브레전드</span>
+                <span className='font-semibold'>{getGame(Number(seletedGameId))?.title}</span>
               </h1>
               <p className='text-lg'>함께 게임할 준비가 된 메이트를 찾아봤어요,</p>
               <p className='text-lg'>바로 이분들이에요!</p>
@@ -93,8 +105,11 @@ export default function HomePage() {
           </div>
           <div className='relative max-w-[720px] w-full'>
             <div className='flex flex-col gap-5'>
-              {dummyReviews.map((review: Review, i) => (
-                <div key={i} className='flex justify-between h-[100px] bg-gray-200 rounded-3xl px-4 py-3 shadow-lg'>
+              {reviews?.map((review: Review) => (
+                <div
+                  key={review.id}
+                  className='flex justify-between h-[100px] bg-gray-200 rounded-3xl px-4 py-3 shadow-lg'
+                >
                   <div>
                     <h1 className='text-lg font-bold'>{review.request_id}</h1>
                     <p>{review.content}</p>

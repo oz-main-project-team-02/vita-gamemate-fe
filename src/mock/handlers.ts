@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { GameMate } from "../config/types";
+import { GameMate, Review } from "../config/types";
 
 const mateData: Record<string, GameMate[]> = {
   "1": [
@@ -371,8 +371,123 @@ const mateData: Record<string, GameMate[]> = {
     },
   ],
 };
+const reviewData: Review[] = [
+  {
+    id: "1",
+    request_id: "Summoner123", // 의뢰자 아이디
+    rating: 5,
+    content: "정말 최고의 게임 메이트였습니다! 추천합니다.",
+    created_at: new Date("2024-10-01"),
+  },
+  {
+    id: "2",
+    request_id: "GameMaster456", // 의뢰자 아이디
+    rating: 4,
+    content: "전반적으로 좋았지만, 약간의 의사소통 문제가 있었어요.",
+    created_at: new Date("2024-10-02"),
+  },
+  {
+    id: "3",
+    request_id: "AcePlayer789", // 의뢰자 아이디
+    rating: 3,
+    content: "괜찮았지만 기대에 미치지 못했습니다.",
+    created_at: new Date("2024-10-03"),
+  },
+  {
+    id: "4",
+    request_id: "ProGamer999", // 의뢰자 아이디
+    rating: 5,
+    content: "매우 유능한 파트너! 다시 함께 하고 싶어요.",
+    created_at: new Date("2024-10-04"),
+  },
+  {
+    id: "5",
+    request_id: "GameNerd123", // 의뢰자 아이디
+    rating: 2,
+    content: "기대했던 것보다 많이 아쉬웠습니다.",
+    created_at: new Date("2024-10-05"),
+  },
+];
+const todayRecommendData: GameMate[] = [
+  {
+    id: 1,
+    nickname: "ProGamer123",
+    email: "progamer123@example.com",
+    gender: "male",
+    description: "FPS 게임 마스터",
+    birthday: "1995-08-10",
+    profile_image: "https://picsum.photos/200/300?random=1",
+    is_online: true,
+    game_id: 4,
+    level: "Diamond",
+    price: 3000,
+    average_rating: 4.8,
+    amount: 5,
+  },
+  {
+    id: 2,
+    nickname: "MageMaster",
+    email: "magemaster@example.com",
+    gender: "female",
+    description: "RPG 전문가",
+    birthday: "1998-05-12",
+    profile_image: "https://picsum.photos/200/300?random=2",
+    is_online: true,
+    game_id: 3,
+    level: "Platinum",
+    price: 2500,
+    average_rating: 4.7,
+    amount: 10,
+  },
+  {
+    id: 3,
+    nickname: "SniperElite",
+    email: "sniperelite@example.com",
+    gender: "male",
+    description: "스나이퍼 전문",
+    birthday: "1996-11-22",
+    profile_image: "https://picsum.photos/200/300?random=3",
+    is_online: true,
+    game_id: 4,
+    level: "Gold",
+    price: 2000,
+    average_rating: 4.5,
+    amount: 7,
+  },
+  {
+    id: 4,
+    nickname: "SpeedRacer",
+    email: "speedracer@example.com",
+    gender: "male",
+    description: "레이싱 게임 전문가",
+    birthday: "1994-03-15",
+    profile_image: "https://picsum.photos/200/300?random=4",
+    is_online: true,
+    game_id: 2,
+    level: "Master",
+    price: 3500,
+    average_rating: 4.9,
+    amount: 3,
+  },
+  {
+    id: 5,
+    nickname: "TacticalGenius",
+    email: "tacticalgenius@example.com",
+    gender: "female",
+    description: "전략 게임 천재",
+    birthday: "1999-12-01",
+    profile_image: "https://picsum.photos/200/300?random=5",
+    is_online: true,
+    game_id: 4,
+    level: "Diamond",
+    price: 2800,
+    average_rating: 4.6,
+    amount: 8,
+  },
+];
 
 export const handlers = [
+  // 게임 카테고리별(gameId) API 요청
   http.get(`/api/v1/mates/:gameId`, ({ params }) => {
     const { gameId } = params;
 
@@ -382,5 +497,15 @@ export const handlers = [
 
     const response = mateData[gameId as string];
     return HttpResponse.json(response);
+  }),
+
+  // 최신 리뷰 데이터 요청
+  http.get(`/api/v1/users/review`, () => {
+    return HttpResponse.json(reviewData);
+  }),
+
+  // 최신 리뷰 데이터 요청
+  http.get(`/api/v1/users/todayrecommend`, () => {
+    return HttpResponse.json(todayRecommendData);
   }),
 ];

@@ -28,7 +28,7 @@ export default function CategorySlider() {
         className='mySwiper'
       >
         {/* 각 슬라이드 */}
-        {GAMES.map((game) => (
+        {Object.values(GAMES).map((game) => (
           <SwiperSlide key={game.id}>
             <div
               className='relative bg-yellow-100 w-full h-[326px] flex flex-col items-center justify-center rounded-3xl overflow-hidden'

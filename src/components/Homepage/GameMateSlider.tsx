@@ -5,13 +5,19 @@ import { Navigation } from "swiper/modules";
 import { GrPrevious } from "react-icons/gr";
 import { GrNext } from "react-icons/gr";
 import VitaPrice from "../Common/VitaPrice";
-import { dummyGameMates } from "../../mock/dummy";
-import { GAMES } from "../../config/const";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { GameMate } from "../../config/types";
+import { getGame } from "../../config/const";
 
 export default function GameMateSlider() {
-  function findGameByGameId(gameId: number) {
-    return GAMES.find((game) => game.id === gameId);
-  }
+  const { data: recommendMates } = useQuery<GameMate[]>({
+    queryKey: ["user", "recommend"],
+    queryFn: async () => {
+      const response = await axios.get(`/api/v1/users/todayrecommend`);
+      return response.data;
+    },
+  });
 
   return (
     <div className='mx-auto max-w-[672px] relative'>
@@ -27,30 +33,32 @@ export default function GameMateSlider() {
         className='mySwiper'
       >
         {/* 각 슬라이드 */}
-        {dummyGameMates.map((mate, i) => (
-          <SwiperSlide key={i}>
-            <div className='relative bg-[#293883] w-full h-[206px] flex items-center rounded-3xl px-[10px] gap-4'>
-              <div className='w-[30%] h-[186px] bg-blue-400 rounded-2xl'>
-                <img
-                  src={mate.profile_image ? mate.profile_image : "/src/assets/imgs/user.png"}
-                  alt='사용자 이미지'
-                  className='w-full h-full rounded-2xl'
-                />
-              </div>
-              <div className='w-[70%] text-white'>
-                <h2 className='text-2xl font-bold'>{mate.nickname}</h2>
-                <p className='font-light text-gray-200 mb-4'>{mate.description}</p>
-                <div className='flex gap-4'>
-                  <img src={findGameByGameId(mate.game_id)?.img} alt='' className='w-[60px] h-[60px]' />
-                  <div>
-                    <h2 className='text-2xl font-bold'>{findGameByGameId(mate.game_id)?.title}</h2>
-                    <VitaPrice mate={mate} />
+        {recommendMates?.map((mate) => {
+          return (
+            <SwiperSlide key={mate.id}>
+              <div className='relative bg-[#293883] w-full h-[206px] flex items-center rounded-3xl px-[10px] gap-4'>
+                <div className='w-[30%] h-[186px] bg-blue-400 rounded-2xl'>
+                  <img
+                    src={mate.profile_image ? mate.profile_image : "/src/assets/imgs/user.png"}
+                    alt='사용자 이미지'
+                    className='w-full h-full rounded-2xl'
+                  />
+                </div>
+                <div className='w-[70%] text-white'>
+                  <h2 className='text-2xl font-bold'>{mate.nickname}</h2>
+                  <p className='font-light text-gray-200 mb-4'>{mate.description}</p>
+                  <div className='flex gap-4'>
+                    <img src={getGame(mate.game_id)?.img} alt='' className='w-[60px] h-[60px]' />
+                    <div>
+                      <h2 className='text-2xl font-bold'>{getGame(mate.game_id)?.title}</h2>
+                      <VitaPrice mate={mate} />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
       <div className='absolute top-1/2 left-[-40px] gameMate-prev z-10'>
         <GrPrevious />

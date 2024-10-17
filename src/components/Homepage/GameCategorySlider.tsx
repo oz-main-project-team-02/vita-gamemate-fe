@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function GameCategorySlider({ gameId }: Props) {
-  const { data, isLoading } = useQuery<GameMate[]>({
+  const { data: gameMates, isLoading } = useQuery<GameMate[]>({
     queryKey: ["user", "mate", gameId], // 쿼리 키
     queryFn: async () => {
       const response = await axios.get(`/api/v1/mates/${gameId}`);
@@ -23,7 +23,7 @@ export default function GameCategorySlider({ gameId }: Props) {
     },
   });
 
-  console.log(data);
+  console.log("카테고리별 게임메이트", gameMates);
 
   if (isLoading) return <div></div>;
 
@@ -41,7 +41,7 @@ export default function GameCategorySlider({ gameId }: Props) {
         className="mySwiper"
       >
         {/* 각 슬라이드 */}
-        {data?.map((mate) => (
+        {gameMates?.map((mate) => (
           <SwiperSlide key={mate.id}>
             <MateCard mate={mate} />
           </SwiperSlide>

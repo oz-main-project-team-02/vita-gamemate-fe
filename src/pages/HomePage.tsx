@@ -104,8 +104,11 @@ export default function HomePage() {
           </div>
           <div className='relative w-full max-w-[720px]'>
             <div className='flex flex-col gap-5'>
-              {dummyReviews.map((review: Review, i) => (
-                <div key={i} className='flex h-[100px] justify-between rounded-3xl bg-gray-200 px-4 py-3 shadow-lg'>
+              {reviews?.map((review: Review) => (
+                <div
+                  key={review.id}
+                  className='flex h-[100px] justify-between rounded-3xl bg-gray-200 px-4 py-3 shadow-lg'
+                >
                   <div>
                     <h1 className='text-lg font-bold'>{review.request_id}</h1>
                     <p>{review.content}</p>

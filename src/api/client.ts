@@ -47,6 +47,7 @@ client.interceptors.response.use(
           const { data } = await client.post("/api/v1/users/auth/accesstoken/", {
             refresh,
           });
+          console.log("토큰 재발급 성공");
           localStorage.setItem("access_token", data.access_token);
           originalRequest.headers["Authorization"] = `Bearer ${data.access_token}`;
 

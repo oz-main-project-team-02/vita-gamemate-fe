@@ -18,7 +18,7 @@ export default function Header() {
 
   const handleLogoutClick = async () => {
     try {
-      const response = await client.post("/api/v1/users/auth/logout/");
+      const response = await client.get("/api/v1/users/auth/logout/");
 
       if (response.status === 200) {
         localStorage.removeItem("access_token");
@@ -37,11 +37,9 @@ export default function Header() {
       if (access_token) {
         (async () => {
           try {
-            const { data } = await client.post("/api/v1/users/profile/me/", {
-              access_token: access_token,
-            });
+            const { data } = await client.get("/api/v1/users/profile/me/");
             setUser(data);
-            console.log(data);
+            console.log("사용자정보: ", data);
           } catch (error) {
             console.error(error);
           }
@@ -63,8 +61,11 @@ export default function Header() {
       </div>
       <div className='flex gap-6'>
         <div className='flex items-center '>
-          {user?.id !== 0 ? (
+          {localStorage.getItem("access_token") ? (
             <>
+              <button onClick={handleLogoutClick} className='mx-5'>
+                로그아웃
+              </button>
               <button className='w-[36px] h-[36px] bg-slate-200 rounded-full flex items-center justify-center mr-6'>
                 <AiOutlineMessage size={24} />
               </button>
@@ -76,9 +77,6 @@ export default function Header() {
             <>
               <button onClick={handleLoginClick} className='text-primaryTextLight font-semibold hover:text-primaryText'>
                 로그인
-              </button>
-              <button onClick={handleLogoutClick} className='mx-5'>
-                로그아웃
               </button>
             </>
           )}

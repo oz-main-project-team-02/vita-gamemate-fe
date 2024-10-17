@@ -18,7 +18,7 @@ export interface GameMate {
   description: string | null;
   birthday: string | null;
   profile_image?: string | null;
-  is_onlien: boolean;
+  is_online: boolean;
   game_id: number;
   level: string;
   price: number;

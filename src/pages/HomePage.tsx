@@ -1,3 +1,4 @@
+import { ChangeEventHandler, useState } from "react";
 import CategorySlider from "../components/Homepage/CategorySlider";
 import EventSlider from "../components/Homepage/EventSlider";
 import GameCategorySlider from "../components/Homepage/GameCategorySlider";
@@ -7,6 +8,13 @@ import CommonLayout from "../layouts/CommonLayout";
 import { dummyReviews } from "../mock/dummy";
 
 export default function HomePage() {
+  const [seletedGameId, setSelectedGameId] = useState<string>("1");
+
+  const handleGameChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    setSelectedGameId(event.target.value);
+    console.log(event.target.value);
+  };
+
   return (
     <CommonLayout>
       <div className='relative'>
@@ -48,15 +56,14 @@ export default function HomePage() {
         <div className='flex justify-center items-center gap-36 h-[760px] bg-gray-100 px-[100px]'>
           <div className='flex flex-col'>
             <div className='mb-8'>
-              <select defaultValue='default' className='px-5 py-3 bg-gray-200 rounded-xl'>
+              <select defaultValue='default' onChange={handleGameChange} className='px-5 py-3 bg-gray-200 rounded-xl'>
                 <option value='default' disabled>
                   게임을 선택해주세요!
                 </option>
-                <option value='game1'>게임 1</option>
-                <option value='game2'>게임 2</option>
-                <option value='game3'>게임 3</option>
-                <option value='game4'>게임 4</option>
-                <option value='game5'>게임 5</option>
+                <option value='1'>리그 오브 레전드</option>
+                <option value='2'>전략적 팀 전투</option>
+                <option value='3'>배틀그라운드</option>
+                <option value='4'>오버워치</option>
               </select>
             </div>
             <div>
@@ -69,7 +76,7 @@ export default function HomePage() {
             </div>
           </div>
           <div>
-            <GameCategorySlider />
+            <GameCategorySlider gameId={seletedGameId} />
           </div>
         </div>
         {/* 실시간 생생후기 */}

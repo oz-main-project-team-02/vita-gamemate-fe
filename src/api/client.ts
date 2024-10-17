@@ -50,6 +50,7 @@ client.interceptors.response.use(
               refresh,
             }
           );
+          console.log("토큰 재발급 성공");
           localStorage.setItem("access_token", data.access_token);
           originalRequest.headers[
             "Authorization"

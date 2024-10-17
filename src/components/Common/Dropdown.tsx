@@ -5,8 +5,6 @@ import { PiCoins } from "react-icons/pi";
 import { SlNotebook } from "react-icons/sl";
 import { TbLogout2 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import { client } from "../../api/client";
-import { useUserStore } from "../../config/store";
 
 interface HoverProps {
   setIsHovered: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,21 +12,6 @@ interface HoverProps {
 
 export default function Dropdown({ setIsHovered }: HoverProps) {
   const navigate = useNavigate();
-  const { reset } = useUserStore();
-
-  const handleLogoutClick = async () => {
-    try {
-      const response = await client.post("/api/v1/users/auth/logout/");
-
-      if (response.status === 200) {
-        localStorage.removeItem("access_token");
-        reset();
-        navigate("/");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div
@@ -109,12 +92,7 @@ export default function Dropdown({ setIsHovered }: HoverProps) {
         <div className="w-[20px] h-[20px]">
           <TbLogout2 size={20} />
         </div>
-        <p
-          onClick={handleLogoutClick}
-          className="w-full ml-[10px] cursor-pointer"
-        >
-          로그아웃
-        </p>
+        <p className="w-full ml-[10px] cursor-pointer">로그아웃</p>
       </div>
     </div>
   );

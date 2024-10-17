@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
 import { useModalStore, useUserStore } from "../../config/store";
 import LoginModal from "./LoginModal";
@@ -10,11 +10,26 @@ import Dropdown from "./Dropdown";
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
-  const { user, setUser } = useUserStore();
+  const navigate = useNavigate();
+  const { user, setUser, reset } = useUserStore();
   const [isHovered, setIsHovered] = useState(false);
 
   const handleLoginClick = () => {
     setModalStatus("login", true);
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      const response = await client.post("/api/v1/users/auth/logout/");
+
+      if (response.status === 200) {
+        localStorage.removeItem("access_token");
+        reset();
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // 액세스 토큰 있을 경우, 사용자 정보 가져오기
@@ -52,6 +67,9 @@ export default function Header() {
         <div className="flex items-center ">
           {localStorage.getItem("access_token") ? (
             <>
+              <button onClick={handleLogoutClick} className="mx-5">
+                로그아웃
+              </button>
               <button className="w-[36px] h-[36px] bg-slate-200 rounded-full flex items-center justify-center mr-6">
                 <AiOutlineMessage size={24} />
               </button>

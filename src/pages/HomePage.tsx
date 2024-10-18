@@ -5,9 +5,9 @@ import GameCategorySlider from '../components/Homepage/GameCategorySlider';
 import GameMateSlider from '../components/Homepage/GameMateSlider';
 import { Review } from '../config/types';
 import CommonLayout from '../layouts/CommonLayout';
-import { GAMES, getGame } from '../config/const';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { getGame } from '../config/const';
 
 export default function HomePage() {
   const [seletedGameId, setSelectedGameId] = useState<string>('1');
@@ -78,9 +78,9 @@ export default function HomePage() {
               </select>
             </div>
             <div>
-              <p className='text-base text-gray-300'>LEAGUE OF LEGENDS</p>
+              <p className='text-base text-gray-300'>{getGame(Number(seletedGameId)).subTitle}</p>
               <h1 className='text-[48px]'>
-                <span className='font-semibold'>리그오브레전드</span>
+                <span className='font-semibold'>{getGame(Number(seletedGameId)).title}</span>
               </h1>
               <p className='text-lg'>함께 게임할 준비가 된 메이트를 찾아봤어요,</p>
               <p className='text-lg'>바로 이분들이에요!</p>

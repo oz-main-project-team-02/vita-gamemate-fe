@@ -2,8 +2,7 @@ import FilterList from '../components/EditInfoPage/FilterList';
 import TitleIntro from '../components/Common/TitleIntro';
 import ProfileImg from '../components/EditInfoPage/ProfileImg';
 import CommonLayout from '../layouts/CommonLayout';
-import GameSelect from '../components/GameMatePage/GameSelect';
-import TeamBattleForm from '../components/GameMatePage/TeamBattleForm';
+import GameMateApplicationForm from '@/components/GameMatePage/GameMateApplicationForm';
 
 export default function GameMatePage() {
   return (
@@ -14,8 +13,7 @@ export default function GameMatePage() {
         <div className='relative h-[1866px] w-full bg-gray-100'>
           <ProfileImg />
           <div className='absolute left-[40.5%] top-[260px] flex min-w-[686px] flex-col gap-10'>
-            <GameSelect />
-            <TeamBattleForm />
+            <GameMateApplicationForm />
           </div>
           <div className='absolute flex h-[1866px] w-[30%] justify-end bg-[#E2E2E2]'>
             <FilterList />

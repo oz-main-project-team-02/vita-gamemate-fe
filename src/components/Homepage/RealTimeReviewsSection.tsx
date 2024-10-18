@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default function RealTimeReviewsSection() {
   const { data: reviews } = useQuery<Review[]>({
-    queryKey: ['reivew', 'new'], // 쿼리 키
+    queryKey: ['review', 'new'], // 쿼리 키
     queryFn: async () => {
       const response = await axios.get(`/api/v1/users/review`);
       return response.data;

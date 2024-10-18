@@ -50,6 +50,7 @@ export default function GameCategoryCardList({ gameId }: Props) {
   if (!getGame(Number(gameId))) {
     return <ErrorPage />;
   }
+
   return (
     <div
       className='flex flex-col items-center justify-center bg-gray-100 py-11'

@@ -13,7 +13,7 @@ export const client = axios.create({
 
 function handleLogout() {
   localStorage.removeItem('accessToken');
-  useUserStore.getState().reset();
+  useUserStore.getState().unSetUser();
   window.location.href = '/';
 }
 

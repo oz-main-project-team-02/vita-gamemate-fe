@@ -1,7 +1,7 @@
 export type User = {
   id: number;
-  nickname: string;
-  email: string;
+  nickname: string | null;
+  email: string | null;
   gender: string | null;
   description: string | null;
   birthday: string | null;

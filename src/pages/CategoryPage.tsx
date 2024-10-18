@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TitleIntro from '../components/Common/TitleIntro';
 import CommonLayout from '../layouts/CommonLayout';
 import MateCard from '../components/Common/MateCard';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getGame } from '../config/const';
 import ErrorPage from './ErrorPage';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
+import getGameMatesByCategory from '@/api/getGameMatesByCategory';
+import { GameMate } from '@/config/types';
+import { useInView } from 'react-intersection-observer';
+import Spinner from '@/components/Common/Spinner';
 
 export default function CategoryPage() {
   const [sort, setSort] = useState<string>('');
@@ -13,11 +17,38 @@ export default function CategoryPage() {
   const { gameId } = useParams();
   const sortArr = ['추천순', '신규 가입', '최고 평가', '최저 가격', '최고 가격'];
   const genderArr = ['모두', '여성', '남성'];
+  const navigate = useNavigate();
 
-  // const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery({
-  //   queryKey: ['user', 'mate', gameId],
-  //   queryFn: getGameMatesByCategory,
-  // });
+  useEffect(() => {
+    if (gameId) {
+      return;
+    }
+    navigate('/', { replace: true });
+  }, [gameId, navigate]);
+
+  const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
+    GameMate[],
+    Error,
+    InfiniteData<GameMate[]>,
+    [string, string, string],
+    number
+  >({
+    queryKey: ['user', 'mate', gameId as string],
+    queryFn: getGameMatesByCategory,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage?.at(-1)?.id,
+  });
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+    delay: 0,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetching, fetchNextPage]);
 
   if (!getGame(Number(gameId))) {
     return <ErrorPage />;
@@ -78,17 +109,21 @@ export default function CategoryPage() {
             ))}
           </div>
         </div>
-        <div className='flex flex-col justify-center bg-gray-100 py-11' style={{ width: `calc(100% - 200px)` }}>
+        <div
+          className='flex flex-col items-center justify-center bg-gray-100 py-11'
+          style={{ width: `calc(100% - 200px)` }}
+        >
           <div className='flex max-w-[1120px] flex-wrap gap-[10px] p-[20px]'>
-            {dummyGameMates.map((mate) => (
-              <div key={mate.id} className='mb-4'>
-                <MateCard mate={mate} />
-              </div>
-            ))}
+            {data?.pages?.map((page) =>
+              page.map((mate) => (
+                <div key={mate.id} className='mb-4'>
+                  <MateCard mate={mate} />
+                </div>
+              ))
+            )}
           </div>
-          <div className='flex justify-center'>
-            <button className='rounded-lg bg-gray-400 px-4 py-3 text-white shadow-sm'>more</button>
-          </div>
+          {isFetching ? <Spinner /> : null}
+          <div ref={ref} className='h-5 w-full bg-transparent'></div>
         </div>
       </div>
     </CommonLayout>

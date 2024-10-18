@@ -24,9 +24,7 @@ export default function Header() {
       if (accessToken) {
         (async () => {
           try {
-            const { data } = await client.post('/api/v1/users/profile/me/', {
-              access_token: accessToken,
-            });
+            const { data } = await client.get('/api/v1/users/profile/me/');
             setUser(data);
             console.log(data);
           } catch (error) {

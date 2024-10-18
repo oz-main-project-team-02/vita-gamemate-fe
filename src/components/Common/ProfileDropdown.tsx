@@ -14,7 +14,7 @@ interface HoverProps {
 
 export default function ProfileDropdown({ setIsHovered }: HoverProps) {
   const navigate = useNavigate();
-  const { reset } = useUserStore();
+  const { unSetUser } = useUserStore();
 
   const handleLogoutClick = async () => {
     try {
@@ -22,7 +22,7 @@ export default function ProfileDropdown({ setIsHovered }: HoverProps) {
 
       if (response.status === 200) {
         localStorage.removeItem('accessToken');
-        reset();
+        unSetUser();
         navigate('/');
       }
     } catch (error) {

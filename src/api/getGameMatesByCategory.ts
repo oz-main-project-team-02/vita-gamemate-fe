@@ -1,5 +1,17 @@
-import { client } from './client';
+import axios from 'axios';
 
-export default async function getGameMatesByCategory(gameId: number) {
-  const response = await client.get(`/api/v1/mates/${gameId.toString()}`);
+type Props = {
+  pageParam?: number;
+  queryKey: [string, string, string];
+};
+
+export default async function getGameMatesByCategory({ pageParam, queryKey }: Props) {
+  const [, , gameId] = queryKey;
+  try {
+    const { data } = await axios.get(`/api/v1/users/${gameId}/mate?cursor=${pageParam}`);
+    return data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }

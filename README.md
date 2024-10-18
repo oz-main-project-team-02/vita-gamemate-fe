@@ -3,7 +3,7 @@
 # 비타 - 게임 메이트 소중한 시간을 함께하세요
 
 <br/>
-<div align="center"><img src="/vitaLogo.png" alt="로고" width="700px"></div>
+<div align="left"><img src="public/favicon.png" alt="로고" width="300px"></div>
 <br/>
 
 **프로젝트 기간** : 2024.10.10 ~ 2024.11.06
@@ -37,9 +37,9 @@
 
 ## 🙌 팀원 소개
 
-| FE 신민혁                                                                                                                                                       | FE 박미선                                                                                                                                             |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <a href="https://github.com/shin-minhyuk"><img src="https://avatars.githubusercontent.com/u/174288486?v=4" alt="shin-minhyuk" width="100px" height="100px"></a> | <a href="https://github.com/mi-suni"><img src="https://avatars.githubusercontent.com/u/175471571?v=4" alt="mi-suni" width="100px" height="100px"></a> |
+| FE 신민혁                                                                                                                                                       | FE 박미선                                                                                                                                             | FE 이희주                                                                                                                                               |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a href="https://github.com/shin-minhyuk"><img src="https://avatars.githubusercontent.com/u/174288486?v=4" alt="shin-minhyuk" width="100px" height="100px"></a> | <a href="https://github.com/mi-suni"><img src="https://avatars.githubusercontent.com/u/175471571?v=4" alt="mi-suni" width="100px" height="100px"></a> | <a href="https://github.com/h22jul22"><img src="https://avatars.githubusercontent.com/u/164333745?v=4" alt="h22jul22" width="100px" height="100px"></a> |
 
 <br/>
 <br/>
@@ -79,7 +79,7 @@
 <br/>
 <br/>
 
-## 🗂 디렉토리 구조
+## 🗂 디렉토리 구조 (변경 예정)
 
 ```
 📦src

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { useUserStore } from '../config/store';
 
 axios.defaults.withCredentials = true;
@@ -37,26 +36,22 @@ client.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const originalRequest = error.config; // 초기 요청에 대한 내용이 전부 들어있음 (url, method, headers 등)
+    const request = error.config; // 초기 요청에 대한 내용이 전부 들어있음 (url, method, headers 등)
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const refreshToken = Cookies.get('refresh_token');
+    if (error.response?.status === 401 && !request._retry && request._retryCount < 3) {
+      request._retry = true;
+      request._retryCount += 1;
+      console.log('request', request);
+      try {
+        const { data } = await client.get('/api/v1/users/auth/accesstoken/');
+        console.log('토큰 재발급 성공', data);
+        localStorage.setItem('accessToken', data.access_token);
+        request.headers['Authorization'] = `Bearer ${data.access_token}`;
 
-      if (refreshToken) {
-        try {
-          const { data } = await client.post('/api/v1/users/auth/accesstoken/', {
-            refreshToken,
-          });
-          console.log('토큰 재발급 성공');
-          localStorage.setItem('accessToken', data.access_token);
-          originalRequest.headers['Authorization'] = `Bearer ${data.access_token}`;
-
-          return client(originalRequest);
-        } catch (error) {
-          console.error('리프레시 토큰 갱신 실패', error);
-          handleLogout();
-        }
+        return client(request);
+      } catch (error) {
+        console.error('리프레시 토큰 갱신 실패', error);
+        handleLogout();
       }
     }
     return Promise.reject(error);

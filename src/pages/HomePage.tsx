@@ -1,34 +1,45 @@
-import { ChangeEventHandler, useState } from "react";
-import CategorySlider from "../components/Homepage/CategorySlider";
-import EventSlider from "../components/Homepage/EventSlider";
-import GameCategorySlider from "../components/Homepage/GameCategorySlider";
-import GameMateSlider from "../components/Homepage/GameMateSlider";
-import { Review } from "../config/types";
-import CommonLayout from "../layouts/CommonLayout";
-import { dummyReviews } from "../mock/dummy";
+import { ChangeEventHandler, useState } from 'react';
+import CategorySlider from '../components/Homepage/CategorySlider';
+import EventSlider from '../components/Homepage/EventSlider';
+import GameCategorySlider from '../components/Homepage/GameCategorySlider';
+import GameMateSlider from '../components/Homepage/GameMateSlider';
+import { Review } from '../config/types';
+import CommonLayout from '../layouts/CommonLayout';
+import { GAMES, getGame } from '../config/const';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 export default function HomePage() {
-  const [seletedGameId, setSelectedGameId] = useState<string>("1");
+  const [seletedGameId, setSelectedGameId] = useState<string>('1');
 
   const handleGameChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     setSelectedGameId(event.target.value);
     console.log(event.target.value);
   };
 
+  const { data: reviews } = useQuery<Review[]>({
+    queryKey: ['reivew', 'new'], // 쿼리 키
+    queryFn: async () => {
+      const response = await axios.get(`/api/v1/users/review`);
+      return response.data;
+    },
+  });
+  console.log('reviews', reviews);
+
   return (
     <CommonLayout>
       <div className='relative'>
         {/* 이벤트 섹션 */}
         <div className='h-[440px] px-[100px]'>
-          <div className='absolute top-[150px] left-0 right-0'>
+          <div className='absolute left-0 right-0 top-[150px]'>
             <EventSlider />
           </div>
         </div>
         {/* 추천 카테고리 섹션 */}
-        <div className='flex items-center justify-center gap-10 h-[760px] bg-gray-100 px-[100px]'>
+        <div className='flex h-[760px] items-center justify-center gap-10 bg-gray-100 px-[100px]'>
           <div className='flex items-center gap-36'>
             <div>
-              <p className='text-gray-300 text-base'>RECOMMEND CATEGORY</p>
+              <p className='text-base text-gray-300'>RECOMMEND CATEGORY</p>
               <h1 className='text-[48px]'>
                 추천 <span className='font-semibold'>카테고리</span>
               </h1>
@@ -39,10 +50,10 @@ export default function HomePage() {
           </div>
         </div>
         {/* 오늘의 게임 메이트 */}
-        <div className='flex items-center justify-center h-[760px] px-[100px]'>
+        <div className='flex h-[760px] items-center justify-center px-[100px]'>
           <div className='flex items-center gap-36'>
             <div>
-              <p className='text-gray-300 text-base'>TODAY GAMEMATE</p>
+              <p className='text-base text-gray-300'>TODAY GAMEMATE</p>
               <h1 className='text-[48px]'>
                 오늘의 <span className='font-semibold'>게임 메이트</span>
               </h1>
@@ -53,10 +64,10 @@ export default function HomePage() {
           </div>
         </div>
         {/* 카테고리별 추천메이트 */}
-        <div className='flex justify-center items-center gap-36 h-[760px] bg-gray-100 px-[100px]'>
+        <div className='flex h-[760px] items-center justify-center gap-36 bg-gray-100 px-[100px]'>
           <div className='flex flex-col'>
             <div className='mb-8'>
-              <select defaultValue='default' onChange={handleGameChange} className='px-5 py-3 bg-gray-200 rounded-xl'>
+              <select defaultValue='default' onChange={handleGameChange} className='rounded-xl bg-gray-200 px-5 py-3'>
                 <option value='default' disabled>
                   게임을 선택해주세요!
                 </option>
@@ -67,7 +78,7 @@ export default function HomePage() {
               </select>
             </div>
             <div>
-              <p className='text-gray-300 text-base'>LEAGUE OF LEGENDS</p>
+              <p className='text-base text-gray-300'>LEAGUE OF LEGENDS</p>
               <h1 className='text-[48px]'>
                 <span className='font-semibold'>리그오브레전드</span>
               </h1>
@@ -80,10 +91,10 @@ export default function HomePage() {
           </div>
         </div>
         {/* 실시간 생생후기 */}
-        <div className='flex items-center justify-center h-[760px] px-[100px] gap-36'>
+        <div className='flex h-[760px] items-center justify-center gap-36 px-[100px]'>
           <div>
             <div>
-              <p className='text-gray-300 text-base'>RECOMMEND CATEGORY</p>
+              <p className='text-base text-gray-300'>RECOMMEND CATEGORY</p>
               <h1 className='text-[48px]'>
                 실시간 <span className='font-semibold'>생생후기</span>
               </h1>
@@ -91,10 +102,13 @@ export default function HomePage() {
               <p className='text-lg'>믿을 수 있는 게임 메이트와 함께라면 가능합니다!</p>
             </div>
           </div>
-          <div className='relative max-w-[720px] w-full'>
+          <div className='relative w-full max-w-[720px]'>
             <div className='flex flex-col gap-5'>
-              {dummyReviews.map((review: Review, i) => (
-                <div key={i} className='flex justify-between h-[100px] bg-gray-200 rounded-3xl px-4 py-3 shadow-lg'>
+              {reviews?.map((review: Review) => (
+                <div
+                  key={review.id}
+                  className='flex h-[100px] justify-between rounded-3xl bg-gray-200 px-4 py-3 shadow-lg'
+                >
                   <div>
                     <h1 className='text-lg font-bold'>{review.request_id}</h1>
                     <p>{review.content}</p>

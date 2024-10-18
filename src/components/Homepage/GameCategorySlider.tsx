@@ -14,20 +14,21 @@ type Props = {
 };
 
 export default function GameCategorySlider({ gameId }: Props) {
-  const { data, isLoading } = useQuery<GameMate[]>({
+  const { data: gameMates, isLoading } = useQuery<GameMate[]>({
     queryKey: ["user", "mate", gameId], // 쿼리 키
     queryFn: async () => {
       const response = await axios.get(`/api/v1/mates/${gameId}`);
+      console.log(response); // 여기서 응답 데이터를 출력해서 확인하세요.
       return response.data;
     },
   });
 
-  console.log(data);
+  console.log("카테고리별 게임메이트", gameMates);
 
   if (isLoading) return <div></div>;
 
   return (
-    <div className='mx-auto max-w-[672px] relative'>
+    <div className="mx-auto max-w-[672px] relative">
       <Swiper
         loop={true}
         slidesPerView={3} // 한 화면에 3개의 슬라이드 표시
@@ -37,19 +38,19 @@ export default function GameCategorySlider({ gameId }: Props) {
           nextEl: ".gameCategory-next",
         }}
         modules={[Navigation]}
-        className='mySwiper'
+        className="mySwiper"
       >
         {/* 각 슬라이드 */}
-        {data?.map((mate) => (
+        {gameMates?.map((mate) => (
           <SwiperSlide key={mate.id}>
             <MateCard mate={mate} />
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className='absolute top-1/2 left-[-40px] gameCategory-prev z-10'>
+      <div className="absolute top-1/2 left-[-40px] gameCategory-prev z-10">
         <GrPrevious />
       </div>
-      <div className='absolute top-1/2 right-[-40px] gameCategory-next z-10'>
+      <div className="absolute top-1/2 right-[-40px] gameCategory-next z-10">
         <GrNext />
       </div>
     </div>

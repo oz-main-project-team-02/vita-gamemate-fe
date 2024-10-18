@@ -2,12 +2,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useUserStore } from "../config/store";
 
+axios.defaults.withCredentials = true;
+
 export const client = axios.create({
   baseURL: import.meta.env.VITE_PUBLIC_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
 });
 
 function handleLogout() {
@@ -44,12 +45,17 @@ client.interceptors.response.use(
 
       if (refresh) {
         try {
-          const { data } = await client.post("/api/v1/users/auth/accesstoken/", {
-            refresh,
-          });
+          const { data } = await client.post(
+            "/api/v1/users/auth/accesstoken/",
+            {
+              refresh,
+            }
+          );
           console.log("토큰 재발급 성공");
           localStorage.setItem("access_token", data.access_token);
-          originalRequest.headers["Authorization"] = `Bearer ${data.access_token}`;
+          originalRequest.headers[
+            "Authorization"
+          ] = `Bearer ${data.access_token}`;
 
           return client(originalRequest);
         } catch (error) {

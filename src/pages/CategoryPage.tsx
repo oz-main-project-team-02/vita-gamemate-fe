@@ -5,7 +5,7 @@ import MateCard from '../components/Common/MateCard';
 import { useParams } from 'react-router-dom';
 import { getGame } from '../config/const';
 import ErrorPage from './ErrorPage';
-import { dummyGameMates } from '../mock/dummy';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 export default function CategoryPage() {
   const [sort, setSort] = useState<string>('');
@@ -13,6 +13,11 @@ export default function CategoryPage() {
   const { gameId } = useParams();
   const sortArr = ['추천순', '신규 가입', '최고 평가', '최저 가격', '최고 가격'];
   const genderArr = ['모두', '여성', '남성'];
+
+  // const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery({
+  //   queryKey: ['user', 'mate', gameId],
+  //   queryFn: getGameMatesByCategory,
+  // });
 
   if (!getGame(Number(gameId))) {
     return <ErrorPage />;

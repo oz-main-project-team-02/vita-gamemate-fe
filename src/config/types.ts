@@ -27,3 +27,11 @@ export interface Review {
   content: string;
   created_at: Date;
 }
+
+export type MateRegister = {
+  game_id: string | null;
+  level: string | null;
+  description: string | null;
+  image: string | null;
+  request_price: number | null;
+};

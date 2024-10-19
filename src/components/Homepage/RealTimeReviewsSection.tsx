@@ -1,12 +1,12 @@
+import { mock } from '@/api/mock';
 import { Review } from '@/config/types';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 
 export default function RealTimeReviewsSection() {
   const { data: reviews } = useQuery<Review[]>({
     queryKey: ['review', 'new'], // 쿼리 키
     queryFn: async () => {
-      const response = await axios.get(`/api/v1/users/review`);
+      const response = await mock.get(`/api/v1/users/review`);
       return response.data;
     },
   });

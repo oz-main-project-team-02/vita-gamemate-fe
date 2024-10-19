@@ -1,17 +1,20 @@
+import { client } from '@/api/client';
 import { GAMES, getGame } from '@/config/const';
 import debounce from '@/utils/debounce';
-import { useCallback, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useCallback, useRef, useState } from 'react';
 
 type Dropdown = {
   game: boolean;
   level: boolean;
 };
 
-type FormData = {
-  game: string | null;
+type FormDataType = {
+  game_id: string | null;
   level: string | null;
   description: string | null;
-  img: string | null;
+  image: File | null;
+  request_price: number | null;
 };
 
 export default function GameMateApplicationForm() {
@@ -19,15 +22,29 @@ export default function GameMateApplicationForm() {
     game: false,
     level: false,
   });
-  const [formData, setFormData] = useState<FormData>({
-    game: null,
+  const [formData, setFormData] = useState<FormDataType>({
+    game_id: null,
     level: null,
     description: null,
-    img: null,
+    image: null,
+    request_price: null,
   });
-
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   console.log(formData);
 
+  // 게임메이트 등록하기 Mutation
+  const mateRegisterMutation = useMutation({
+    mutationFn: (mateInfo: FormData) => {
+      return client.post('/api/v1/mates/register/', mateInfo, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    },
+  });
+
+  // 게임선택 시 드롭다운 토글
   const toggleDropdownGame = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -36,6 +53,7 @@ export default function GameMateApplicationForm() {
     [isDropdownOpen]
   );
 
+  // 레벨선택시 시 드롭다운 토글
   const toggleDropdownLevel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -44,23 +62,66 @@ export default function GameMateApplicationForm() {
     [isDropdownOpen]
   );
 
+  // field, value 기반 FormData 업데이트 함수
   const handleFieldChange = useCallback(
-    (field: keyof FormData, value: string) => {
+    (field: keyof FormDataType, value: string | number) => {
       setFormData({ ...formData, [field]: value });
     },
     [formData]
   );
 
-  const updateDescription = useCallback(
-    debounce((value) => {
-      setFormData((prev: FormData) => ({ ...prev, description: value }));
-    }, 500),
-    [setFormData]
-  );
-
+  // 재능정보 작성 시 상태업데이트 지연함수
+  const updateDescription = debounce((value) => {
+    setFormData((prev: FormDataType) => ({ ...prev, description: value }));
+  }, 1000);
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     updateDescription(e.target.value);
+  };
+
+  // 파일변경시 이미지 프리뷰
+  const handleChangeFile = () => {
+    if (fileRef.current?.files?.[0]) {
+      const file = fileRef.current.files[0];
+      const imageUrl = URL.createObjectURL(file);
+
+      handleFieldChange('image', imageUrl);
+      setPreviewImage(imageUrl);
+    }
+  };
+
+  // 가격변경
+  const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleFieldChange('request_price', Number(e.target.value));
+  };
+
+  // 게임메이트 등록하기 submit 함수
+  const fetchMateRegister = async () => {
+    const data = new FormData();
+
+    if (formData.game_id) {
+      const selectedGame = getGame(formData.game_id);
+      if (selectedGame) {
+        data.append('game_id', selectedGame?.id.toString());
+      }
+    }
+
+    if (fileRef.current?.files?.[0]) {
+      data.append('image', fileRef.current.files[0]);
+    }
+
+    data.append('level', formData.level || '');
+    data.append('description', formData.description || '');
+    data.append('request_price', formData.request_price?.toString() || '');
+
+    mateRegisterMutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log('성공적으로 등록되었습니다', data);
+      },
+      onError: (error) => {
+        console.error('등록 중 오류가 발생했습니다:', error);
+      },
+    });
   };
 
   return (
@@ -70,7 +131,7 @@ export default function GameMateApplicationForm() {
         onClick={(e) => toggleDropdownGame(e)}
         className='relative flex h-[50px] items-center justify-between rounded-xl bg-white p-4 text-gray-400 outline outline-gray-200'
       >
-        <span>{formData.game ? formData.game : '게임을 선택하세요.'}</span>
+        <span>{formData.game_id ? formData.game_id : '게임을 선택하세요.'}</span>
         <span className='text-xl'>&gt;</span>
       </button>
       {isDropdownOpen.game && (
@@ -79,13 +140,13 @@ export default function GameMateApplicationForm() {
             {Object.values(GAMES).map((game, i) => (
               <div
                 key={i}
-                onClick={() => handleFieldChange('game', game.title)}
-                className={`flex flex-1 flex-col items-center rounded-xl py-2 hover:scale-110 hover:bg-[#FFD80077] ${formData.game === game.title ? 'bg-primary' : null}`}
+                onClick={() => handleFieldChange('game_id', game.title)}
+                className={`flex flex-1 flex-col items-center rounded-xl py-2 hover:scale-110 hover:bg-[#FFD80077] ${formData.game_id === game.title ? 'bg-primary' : null}`}
               >
                 <div className='rounded-full bg-gray-200 p-4'>
                   <img src={game.icon} alt={`${game.title} 로고`} className='h-16 w-16' />
                 </div>
-                <span className={`mt-2 text-center ${formData.game === game.title ? 'font-semibold' : null}`}>
+                <span className={`mt-2 text-center ${formData.game_id === game.title ? 'font-semibold' : null}`}>
                   {game.title}
                 </span>
               </div>
@@ -93,9 +154,9 @@ export default function GameMateApplicationForm() {
           </div>
         </div>
       )}
-      {formData.game && (
+      {formData.game_id && (
         <form className='flex flex-col gap-6'>
-          <h2 className='text-3xl font-semibold'>{formData.game}</h2>
+          <h2 className='text-3xl font-semibold'>{formData.game_id}</h2>
           <div className='flex flex-col gap-4'>
             <h2 className='text-xl font-semibold'>게임 레벨</h2>
             <button
@@ -108,7 +169,7 @@ export default function GameMateApplicationForm() {
           </div>
           {isDropdownOpen.game && isDropdownOpen.level && (
             <div className='mt-4 grid grid-cols-4 gap-y-4 rounded-xl bg-white p-4 outline outline-gray-200'>
-              {getGame(formData.game)?.level.map((level, i) => (
+              {getGame(formData.game_id)?.level.map((level, i) => (
                 <div key={i} className='flex justify-center' onClick={() => handleFieldChange('level', level)}>
                   <div
                     className={`w-[100px] rounded-md bg-gray-200 py-2 text-center hover:scale-110 hover:bg-[#FFD80077] ${formData.level === level ? 'bg-primary font-semibold' : null}`}
@@ -133,18 +194,54 @@ export default function GameMateApplicationForm() {
             ></textarea>
           </div>
           <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-4'>
+              <div>
+                <h2 className='text-xl font-semibold'>재능 가격</h2>
+                <p className='text-gray-400'>원하는 가격을 설정하여 재능을 제공하세요.</p>
+              </div>
+              <input
+                type='text'
+                maxLength={4}
+                className='flex h-[50px] items-center justify-between rounded-xl bg-white p-4 text-gray-400 outline outline-gray-200'
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (
+                    /[0-9]/.test(e.key) === false &&
+                    e.key !== 'Backspace' &&
+                    e.key !== 'Delete' &&
+                    e.key !== 'Tab' &&
+                    e.key !== 'ArrowLeft' &&
+                    e.key !== 'ArrowRight'
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+                onChange={(e) => handleChangePrice(e)}
+                placeholder='코인을 입력하세요'
+              />
+            </div>
+          </div>
+          <div className='flex flex-col gap-4'>
             <div className='flex flex-col'>
               <h2 className='text-xl font-semibold'>스크린샷 업로드</h2>
               <p className='text-gray-400'>본인의 실력을 보여줄 수 있는 사진을 업로드 해주세요.</p>
             </div>
-            <button className='h-32 rounded-xl bg-white text-3xl text-gray-300 outline outline-gray-200'>+</button>
+            <div className='relative flex h-72 items-center justify-center rounded-xl bg-white outline outline-gray-200'>
+              <input type='file' ref={fileRef} id='file' className='hidden' onChange={handleChangeFile} />
+              <label htmlFor='file' className='absolute cursor-pointer px-20 py-6 text-3xl text-gray-300'>
+                +
+              </label>
+              {previewImage && <img src={previewImage} className='h-full object-cover' />}
+            </div>
           </div>
-          <button
-            type='submit'
-            className='mt-4 h-[50px] rounded-xl bg-gradient-to-r from-[#FFD800] to-[#D5FFB7] font-semibold'
-          >
-            저장
-          </button>
+          {formData.description && formData.game_id && formData.image && formData.level && (
+            <button
+              type='button'
+              onClick={fetchMateRegister}
+              className='mt-4 h-[50px] rounded-xl bg-gradient-to-r from-[#FFD800] to-[#D5FFB7] font-semibold'
+            >
+              게임메이트 신청하기
+            </button>
+          )}
         </form>
       )}
     </div>

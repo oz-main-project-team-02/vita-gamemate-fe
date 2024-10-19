@@ -7,7 +7,7 @@ import GameMateApplicationForm from '@/components/GameMatePage/GameMateApplicati
 export default function GameMatePage() {
   return (
     <CommonLayout>
-      <div className='h-[4105px] w-full'>
+      <div className='w-full'>
         {/* <NavBar /> */}
         <TitleIntro titleE={'VITA GAMEMATE'} titleK={'게임 메이트'} content={'당신의 재능을 보여주세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100'>

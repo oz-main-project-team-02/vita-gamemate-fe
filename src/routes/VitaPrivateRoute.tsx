@@ -3,8 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 export default function VitaPrivateRoute() {
   const { user } = useUserStore();
-
-  if (user.id !== 0 && localStorage.getItem('accesToken')) {
+  if (user.id !== 0 && localStorage.getItem('accessToken')) {
     return <Outlet />;
   }
 

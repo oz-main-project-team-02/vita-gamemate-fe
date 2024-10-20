@@ -24,6 +24,8 @@ export default function LoginStatusChecker({ children }: Props) {
 
           const { data: coin }: { data: Wallet } = await client.get('/api/v1/wallets/coin/');
           setUser({ coin: coin.coin }); // 사용자 지갑 업데이트
+          console.log('user:', user);
+          console.log('coin:', coin);
         } catch (err) {
           console.error(err);
           unSetUser(); // 사용자 정보 초기화

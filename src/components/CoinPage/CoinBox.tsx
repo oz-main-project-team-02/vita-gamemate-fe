@@ -1,14 +1,56 @@
-export default function CoinBox() {
+import { client } from '@/api/client';
+import { CoinPackage } from '@/config/const';
+import { useUserStore } from '@/config/store';
+import { useMutation } from '@tanstack/react-query';
+
+type Props = {
+  coinData: CoinPackage;
+};
+
+type RechargeResponse = {
+  message: string;
+  coin: number;
+};
+
+export default function CoinBox({ coinData }: Props) {
+  const { setUser } = useUserStore();
+  const rechargeMutation = useMutation({
+    mutationFn: async () => {
+      const { data }: { data: RechargeResponse } = await client.post('/api/v1/wallets/coin/recharge/', {
+        coin: coinData.coin,
+      });
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      setUser({ coin: data.coin });
+    },
+  });
+
+  const handlePaymentClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    rechargeMutation.mutate();
+  };
+
   return (
-    <div className="w-11/12 h-[160px] p-[29px] flex flex-col items-center border rounded-xl border-gray-200 bg-[#F8F8F8]">
-      <div className="w-7/12 h-[23px] mt-[-30px] ml-[102px] pt-1 pl-[5px] rounded-bl-xl rounded-tr-xl bg-purple font-medium text-xs text-[#FFFFFF]">20% OFF</div>
-      <div className="mb-[13px] flex items-center">
-        <img className="w-[24px] h-[24px] mr-2" src="/src/assets/imgs/vitaCoin.svg" alt="vitaCoin" />
-        <h1 className="font-semibold text-2xl text-primary">500</h1>
+    <div
+      onClick={(e) => handlePaymentClick(e)}
+      className='flex h-[160px] w-11/12 cursor-pointer flex-col items-center gap-2 rounded-xl border border-gray-200 bg-[#F8F8F8]'
+    >
+      <div className='flex w-full justify-end'>
+        <div className='w-7/12 rounded-bl-xl rounded-tr-xl bg-purple text-center text-sm font-medium text-[#FFFFFF]'>
+          {coinData.discountRate}% OFF
+        </div>
       </div>
-      <div className="mb-[13px] border-t-2 border-dashed border-gray-300 w-full"></div>
-      <p className="font-semibold text-base text-gray-500">₩ 4,200</p>
-      <p className="text-xs font-semibold text-gray-300 line-through">₩ 5,000</p>
+      <div className='flex flex-col items-center'>
+        <div className='mb-[13px] flex items-center'>
+          <img className='mr-2 h-[24px] w-[24px]' src='/src/assets/imgs/vitaCoin.svg' alt='vitaCoin' />
+          <h1 className='text-2xl font-semibold text-deepYellow'>{coinData.coin.toLocaleString()}</h1>
+        </div>
+        <div className='mb-[13px] w-full border-t-2 border-dashed border-gray-300'></div>
+        <p className='text-base font-semibold text-gray-500'>₩ {coinData.discountPrice.toLocaleString()}</p>
+        <p className='text-xs font-semibold text-gray-300 line-through'>₩ {coinData.price.toLocaleString()}</p>
+      </div>
     </div>
-  )
+  );
 }

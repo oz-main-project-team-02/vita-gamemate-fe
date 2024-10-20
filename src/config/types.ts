@@ -5,12 +5,13 @@ export interface User {
   nickname: string | null;
   email: string | null;
   gender: string | null;
-  profile_image?: string | null;
+  profile_image: string | null;
   birthday: string | null;
   description: string | null;
   social_provider: string | null;
   is_online: boolean;
   is_mate: boolean;
+  coin: number;
 }
 
 export interface MateUser {
@@ -47,4 +48,9 @@ export type MateRegister = {
   description: string | null;
   image: string | null;
   request_price: number | null;
+};
+
+export type Wallet = {
+  user_id: number;
+  coin: number;
 };

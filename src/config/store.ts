@@ -26,7 +26,7 @@ export const useModalStore = create<ModalStore>((set) => ({
 
 interface UserStore {
   user: User;
-  setUser: (user: User) => void;
+  setUser: (newUserData: Partial<User>) => void;
   unSetUser: () => void;
 }
 
@@ -42,8 +42,12 @@ export const useUserStore = create<UserStore>((set) => ({
     social_provider: null,
     is_mate: false,
     is_online: false,
+    coin: 0,
   },
-  setUser: (user: User) => set({ user }),
+  setUser: (newUserData) =>
+    set((state) => ({
+      user: { ...state.user, ...newUserData },
+    })),
   unSetUser: () =>
     set({
       user: {
@@ -57,6 +61,7 @@ export const useUserStore = create<UserStore>((set) => ({
         social_provider: null,
         is_mate: false,
         is_online: false,
+        coin: 0,
       },
     }),
 }));

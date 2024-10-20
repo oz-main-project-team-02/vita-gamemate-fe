@@ -34,7 +34,7 @@ export default function Header() {
               <Link to={'/coin'}>
                 <div className='flex items-center gap-2 rounded-md bg-slate-200 px-4 py-2'>
                   <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
-                  <span className='font-semibold'>1000</span>
+                  <span className='font-semibold'>{user.coin}</span>
                   <img src='/src/assets/imgs/button_plus.svg' alt='충전버튼' />
                 </div>
               </Link>

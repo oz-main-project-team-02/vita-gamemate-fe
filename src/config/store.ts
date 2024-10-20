@@ -58,3 +58,25 @@ export const useUserStore = create<UserStore>((set) => ({
       },
     }),
 }));
+
+interface ChatModalState {
+  isChatModalOpen: boolean;
+  setChatModalOpen: () => void;
+  setChatModalClose: () => void;
+}
+
+export const useChatModalStore = create<ChatModalState>((set) => ({
+  isChatModalOpen: false,
+  setChatModalOpen: () => set({ isChatModalOpen: true }),
+  setChatModalClose: () => set({ isChatModalOpen: false }),
+}));
+
+interface ChatState {
+  selectedRoomId: number | null;
+  setSelectedRoomId: (roomId: number) => void;
+}
+
+export const useChatStore = create<ChatState>((set) => ({
+  selectedRoomId: null,
+  setSelectedRoomId: (id: number) => set({ selectedRoomId: id }),
+}));

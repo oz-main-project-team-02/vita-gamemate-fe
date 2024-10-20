@@ -43,7 +43,7 @@ export default function Header() {
         VI<span className='text-white'>TA</span>
       </div>
       <div className='flex gap-6'>
-        <div className='flex items-center'>
+        <div className='flex items-center gap-4'>
           {localStorage.getItem('accessToken') ? (
             <>
               <Link to={'/coin'}>
@@ -54,7 +54,7 @@ export default function Header() {
                 </div>
               </Link>
               <button
-                className='mr-6 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
+                className='flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
                 onClick={setChatModalOpen}
                 onMouseEnter={chatIconMouseEnterHandler}
               >

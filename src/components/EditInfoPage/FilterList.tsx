@@ -1,15 +1,32 @@
+import { client } from '@/api/client';
+import { useUserStore } from '@/config/store';
 import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function FilterList() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { unSetUser } = useUserStore();
 
   const getNavigateClass = (path: string) => {
     return classNames('my-3 text-base hover:text-[#3A3A3A] cursor-pointer', {
       'text-[#3A3A3A]': location.pathname === path,
       'text-[#898989]': location.pathname !== path,
     });
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      const response = await client.post('/api/v1/users/auth/logout/');
+
+      if (response.status === 200) {
+        localStorage.removeItem('accessToken');
+        unSetUser();
+        navigate('/');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -41,7 +58,9 @@ export default function FilterList() {
       <br />
       <hr className='h-[1px] border-0 bg-[#898989]' />
       <br />
-      <p className='mt-3 cursor-pointer text-[#898989] hover:text-[#3A3A3A]'>로그아웃</p>
+      <p onClick={handleLogoutClick} className='mt-3 cursor-pointer text-[#898989] hover:text-[#3A3A3A]'>
+        로그아웃
+      </p>
     </div>
   );
 }

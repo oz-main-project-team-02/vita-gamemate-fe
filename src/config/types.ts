@@ -54,3 +54,31 @@ export type Wallet = {
   user_id: number;
   coin: number;
 };
+
+export interface ChatList {
+  chat_room_id: number;
+  profile_image: string | null;
+  nickname: string;
+  last_message: string;
+  last_message_time: Date;
+}
+
+export interface Participant {
+  user_id: number;
+  nickname: string;
+  profile_image: string | null;
+}
+
+export interface Message {
+  message_id: number;
+  user_id: number;
+  message: string;
+  created_at: Date;
+  profile_image: string | null;
+}
+
+export interface ChatMessage {
+  chat_room_id: number;
+  participants: Participant[];
+  messages: Message[];
+}

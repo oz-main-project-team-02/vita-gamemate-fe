@@ -1,23 +1,35 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import FilterList from '../components/EditInfoPage/FilterList';
 import TitleIntro from '../components/Common/TitleIntro';
 import ProfileImg from '../components/EditInfoPage/ProfileImg';
 import CommonLayout from '../layouts/CommonLayout';
+import { useUserStore } from '@/config/store';
+import Male from '@/components/EditInfoPage/Male';
+import Female from '@/components/EditInfoPage/Female';
 
 export default function EditInfoPage() {
+  const { user } = useUserStore();
+
+  const birthDate = user.birthday !== null ? new Date(user.birthday!) : null;
+  const yearStr = birthDate !== null ? birthDate.getFullYear().toString() : '';
+  const monthStr = birthDate !== null ? (birthDate.getMonth() + 1).toString() : '';
+  const dateStr = birthDate !== null ? birthDate.getDate().toString() : '';
+
   const years = Array.from({ length: 22 }, (_, i) => 1984 + i); // 2020 ~ 2030
   const months = Array.from({ length: 12 }, (_, i) => i + 1); // 1 ~ 12
 
-  const [birthYear, setBirthYear] = useState('');
-  const [birthMonth, setBirthMonth] = useState('');
-  const [birthDay, setBirthDay] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [birthYear, setBirthYear] = useState(yearStr);
+  const [birthMonth, setBirthMonth] = useState(monthStr && Number(monthStr) < 10 ? `0${monthStr}` : monthStr);
+  const [birthDay, setBirthDay] = useState(dateStr && Number(dateStr) < 10 ? `0${dateStr}` : dateStr);
   const [days, setDays] = useState(Array.from({ length: 31 }, (_, i) => i + 1)); // 기본 일수는 31
 
   const [profile, setProfile] = useState({
-    nickname: '',
-    description: '',
-    gender: '',
-    date: `${birthYear}.${birthMonth}.${birthDay}`,
+    profileImage: user.profile_image,
+    nickname: user.nickname!,
+    description: user.description,
+    gender: user.gender,
+    date: `${birthYear}-${birthMonth}-${birthDay}`,
   });
 
   // 윤년 확인 함수
@@ -43,10 +55,25 @@ export default function EditInfoPage() {
     }
   }, [birthYear, birthMonth]);
 
+  const handleChangePickedImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+
+    if (!file) {
+      setProfile({ ...profile, profileImage: null });
+    }
+
+    const imageUrl = URL.createObjectURL(file);
+
+    return setProfile({ ...profile, profileImage: imageUrl });
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(profile);
+    console.log('profile', profile);
   };
+
+  console.log('user', user);
+
   return (
     <CommonLayout>
       <div className='h-[4105px] w-full'>
@@ -54,9 +81,15 @@ export default function EditInfoPage() {
         <div className='relative h-[1866px] w-full bg-gray-100'>
           <ProfileImg />
           <form onSubmit={handleSubmit} className='absolute left-[40.5%] top-[260px] h-[1028px] w-[50%]'>
-            <button className='absolute left-[69%] top-[-210px] h-[60px] w-[31%] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'>
+            <button
+              onClick={() => {
+                fileInputRef.current?.click();
+              }}
+              className='absolute left-[69%] top-[-210px] h-[60px] w-[31%] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'
+            >
               프로필 사진 올리기
             </button>
+            <input ref={fileInputRef} onChange={handleChangePickedImage} type='file' className='hidden' />
 
             <div className='mb-[61px] h-[144px] w-full'>
               <p className='mb-[10px] text-2xl font-bold text-gray-500'>닉네임</p>
@@ -73,7 +106,7 @@ export default function EditInfoPage() {
             <div className='mb-[61px] h-[214px] w-full'>
               <p className='mb-[10px] text-2xl font-bold text-gray-500'>소개</p>
               <input
-                value={profile.description}
+                value={profile.description !== null ? profile.description : ''}
                 onChange={(e) => setProfile({ ...profile, description: e.target.value })}
                 className='h-[168px] w-full rounded-xl bg-primary pb-28 pt-1 indent-6 text-gray-500 focus:outline-none'
                 placeholder='본인을 어필할 수 있어요!'
@@ -82,18 +115,16 @@ export default function EditInfoPage() {
 
             <div className='mb-[61px] h-[148px] w-full'>
               <p className='mb-[10px] text-2xl font-bold text-gray-500'>성별</p>
-              <input
-                onClick={() => setProfile({ ...profile, gender: '남성' })}
-                className='mr-1 h-[60px] w-[365px] cursor-pointer rounded-xl bg-primary text-[24px] font-bold'
-                type='button'
-                value='남성'
-              />
-              <input
-                onClick={() => setProfile({ ...profile, gender: '여성' })}
-                className='h-[60px] w-[365px] cursor-pointer rounded-xl bg-primary text-[24px] font-bold'
-                type='button'
-                value='여성'
-              />
+              {profile.gender === null ? (
+                <>
+                  <Male profile={profile} setProfile={setProfile} />
+                  <Female profile={profile} setProfile={setProfile} />
+                </>
+              ) : profile.gender === 'male' ? (
+                <Male profile={profile} setProfile={setProfile} />
+              ) : (
+                <Female profile={profile} setProfile={setProfile} />
+              )}
               <p className='mt-[13px] text-base text-error'>성별은 수정이 불가합니다.</p>
             </div>
 
@@ -105,7 +136,7 @@ export default function EditInfoPage() {
                   setBirthYear(e.target.value);
                   setProfile({
                     ...profile,
-                    date: `${e.target.value}.${birthMonth}.${birthDay}`,
+                    date: `${e.target.value}-${birthMonth}-${birthDay}`,
                   });
                 }}
                 className='form-control mx-3 w-[133px] rounded-md border border-gray-200'
@@ -124,7 +155,7 @@ export default function EditInfoPage() {
                   setBirthMonth(e.target.value);
                   setProfile({
                     ...profile,
-                    date: `${birthYear}.${e.target.value}.${birthDay}`,
+                    date: `${birthYear}-${e.target.value}-${birthDay}`,
                   });
                 }}
                 className='form-control mx-3 w-[133px] rounded-md border border-gray-200'
@@ -143,7 +174,7 @@ export default function EditInfoPage() {
                   setBirthDay(e.target.value);
                   setProfile({
                     ...profile,
-                    date: `${birthYear}.${birthMonth}.${e.target.value}`,
+                    date: `${birthYear}-${birthMonth}-${e.target.value}`,
                   });
                 }}
                 className='form-control mx-3 w-[133px] rounded-md border border-gray-200'

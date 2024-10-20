@@ -1,15 +1,27 @@
-import { TbGenderFemale, TbGenderMale } from "react-icons/tb";
+import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
-interface gender {
-  gender: string,
-  age: number
+interface genderProps {
+  gender: string;
+  birthday: string | null;
 }
 
-export default function Gender({gender, age}: gender) {
+export default function Gender({ gender, birthday }: genderProps) {
+  const calculateAge = (gender: string, birhday: string | null): string | number => {
+    if (birhday === null) {
+      return gender === 'male' ? '남성' : '여성';
+    }
+    const today = new Date();
+    const birthDate = new Date(birhday!);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    return age;
+  };
+
   return (
-    <div className={`w-[45px] h-[21px] p-[3px] flex items-center rounded-xl ${gender === 'male' ? 'bg-[#70C6FF]' : 'bg-brightPink'} text-[#FFFFFF]`}>
-      {gender === 'male' ? <TbGenderMale /> : <TbGenderFemale />}
-      <p className="pl-[2px] font-light text-sm">{age}</p>
+    <div
+      className={`mr-1 flex h-[21px] w-[53px] items-center rounded-xl pl-[7px] ${gender === 'male' ? 'bg-[#70C6FF]' : 'bg-brightPink'} text-[#FFFFFF]`}
+    >
+      {gender === 'male' ? <TbGenderMale size={20} /> : <TbGenderFemale size={20} />}
+      <p className='w-full pl-[4px] text-sm font-light'>{calculateAge(gender, birthday)}</p>
     </div>
-  )
+  );
 }

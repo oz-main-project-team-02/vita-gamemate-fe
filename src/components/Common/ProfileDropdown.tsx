@@ -7,12 +7,15 @@ import { TbLogout2 } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { client } from '../../api/client';
 import { useUserStore } from '../../config/store';
+import { User } from '@/config/types';
+import { TiUser } from 'react-icons/ti';
 
 interface HoverProps {
+  user: User;
   setIsHovered: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ProfileDropdown({ setIsHovered }: HoverProps) {
+export default function ProfileDropdown({ user, setIsHovered }: HoverProps) {
   const navigate = useNavigate();
   const { unSetUser } = useUserStore();
 
@@ -30,6 +33,8 @@ export default function ProfileDropdown({ setIsHovered }: HoverProps) {
     }
   };
 
+  console.log('user', user);
+
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
@@ -38,11 +43,15 @@ export default function ProfileDropdown({ setIsHovered }: HoverProps) {
     >
       <div className='mb-3 flex h-[60px] w-full items-center'>
         <div className='h-[50px] w-[50px] rounded-full bg-slate-200'>
-          <img className='h-[50px] w-[50px] rounded-full' src='/src/assets/imgs/user.png' alt='user' />
+          {user.profile_image ? (
+            <img className='h-[50px] w-[50px] rounded-full' src={user.profile_image} alt='사용자 이미지' />
+          ) : (
+            <TiUser size={50} />
+          )}
         </div>
         <div className='ml-2 h-[50px] w-[200px] pt-1'>
-          <p className='text-[15px]'>닉네임</p>
-          <p className='text-sm text-gray-400'>아이디</p>
+          <p className='text-[15px]'>{user.nickname}</p>
+          <p className='text-sm text-gray-400'>{user.email}</p>
         </div>
         <button onClick={() => navigate('/user/:userId')} className='text-gray-300 hover:text-lg'>
           <SlArrowRight />

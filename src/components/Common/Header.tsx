@@ -59,7 +59,7 @@ export default function Header() {
               >
                 {user.profile_image ? <img src={user.profile_image} alt='사용자 이미지' /> : <TiUser size={36} />}
               </button>
-              {isHovered && <ProfileDropdown setIsHovered={setIsHovered} />}
+              {isHovered && <ProfileDropdown user={user} setIsHovered={setIsHovered} />}
             </>
           ) : (
             <>

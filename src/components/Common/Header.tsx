@@ -28,10 +28,17 @@ export default function Header() {
         VI<span className='text-white'>TA</span>
       </div>
       <div className='flex gap-6'>
-        <div className='flex items-center'>
-          {localStorage.getItem('accessToken') ? (
+        <div className='flex items-center gap-4'>
+          {localStorage.getItem('accessToken') && user.id !== 0 ? (
             <>
-              <button className='mr-6 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
+              <Link to={'/coin'}>
+                <div className='flex items-center gap-2 rounded-md bg-slate-200 px-4 py-2'>
+                  <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
+                  <span className='font-semibold'>1000</span>
+                  <img src='/src/assets/imgs/button_plus.svg' alt='충전버튼' />
+                </div>
+              </Link>
+              <button className='flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
                 <AiOutlineMessage size={24} />
               </button>
               <button
@@ -40,6 +47,7 @@ export default function Header() {
               >
                 {user.profile_image ? <img src={user.profile_image} alt='사용자 이미지' /> : <TiUser size={36} />}
               </button>
+
               {isHovered && <ProfileDropdown setIsHovered={setIsHovered} />}
             </>
           ) : (

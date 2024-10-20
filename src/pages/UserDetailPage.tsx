@@ -9,25 +9,31 @@ import UserRanking from '../components/UserDetailPage/UserRanking';
 import VitaPrice from '../components/Common/VitaPrice';
 import lol from '../assets/imgs/lol.png';
 import ReviewList from '../components/UserDetailPage/ReviewList';
-import { GameMate } from '../config/types';
+import { MateUser, User } from '../config/types';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { client } from '@/api/client';
 
 export default function UserDetailPage() {
-  const mate: GameMate = {
-    id: 1,
-    nickname: 'Summoner123',
-    email: 'summoner123@example.com',
-    gender: 'male',
-    description: '즐겁게 게임할 파트너를 찾고 있습니다.',
-    birthday: '1995-08-15',
-    profile_image: 'https://picsum.photos/200/300?random=1',
-    is_mate: true,
-    is_online: true,
-    game_id: 1,
-    level: 'Diamond',
-    price: 9999,
-    average_rating: 4,
-    amount: 500,
-  };
+  const { userId } = useParams();
+
+  const { data: mate } = useQuery<User>({
+    queryKey: ['user', userId],
+    queryFn: async () => {
+      try {
+        const response = await client.get(`/api/v1/users/${userId}/profile/`);
+
+        if (response.data.is_mate) {
+          const { data }: { data: MateUser } = await client.get(`/api/v1/mates/${userId}/`);
+          return data;
+        }
+        return response.data;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+  });
+  console.log(mate);
 
   return (
     <CommonLayout>

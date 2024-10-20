@@ -5,11 +5,24 @@ export interface User {
   nickname: string | null;
   email: string | null;
   gender: string | null;
-  description: string | null;
-  birthday: string | null;
   profile_image?: string | null;
-  is_mate: boolean;
+  birthday: string | null;
+  description: string | null;
+  social_provider: string | null;
   is_online: boolean;
+  is_mate: boolean;
+}
+
+export interface MateUser {
+  user_nickname: string;
+  user_gender: string | null;
+  user_profile_image: string | null;
+  user_description: string | null;
+  game_id: number;
+  description: string | null;
+  image: string;
+  level: string;
+  coin_price: number;
 }
 
 export interface GameMate extends User {

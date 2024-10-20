@@ -37,8 +37,9 @@ client.interceptors.response.use(
   },
   async (error) => {
     const request = error.config; // 초기 요청에 대한 내용이 전부 들어있음 (url, method, headers 등)
+    const status = error.response?.status;
 
-    if (error.response?.status === 401 && !request._retry && request._retryCount < 3) {
+    if ((status === 400 || status === 401) && !request._retry && request._retryCount < 3) {
       request._retry = true;
       request._retryCount += 1;
       console.log('request', request);

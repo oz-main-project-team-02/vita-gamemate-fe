@@ -7,7 +7,7 @@ import { GrNext } from 'react-icons/gr';
 import MateCard from '../Common/MateCard';
 import { useQuery } from '@tanstack/react-query';
 import { GameMate } from '../../config/types';
-import axios from 'axios';
+import { mock } from '@/api/mock';
 
 type Props = {
   gameId: string;
@@ -18,7 +18,7 @@ export default function GameCategorySlider({ gameId }: Props) {
   const { data: gameMates, isLoading } = useQuery<GameMate[]>({
     queryKey: ['user', 'mate', gameId, 'main'],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/v1/users/${Number(gameId)}/mate?cursor=0`);
+      const { data } = await mock.get(`/api/v1/users/${Number(gameId)}/mate?cursor=0`);
       return data;
     },
   });

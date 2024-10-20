@@ -2,38 +2,19 @@ import { Link } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
 import { useModalStore, useUserStore } from '../../config/store';
 import LoginModal from './LoginModal';
-import { client } from '../../api/client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AiOutlineMessage } from 'react-icons/ai';
 import { TiUser } from 'react-icons/ti';
 import ProfileDropdown from './ProfileDropdown';
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
-  const { user, setUser } = useUserStore();
   const [isHovered, setIsHovered] = useState(false);
+  const { user } = useUserStore();
 
   const handleLoginClick = () => {
     setModalStatus('login', true);
   };
-
-  // 액세스 토큰 있을 경우, 사용자 정보 가져오기
-  useEffect(() => {
-    if (user.id === 0) {
-      const accessToken = localStorage.getItem('accessToken');
-      if (accessToken) {
-        (async () => {
-          try {
-            const { data } = await client.get('/api/v1/users/profile/me/');
-            setUser(data);
-            console.log(data);
-          } catch (error) {
-            console.error(error);
-          }
-        })();
-      }
-    }
-  }, [setUser, user.id]);
 
   return (
     <header className='flex items-center justify-between px-12'>

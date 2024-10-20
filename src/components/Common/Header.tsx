@@ -6,10 +6,12 @@ import { useState } from 'react';
 import { AiOutlineMessage } from 'react-icons/ai';
 import { TiUser } from 'react-icons/ti';
 import ProfileDropdown from './ProfileDropdown';
+import GameDropdown from './GameDropdown';
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
-  const [isHovered, setIsHovered] = useState(false);
+  const [gameHover, setGameHover] = useState(false);
+  const [profileHover, setProfileHover] = useState(false);
   const { user } = useUserStore();
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
 
@@ -28,8 +30,15 @@ export default function Header() {
         <Link to={'/'}>
           <div className='hover:text-primaryText'>홈페이지</div>
         </Link>
-        <div className='hover:text-primaryText'>모든 서비스</div>
+        <div
+          onMouseEnter={() => setGameHover(true)}
+          onMouseLeave={() => setGameHover(false)}
+          className='hover:text-primaryText'
+        >
+          모든 서비스
+        </div>
       </div>
+      {gameHover && <GameDropdown setGameHover={setGameHover} />}
       <div className='text-[48px] font-bold'>
         VI<span className='text-white'>TA</span>
       </div>
@@ -45,12 +54,21 @@ export default function Header() {
                 <AiOutlineMessage size={24} />
               </button>
               <button
-                onMouseEnter={() => setIsHovered(true)}
+                onMouseEnter={() => setProfileHover(true)}
+                onMouseLeave={() => setProfileHover(false)}
                 className='flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
               >
-                {user.profile_image ? <img src={user.profile_image} alt='사용자 이미지' /> : <TiUser size={36} />}
+                {user.profile_image ? (
+                  <img
+                    className='h-[36px] w-[36px] rounded-full object-cover'
+                    src={user.profile_image}
+                    alt='사용자 이미지'
+                  />
+                ) : (
+                  <TiUser size={36} />
+                )}
               </button>
-              {isHovered && <ProfileDropdown setIsHovered={setIsHovered} />}
+              {profileHover && <ProfileDropdown user={user} setProfileHover={setProfileHover} />}
             </>
           ) : (
             <>

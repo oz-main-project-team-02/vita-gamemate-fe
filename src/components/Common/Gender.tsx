@@ -1,11 +1,11 @@
 import { TbGenderFemale, TbGenderMale } from 'react-icons/tb';
 
-interface genderProps {
+type GenderProps = {
   gender: string;
   birthday: string | null;
-}
+};
 
-export default function Gender({ gender, birthday }: genderProps) {
+export default function Gender({ gender, birthday }: GenderProps) {
   const calculateAge = (gender: string, birhday: string | null): string | number => {
     if (birhday === null) {
       return gender === 'male' ? '남성' : '여성';

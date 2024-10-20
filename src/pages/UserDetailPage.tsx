@@ -27,7 +27,6 @@ export default function UserDetailPage() {
     price: 9999,
     average_rating: 4,
     amount: 500,
-    is_mate: true,
   };
 
   return (
@@ -54,7 +53,6 @@ export default function UserDetailPage() {
                 <p className='ml-2 text-xs text-gray-200'>{mate.email}</p>
               </div>
             </div>
-            <button className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
             <button className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
               <AiOutlineMessage size={24} />
             </button>
@@ -86,12 +84,8 @@ export default function UserDetailPage() {
             <div className='flex h-[193px] w-[62%] min-w-[350px] rounded-3xl border bg-[#FFFFFF] p-8'>
               <div
                 className='h-[130px] w-[130px] overflow-hidden rounded-3xl bg-gray-100'
-                className='h-[130px] w-[130px] overflow-hidden rounded-3xl bg-gray-100'
                 style={{
                   backgroundImage: `url(${lol})`, // 배경 이미지 설정
-                  backgroundSize: '130px 130px', // 이미지 크기를 322px x 331px으로 설정
-                  backgroundRepeat: 'no-repeat', // 배경 이미지가 반복되지 않도록 설정
-                  backgroundPosition: '0px',
                   backgroundSize: '130px 130px', // 이미지 크기를 322px x 331px으로 설정
                   backgroundRepeat: 'no-repeat', // 배경 이미지가 반복되지 않도록 설정
                   backgroundPosition: '0px',
@@ -101,17 +95,11 @@ export default function UserDetailPage() {
                 <h1 className='pb-1 text-2xl font-bold'>리그오브레전드</h1>
                 <p className='flex items-center pb-1'>
                   <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
-              <div className='h-[82px] w-3/5 px-4 py-1'>
-                <h1 className='pb-1 text-2xl font-bold'>리그오브레전드</h1>
-                <p className='flex items-center pb-1'>
-                  <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
                   &nbsp;5.00&nbsp;
-                  <span className='text-sm text-gray-300'>| 받은 의뢰수 10</span>
                   <span className='text-sm text-gray-300'>| 받은 의뢰수 10</span>
                 </p>
                 <VitaPrice mate={mate} />
               </div>
-              <button className='my-8 h-[50px] w-[120px] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'>
               <button className='my-8 h-[50px] w-[120px] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'>
                 의뢰
               </button>
@@ -123,20 +111,14 @@ export default function UserDetailPage() {
                   <MdNotes />
                 </p>
                 <h1 className='px-2 text-2xl font-bold'>게임 정보</h1>
-                <h1 className='px-2 text-2xl font-bold'>게임 정보</h1>
               </div>
-              <div className='h-[120px] w-full rounded-3xl bg-gray-100 p-4 text-sm'>게임메이트등록 소개글</div>
-              <div className='h-[230px] w-full rounded-3xl bg-gray-100'>이미지 들어갈 자리(width 값 조정해도 됨)</div>
-              <div className='flex h-[60px] w-full items-center rounded-3xl bg-gray-100 p-4 text-sm'>
-                <div className='mr-2 h-6 w-6 rounded-full bg-slate-200 p-[4px] text-base text-[#FFFFFF]'>
+
               <div className='h-[120px] w-full rounded-3xl bg-gray-100 p-4 text-sm'>게임메이트등록 소개글</div>
               <div className='h-[230px] w-full rounded-3xl bg-gray-100'>이미지 들어갈 자리(width 값 조정해도 됨)</div>
               <div className='flex h-[60px] w-full items-center rounded-3xl bg-gray-100 p-4 text-sm'>
                 <div className='mr-2 h-6 w-6 rounded-full bg-slate-200 p-[4px] text-base text-[#FFFFFF]'>
                   <PiCrownSimpleFill />
                 </div>
-                <p className='text-[15px] text-gray-300'>
-                  <span className='text-gray-500'>레벨:</span> 다이아몬드
                 <p className='text-[15px] text-gray-300'>
                   <span className='text-gray-500'>레벨:</span> 다이아몬드
                 </p>
@@ -151,8 +133,6 @@ export default function UserDetailPage() {
               <ReviewList />
               <ReviewList />
               <ReviewList />
-              <div className='flex justify-center'>
-                <button className='h-[35px] w-[110px] rounded-xl bg-softYellow hover:font-semibold'>자세히 보기</button>
               <div className='flex justify-center'>
                 <button className='h-[35px] w-[110px] rounded-xl bg-softYellow hover:font-semibold'>자세히 보기</button>
               </div>

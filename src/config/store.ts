@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatList, Message, Participant, User } from './types';
+import { User } from './types';
 
 interface ModalStore {
   modalStatus: {

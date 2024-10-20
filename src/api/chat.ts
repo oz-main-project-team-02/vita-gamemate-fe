@@ -1,9 +1,9 @@
-import axios from 'axios';
+import { mock } from './mock';
 import { ChatList, Message, Participant } from '../config/types';
 
 // 채팅 목록 조회
 export const fetchChatLists = async (): Promise<ChatList[]> => {
-  const response = await axios.get('/api/v1/chats/rooms/');
+  const response = await mock.get('/api/v1/chats/rooms/');
   return response.data.sort(
     (a: ChatList, b: ChatList) => new Date(b.last_message_time).getTime() - new Date(a.last_message_time).getTime()
   );
@@ -16,7 +16,7 @@ export const fetchChatMessages = async (
   participants: Participant[];
   messages: Message[];
 }> => {
-  const response = await axios.get(`/api/v1/chats/${roomId}/messages`);
+  const response = await mock.get(`/api/v1/chats/${roomId}/messages`);
   return {
     participants: response.data.participants,
     messages: response.data.messages.sort(
@@ -33,6 +33,6 @@ export const sendMessage = async ({
   roomId: number;
   message: string;
 }): Promise<{ message: string }> => {
-  const response = await axios.post(`/api/v1/chats/${roomId}/messages`, { message });
+  const response = await mock.post(`/api/v1/chats/${roomId}/messages`, { message });
   return response.data; // 응답 나중에 변경해야됨
 };

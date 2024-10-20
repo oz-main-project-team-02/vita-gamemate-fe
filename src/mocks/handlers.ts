@@ -1,6 +1,5 @@
 import { http, HttpResponse } from 'msw';
 import { GameMate, Review } from '../config/types';
-import { dummyChatLists, dummyChatMessage } from './dummy';
 
 const delay = (ms: number) =>
   new Promise((res) => {
@@ -716,16 +715,3 @@ export const handlers = [
     ]);
   }),
 ];
-
-// 채팅 전체 목록 조회
-http.get('/api/v1/chats/rooms/', () => {
-  return HttpResponse.json(dummyChatLists);
-}),
-  // 채팅 내역 상세 조회
-  http.get(`/api/v1/chats/:roomId/messages`, () => {
-    return HttpResponse.json(dummyChatMessage);
-  }),
-  // 채팅 메세지 전송
-  http.post(`/api/v1/chats/:roomId/messages`, () => {
-    return HttpResponse.json({ message: '메세지가 전송되었습니다.' }, { status: 200 });
-  });

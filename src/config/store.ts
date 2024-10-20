@@ -73,60 +73,11 @@ export const useChatModalStore = create<ChatModalState>((set) => ({
 }));
 
 interface ChatState {
-  chatList: ChatList[];
-  chatParticipants: Participant[];
-  chatMessages: Message[];
   selectedRoomId: number | null;
   setSelectedRoomId: (roomId: number) => void;
-  fetchChatLists: () => Promise<void>;
-  fetchChatMessages: () => Promise<void>;
 }
 
-export const useChatStore = create<ChatState>((set, get) => ({
-  chatList: [],
-  chatParticipants: [],
-  chatMessages: [],
+export const useChatStore = create<ChatState>((set) => ({
   selectedRoomId: null,
   setSelectedRoomId: (id: number) => set({ selectedRoomId: id }),
-  fetchChatLists: async () => {
-    try {
-      const response = await axios.get('/api/v1/chats/rooms/');
-
-      if (response.data.length > 0) {
-        // 최신순 정렬
-        const sortedChatList = response.data.sort(
-          (a: ChatList, b: ChatList) =>
-            new Date(b.last_message_time).getTime() - new Date(a.last_message_time).getTime()
-        );
-        set({ chatList: sortedChatList });
-
-        // 가장 최근 채팅방 선택
-        if (sortedChatList.length > 0) {
-          set({ selectedRoomId: sortedChatList[0].chat_room_id });
-        }
-      }
-    } catch (error) {
-      // 에러 처리 해야됨
-      console.error(error);
-    }
-  },
-  fetchChatMessages: async () => {
-    try {
-      const selectedRoomId = get().selectedRoomId;
-
-      if (selectedRoomId) {
-        const response = await axios.get(`/api/v1/chats/${selectedRoomId}/messages`);
-        set({ chatParticipants: response.data.participants });
-
-        // 메세지 정렬
-        const sortedMessages = response.data.messages.sort(
-          (a: Message, b: Message) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-        );
-        set({ chatMessages: sortedMessages });
-      }
-    } catch (error) {
-      // 에러 처리 해야됨
-      console.error(error);
-    }
-  },
 }));

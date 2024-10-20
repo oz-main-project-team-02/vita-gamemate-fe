@@ -33,8 +33,6 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
     }
   };
 
-  console.log('user', user);
-
   return (
     <div
       onMouseEnter={() => setProfileHover(true)}

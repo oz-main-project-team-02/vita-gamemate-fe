@@ -1,11 +1,16 @@
+import { useUserStore } from '@/config/store';
+import { TiUser } from 'react-icons/ti';
+
 export default function ProfileImg() {
+  const { user } = useUserStore();
+
   return (
-    <div className='w-[300px] h-[300px] rounded-full absolute top-[-110px] left-[40%] bg-white'>
-      <img
-        className='w-[280px] h-[280px] m-[10px] rounded-full'
-        src='/public/vitaLogo.png'
-        alt='vitaLogo'
-      />
+    <div className='absolute left-[40%] top-[-110px] h-[300px] w-[300px] rounded-full bg-slate-200'>
+      {user.profile_image !== null ? (
+        <img className='h-[300px] w-[300px] rounded-full object-cover' src={user.profile_image!} alt='user' />
+      ) : (
+        <TiUser size={305} />
+      )}
     </div>
   );
 }

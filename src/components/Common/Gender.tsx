@@ -6,12 +6,12 @@ type GenderProps = {
 };
 
 export default function Gender({ gender, birthday }: GenderProps) {
-  const calculateAge = (gender: string, birhday: string | null): string | number => {
-    if (birhday === null) {
+  const calculateAge = (gender: string, birthday: string | null): string | number => {
+    if (birthday === null) {
       return gender === 'male' ? '남성' : '여성';
     }
     const today = new Date();
-    const birthDate = new Date(birhday!);
+    const birthDate = new Date(birthday!);
     const age = today.getFullYear() - birthDate.getFullYear();
     return age;
   };

@@ -6,8 +6,12 @@ import bgIcon from '@/assets/imgs/icon-bg.png';
 import tftIcon from '@/assets/imgs/icon-tft.png';
 import lolIcon from '@/assets/imgs/icon-lol.png';
 import overwatchIcon from '@/assets/imgs/icon-overwatch.png';
+import gameCardLOL from '@/assets/imgs/lol.png';
+import gameCardTFT from '@/assets/imgs/tft.png';
+import gameCardOVERWATCH from '@/assets/imgs/overwatch.png';
+import gameCardBG from '@/assets/imgs/bg.png';
 
-type Games = {
+export type Games = {
   id: number;
   img: string;
   icon: string;
@@ -16,6 +20,7 @@ type Games = {
   type: string;
   description: string;
   level: string[];
+  gameCardImg: string;
 };
 
 type GameCategories = 'lol' | 'tft' | 'bg' | 'overwatch';
@@ -41,6 +46,7 @@ export const GAMES: Record<GameCategories, Games> = {
       '브론즈',
       '아이언',
     ],
+    gameCardImg: gameCardLOL,
   },
   tft: {
     id: 2,
@@ -62,6 +68,7 @@ export const GAMES: Record<GameCategories, Games> = {
       '브론즈',
       '아이언',
     ],
+    gameCardImg: gameCardTFT,
   },
   bg: {
     id: 3,
@@ -72,6 +79,7 @@ export const GAMES: Record<GameCategories, Games> = {
     type: 'PC • FPS',
     description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
     level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
+    gameCardImg: gameCardBG,
   },
   overwatch: {
     id: 4,
@@ -82,6 +90,7 @@ export const GAMES: Record<GameCategories, Games> = {
     type: 'PC • FPS',
     description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
     level: ['챔피언', '그랜드 마스터', '마스터', '다이아몬드', '에메랄드', '플래티넘', '골드', '실버', '브론즈'],
+    gameCardImg: gameCardOVERWATCH,
   },
 };
 

@@ -1,8 +1,8 @@
-interface MyPageBarProps {
+type Props = {
   [key: string]: string | undefined;
-}
+};
 
-export default function TitleIntro({ titleE, titleK, content }: MyPageBarProps) {
+export default function TitleIntro({ titleE, titleK, content }: Props) {
   return (
     <div className='relative h-[226px] w-full'>
       <div className='absolute bottom-[20%] left-[20%]'>

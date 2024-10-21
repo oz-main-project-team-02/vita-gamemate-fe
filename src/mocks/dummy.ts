@@ -49,7 +49,7 @@ export const dummyChatMessage: ChatMessage = {
   chat_room_id: 1,
   participants: [
     {
-      user_id: 0,
+      user_id: 2,
       nickname: '게임왕',
       profile_image: 'https://picsum.photos/100/100?random=3',
     },
@@ -62,14 +62,14 @@ export const dummyChatMessage: ChatMessage = {
   messages: [
     {
       message_id: 1,
-      user_id: 0,
+      user_id: 2,
       message: '내일 저녁에 게임 가능?',
       created_at: new Date('2024-10-19 20:00:10'),
       profile_image: 'https://picsum.photos/100/100?random=3',
     },
     {
       message_id: 2,
-      user_id: 0,
+      user_id: 2,
       message:
         '이번에 새로운 전략을 시도해볼까 생각 중이야. 조금 더 수비적으로 가면서 상대방이 지칠 때까지 기다렸다가 카운터를 치는 게 어떨까? 그리고 새로운 무기 조합도 생각해봤는데, 네가 저번에 추천한 아이템을 써보는 것도 좋을 것 같아. 네 의견은 어때?',
       created_at: new Date('2024-10-19 20:01:30'),
@@ -100,7 +100,7 @@ export const dummyChatMessage: ChatMessage = {
     },
     {
       message_id: 6,
-      user_id: 0,
+      user_id: 2,
       message:
         '중반에 교체하는 건 좋은 생각이야. 초반에는 방어 중심으로 가고, 중반부터는 공격적으로 전환하는 방식으로 가보자',
       created_at: new Date('2024-10-20 10:02:00'),
@@ -108,7 +108,7 @@ export const dummyChatMessage: ChatMessage = {
     },
     {
       message_id: 7,
-      user_id: 0,
+      user_id: 2,
       message: '그럼, 오늘 저녁에 8시쯤 만날까? 나도 좀 더 연구해볼 테니 그때 다시 이야기하자',
       created_at: new Date('2024-10-20 10:02:50'),
       profile_image: 'https://picsum.photos/100/100?random=3',

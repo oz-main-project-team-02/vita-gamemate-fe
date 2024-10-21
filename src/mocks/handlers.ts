@@ -727,4 +727,8 @@ export const handlers = [
   http.post(`/api/v1/chats/:roomId/messages`, () => {
     return HttpResponse.json({ message: '메세지가 전송되었습니다.' }, { status: 200 });
   }),
+  // 채팅방 생성
+  http.post('/api/v1/chats/create/', () => {
+    return HttpResponse.json({ message: '채팅방이 생성되었습니다.' }, { status: 201 });
+  }),
 ];

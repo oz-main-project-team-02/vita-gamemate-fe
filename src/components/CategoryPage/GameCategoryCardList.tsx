@@ -89,13 +89,14 @@ export default function GameCategoryCardList({ gameId }: Props) {
 //   }, [gameId, navigate]);
 
 //   const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
-//     GameMate[],
+//     User[],
 //     Error,
-//     InfiniteData<GameMate[]>,
+//     InfiniteData<User[]>,
 //     [string, string, string, string, string, string],
 //     number
 //   >({
 //     queryKey: ['user', 'mate', gameId as string, sortValue, genderValue, levelValue],
+//     queryFn: () => getGameMatesByCategory({ gameId, sortValue, genderValue, levelValue, pageParam }),
 //     initialPageParam: 1,
 //     getNextPageParam: (lastPage, allPages) => {
 //       console.log('lastPage 데이터:', lastPage);

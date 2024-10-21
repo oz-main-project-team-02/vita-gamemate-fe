@@ -1,4 +1,4 @@
-import { client } from '@/api/client';
+import { reviewApi } from '@/api';
 import { Review } from '@/config/types';
 import { useQuery } from '@tanstack/react-query';
 
@@ -9,16 +9,10 @@ type Props = {
 export default function ReviewList({ userId }: Props) {
   // FIXME: 아직 개발되지 않은 API
   // TODO: useInfiniteQuery() 교체 예정
+  console.log(userId);
   const { data: reviews } = useQuery<Review[]>({
     queryKey: ['user', userId, 'reviews'],
-    queryFn: async () => {
-      try {
-        const { data } = await client.get(`/api/v1/reviews/${userId}/?page=1`);
-        return data;
-      } catch (err) {
-        console.error(err);
-      }
-    },
+    queryFn: () => reviewApi.fetchReviewsById(userId, 1),
   });
 
   if (!reviews || !Array.isArray(reviews)) {

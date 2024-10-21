@@ -21,7 +21,7 @@ export default function CategoryPage() {
       />
       <div className='flex'>
         <FilterSidebar
-          gameId={gameId}
+          gameId={gameId!}
           sortValue={sortValue}
           setSortValue={setSortValue}
           genderValue={genderValue}
@@ -29,9 +29,9 @@ export default function CategoryPage() {
           levelValue={levelValue}
           setLevelValue={setLevelValue}
         />
-        {/* Section left */}
-        <GameCategoryCardList gameId={gameId} sortValue={sortValue} genderValue={genderValue} levelValue={levelValue} />
-        {/* section Right */}
+        <GameCategoryCardList gameId={gameId} />
+        {/* FIXME: API 개발 완료 시 교체만 하면됩니다. */}
+        {/* <GameCategoryCardList gameId={gameId} sortValue={sortValue} genderValue={genderValue} levelValue={levelValue} /> */}
       </div>
     </CommonLayout>
   );

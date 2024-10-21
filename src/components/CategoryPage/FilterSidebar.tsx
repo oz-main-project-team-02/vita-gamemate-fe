@@ -1,4 +1,4 @@
-import { Games, GenderArr, getGame, SortArr } from '@/config/const';
+import { GenderArr, SortArr } from '@/config/const';
 import RadioButtonGroup from './RadioButtonGroup';
 import CheckBoxButtonGroup from './CheckBoxButtonGroup';
 

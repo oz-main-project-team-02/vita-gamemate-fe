@@ -1,9 +1,9 @@
 type Profile = {
-  profileImage: string | null | undefined;
+  profile_image: string | null;
   nickname: string;
   description: string | null;
   gender: string | null;
-  date: string;
+  birthday: string;
 };
 
 type ProfileProps = {

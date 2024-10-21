@@ -1,6 +1,6 @@
-import FilterList from '../components/EditInfoPage/FilterList';
+import FilterList from '../components/Common/FilterList';
 import TitleIntro from '../components/Common/TitleIntro';
-import ProfileImg from '../components/EditInfoPage/ProfileImg';
+import ProfileImg from '../components/Common/ProfileImg';
 import CommonLayout from '../layouts/CommonLayout';
 import GameMateApplicationForm from '@/components/GameMatePage/GameMateApplicationForm';
 

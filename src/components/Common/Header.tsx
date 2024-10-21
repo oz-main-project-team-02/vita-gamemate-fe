@@ -7,7 +7,6 @@ import { AiOutlineMessage } from 'react-icons/ai';
 import { TiUser } from 'react-icons/ti';
 import ProfileDropdown from './ProfileDropdown';
 import GameDropdown from './GameDropdown';
-import Search from './Search';
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
@@ -87,7 +86,7 @@ export default function Header() {
           )}
         </div>
         <div className='flex items-center border-b border-b-primaryText'>
-          <Search />
+          <input type='search' className='w-24 border-none bg-transparent p-1 focus:outline-none' />
           <IoSearchSharp />
         </div>
       </div>

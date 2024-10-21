@@ -1,14 +1,18 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import FilterList from '../components/EditInfoPage/FilterList';
+import FilterList from '../components/Common/FilterList';
 import TitleIntro from '../components/Common/TitleIntro';
-import ProfileImg from '../components/EditInfoPage/ProfileImg';
+import ProfileImg from '../components/Common/ProfileImg';
 import CommonLayout from '../layouts/CommonLayout';
 import { useUserStore } from '@/config/store';
-import Male from '@/components/EditInfoPage/Male';
-import Female from '@/components/EditInfoPage/Female';
+import { profilePatch } from '@/api/profilePatch';
+import Nickname from '@/components/EditInfoPage/Nickname';
+import Description from '@/components/EditInfoPage/Description';
+import GenderCheck from '@/components/EditInfoPage/GenderCheck';
+import Birthday from '@/components/EditInfoPage/Birthday';
 
 export default function EditInfoPage() {
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
+  const [isPatch, setIsPatch] = useState(false);
 
   const birthDate = user.birthday !== null ? new Date(user.birthday!) : null;
   const yearStr = birthDate !== null ? birthDate.getFullYear().toString() : '';
@@ -25,11 +29,11 @@ export default function EditInfoPage() {
   const [days, setDays] = useState(Array.from({ length: 31 }, (_, i) => i + 1)); // 기본 일수는 31
 
   const [profile, setProfile] = useState({
-    profileImage: user.profile_image,
+    profile_image: user.profile_image,
     nickname: user.nickname!,
     description: user.description,
     gender: user.gender,
-    date: `${birthYear}-${birthMonth}-${birthDay}`,
+    birthday: `${birthYear}-${birthMonth}-${birthDay}`,
   });
 
   // 윤년 확인 함수
@@ -59,18 +63,26 @@ export default function EditInfoPage() {
     const file = e.target.files![0];
 
     if (!file) {
-      setProfile({ ...profile, profileImage: null });
+      setProfile({ ...profile, profile_image: null });
     }
 
     const imageUrl = URL.createObjectURL(file);
 
-    return setProfile({ ...profile, profileImage: imageUrl });
+    return setProfile({ ...profile, profile_image: imageUrl });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setUser(profile);
+    setIsPatch(true);
     console.log('profile', profile);
   };
+
+  useEffect(() => {
+    if (isPatch) {
+      profilePatch(user);
+    }
+  }, [isPatch]);
 
   console.log('user', user);
 
@@ -91,102 +103,22 @@ export default function EditInfoPage() {
             </button>
             <input ref={fileInputRef} onChange={handleChangePickedImage} type='file' className='hidden' />
 
-            <div className='mb-[61px] h-[144px] w-full'>
-              <p className='mb-[10px] text-2xl font-bold text-gray-500'>닉네임</p>
-              <input
-                value={profile.nickname}
-                onChange={(e) => setProfile({ ...profile, nickname: e.target.value })}
-                className='h-[66px] w-full rounded-xl bg-primary px-6 focus:outline-none'
-              />
-              <p className={profile.nickname === '' ? 'hidden' : 'mt-[13px] text-base text-error'}>
-                매주 한 번만 변경 가능하니 신중하게 설정하세요
-              </p>
-            </div>
-
-            <div className='mb-[61px] h-[214px] w-full'>
-              <p className='mb-[10px] text-2xl font-bold text-gray-500'>소개</p>
-              <input
-                value={profile.description !== null ? profile.description : ''}
-                onChange={(e) => setProfile({ ...profile, description: e.target.value })}
-                className='h-[168px] w-full rounded-xl bg-primary pb-28 pt-1 indent-6 text-gray-500 focus:outline-none'
-                placeholder='본인을 어필할 수 있어요!'
-              />
-            </div>
-
-            <div className='mb-[61px] h-[148px] w-full'>
-              <p className='mb-[10px] text-2xl font-bold text-gray-500'>성별</p>
-              {profile.gender === null ? (
-                <>
-                  <Male profile={profile} setProfile={setProfile} />
-                  <Female profile={profile} setProfile={setProfile} />
-                </>
-              ) : profile.gender === 'male' ? (
-                <Male profile={profile} setProfile={setProfile} />
-              ) : (
-                <Female profile={profile} setProfile={setProfile} />
-              )}
-              <p className='mt-[13px] text-base text-error'>성별은 수정이 불가합니다.</p>
-            </div>
-
-            <div className='mb-[61px] h-[93px] w-1/2'>
-              <p className='mb-[10px] text-2xl font-bold text-gray-500'>생일</p>
-              <select
-                value={birthYear}
-                onChange={(e) => {
-                  setBirthYear(e.target.value);
-                  setProfile({
-                    ...profile,
-                    date: `${e.target.value}-${birthMonth}-${birthDay}`,
-                  });
-                }}
-                className='form-control mx-3 w-[133px] rounded-md border border-gray-200'
-              >
-                <option value=''>년</option>
-                {years.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={birthMonth}
-                onChange={(e) => {
-                  setBirthMonth(e.target.value);
-                  setProfile({
-                    ...profile,
-                    date: `${birthYear}-${e.target.value}-${birthDay}`,
-                  });
-                }}
-                className='form-control mx-3 w-[133px] rounded-md border border-gray-200'
-              >
-                <option value=''>월</option>
-                {months.map((month) => (
-                  <option key={month} value={month < 10 ? `0${month}` : month}>
-                    {month < 10 ? `0${month}` : month}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={birthDay}
-                onChange={(e) => {
-                  setBirthDay(e.target.value);
-                  setProfile({
-                    ...profile,
-                    date: `${birthYear}-${birthMonth}-${e.target.value}`,
-                  });
-                }}
-                className='form-control mx-3 w-[133px] rounded-md border border-gray-200'
-              >
-                <option value=''>일</option>
-                {days.map((day) => (
-                  <option key={day} value={day < 10 ? `0${day}` : day}>
-                    {day < 10 ? `0${day}` : day}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Nickname profile={profile} setProfile={setProfile} />
+            <Description profile={profile} setProfile={setProfile} />
+            <GenderCheck profile={profile} setProfile={setProfile} />
+            <Birthday
+              profile={profile}
+              setProfile={setProfile}
+              birthYear={birthYear}
+              setBirthYear={setBirthYear}
+              birthMonth={birthMonth}
+              setBirthMonth={setBirthMonth}
+              birthDay={birthDay}
+              setBirthDay={setBirthDay}
+              years={years}
+              months={months}
+              days={days}
+            />
 
             <button
               className='h-[66px] w-full rounded-xl bg-gradient-to-r from-primary to-limeGreen text-2xl font-bold text-gray-500'

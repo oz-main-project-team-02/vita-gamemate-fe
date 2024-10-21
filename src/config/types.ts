@@ -42,8 +42,7 @@ export interface GameMate extends User {
 }
 
 export interface Review {
-  id: string;
-  request_id: string;
+  game_request_id: string;
   rating: number;
   content: string;
   created_at: Date;

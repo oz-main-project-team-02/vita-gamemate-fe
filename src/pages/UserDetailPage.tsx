@@ -33,7 +33,6 @@ export default function UserDetailPage() {
     average_rating: 4,
     amount: 500,
     social_provider: 'kakao',
-    coin: 0,
   };
 
   const { userId } = useParams();

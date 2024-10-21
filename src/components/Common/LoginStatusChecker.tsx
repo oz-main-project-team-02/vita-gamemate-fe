@@ -19,12 +19,13 @@ export default function LoginStatusChecker({ children }: Props) {
     if (accessToken) {
       (async () => {
         try {
-          const { data: user }: { data: User } = await client.get('/api/v1/users/profile/me/');
-          setUser(user); // 사용자 정보 업데이트
-
+          const { data } = await client.get('/api/v1/users/profile/me/');
+          const { data: user }: { data: User } = await client.get(`/api/v1/users/${data.id}/profile`);
           const { data: coin }: { data: Wallet } = await client.get('/api/v1/wallets/coin/');
+
+          setUser(user); // 사용자 정보 업데이트
           setUser({ coin: coin.coin }); // 사용자 지갑 업데이트
-          console.log('user:', user);
+          console.log(user);
           console.log('coin:', coin);
         } catch (err) {
           console.error(err);

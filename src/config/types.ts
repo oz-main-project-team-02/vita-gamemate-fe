@@ -1,16 +1,23 @@
-// TODO: API 명세서가 나오면 데이터 타입을 새로 지정할 필요가 있음.
-// WARNING: 기존 type * = { [key]: [string] } Response의 불확실으로 에러날 확률이 100%
+export interface MateGameInfo {
+  description: string;
+  game_id: number;
+  image: string;
+  level: string;
+  request_price: number;
+}
+
 export interface User {
-  id: number;
-  nickname: string | null;
-  email: string | null;
-  gender: string | null;
-  profile_image: string | null;
   birthday: string | null;
   description: string | null;
-  social_provider: string | null;
-  is_online: boolean;
+  email: string | null;
+  gender: string | null;
+  id: number;
   is_mate: boolean;
+  is_online: boolean;
+  mate_game_info?: MateGameInfo[]; // mate_game_info 배열
+  nickname: string | null;
+  profile_image: string | null;
+  social_provider: string | null;
   coin: number;
 }
 

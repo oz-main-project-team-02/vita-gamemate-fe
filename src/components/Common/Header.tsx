@@ -43,11 +43,18 @@ export default function Header() {
         VI<span className='text-white'>TA</span>
       </div>
       <div className='flex gap-6'>
-        <div className='flex items-center'>
+        <div className='flex items-center gap-4'>
           {localStorage.getItem('accessToken') ? (
             <>
+              <Link to={'/coin'}>
+                <div className='flex items-center gap-2 rounded-md bg-slate-200 px-4 py-2'>
+                  <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
+                  <span className='font-semibold'>{user.coin}</span>
+                  <img src='/src/assets/imgs/button_plus.svg' alt='충전버튼' />
+                </div>
+              </Link>
               <button
-                className='mr-6 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
+                className='flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
                 onClick={setChatModalOpen}
                 onMouseEnter={chatIconMouseEnterHandler}
               >

@@ -3,7 +3,7 @@ import Footer from '../components/Common/Footer';
 import Header from '../components/Common/Header';
 import { useChatModalStore } from '../config/store';
 
-const ChatModal = React.lazy(() => import('../components/Common/ChatModal'));
+const ChatModal = React.lazy(() => import('@/components/Common/ChatModal') as Promise<{ default: () => JSX.Element }>);
 
 type Props = {
   children: React.ReactNode;

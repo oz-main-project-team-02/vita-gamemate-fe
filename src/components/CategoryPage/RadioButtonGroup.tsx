@@ -15,8 +15,8 @@ export default function RadioButtonGroup({ label, options, selectedValue, setSel
             type='radio'
             id={`${value}-${i + 1}`}
             value={value}
-            checked={selectedValue === value}
             onChange={() => setSelectedValue(value)}
+            checked={selectedValue === value}
             hidden
           />
           <label htmlFor={`${value}-${i + 1}`} className='mt-3 flex items-center gap-2'>

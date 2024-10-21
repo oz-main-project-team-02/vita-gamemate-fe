@@ -21,6 +21,7 @@ export type Game = {
   description: string;
   level: string[];
   gameCardImg: string;
+  engLevel: string[];
 };
 
 type GameCategories = 'lol' | 'tft' | 'bg' | 'overwatch';
@@ -46,6 +47,18 @@ export const Games: Record<GameCategories, Game> = {
       '브론즈',
       '아이언',
     ],
+    engLevel: [
+      'challenger',
+      'grandmaster',
+      'master',
+      'diamond',
+      'emerald',
+      'platinum',
+      'gold',
+      'silver',
+      'bronze',
+      'iron',
+    ],
     gameCardImg: gameCardLOL,
   },
   overwatch: {
@@ -56,8 +69,9 @@ export const Games: Record<GameCategories, Game> = {
     subTitle: 'OVERWATCH',
     type: 'PC • FPS',
     description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
-    level: ['챔피언', '그랜드 마스터', '마스터', '다이아몬드', '에메랄드', '플래티넘', '골드', '실버', '브론즈'],
+    level: ['챔피언', '그랜드 마스터', '마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
     gameCardImg: gameCardOVERWATCH,
+    engLevel: ['champion', 'grandmaster', 'master', 'diamond', 'platinum', 'gold', 'silver', 'bronze'],
   },
   tft: {
     id: 3,
@@ -79,6 +93,18 @@ export const Games: Record<GameCategories, Game> = {
       '브론즈',
       '아이언',
     ],
+    engLevel: [
+      'challenger',
+      'grandmaster',
+      'master',
+      'diamond',
+      'emerald',
+      'platinum',
+      'gold',
+      'silver',
+      'bronze',
+      'iron',
+    ],
     gameCardImg: gameCardTFT,
   },
   bg: {
@@ -90,6 +116,7 @@ export const Games: Record<GameCategories, Game> = {
     type: 'PC • FPS',
     description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
     level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
+    engLevel: ['master', 'diamond', 'platinum', 'gold', 'silver', 'bronze'],
     gameCardImg: gameCardBG,
   },
 };

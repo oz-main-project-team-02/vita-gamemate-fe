@@ -21,19 +21,21 @@ export default async function getGameMatesByCategory({ pageParam, queryKey }: Pr
 // import { client } from './client';
 
 // type Props = {
-//   queryKey: [string, string, string, string, string];
+//   queryKey: [string, string, string, string, string, string];
 //   gameId: string;
 //   sortValue: string;
 //   genderValue: string;
+//   levelValue: string;
 //   pageParam: number;
 // };
 
-// export default async function getGameMatesByCategory({ gameId, sortValue, genderValue, pageParam }: Props) {
+// export default async function getGameMatesByCategory({ gameId, sortValue, genderValue, levelValue, pageParam }: Props) {
 //   try {
 //     const { data } = await client.get(`/api/v1/mates/${gameId}`, {
 //       params: {
 //         sort: sortValue,
 //         gender: genderValue,
+//         level: levelValue,
 //         pageParam: pageParam,
 //       },
 //     });

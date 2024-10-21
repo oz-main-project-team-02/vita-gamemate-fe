@@ -13,7 +13,7 @@ type Props = {
   gameId: string | undefined;
 };
 
-export default function GameCategoryCardList({ gameId }: Props) {
+export default function GameCategoryCardList({ gameId, sortValue, genderValue, levelValue }: Props) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,10 +42,10 @@ export default function GameCategoryCardList({ gameId }: Props) {
   //   GameMate[],
   //   Error,
   //   InfiniteData<GameMate[]>,
-  //   [string, string, string, string, string],
+  //   [string, string, string, string, string, string],
   //   number
   // >({
-  //   queryKey: ['user', 'mate', gameId as string, sortValue, genderValue],
+  //   queryKey: ['user', 'mate', gameId as string, sortValue, genderValue, levelValue],
   //   initialPageParam: 1,
   //   getNextPageParam: (lastPage, allPages) => {
   //     console.log('lastPage 데이터:', lastPage);

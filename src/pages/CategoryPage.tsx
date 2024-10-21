@@ -10,6 +10,7 @@ export default function CategoryPage() {
   const { gameId } = useParams();
   const [sortValue, setSortValue] = useState<string>('recommendation');
   const [genderValue, setGenderValue] = useState<string>('all');
+  const [levelValue, setLevelValue] = useState<string[]>([]);
 
   return (
     <CommonLayout>
@@ -20,13 +21,17 @@ export default function CategoryPage() {
       />
       <div className='flex'>
         <FilterSidebar
+          gameId={gameId}
           sortValue={sortValue}
           setSortValue={setSortValue}
           genderValue={genderValue}
           setGenderValue={setGenderValue}
-        />{' '}
+          levelValue={levelValue}
+          setLevelValue={setLevelValue}
+        />
         {/* Section left */}
-        <GameCategoryCardList gameId={gameId} sortValue={sortValue} genderValue={genderValue} /> {/* section Right */}
+        <GameCategoryCardList gameId={gameId} sortValue={sortValue} genderValue={genderValue} levelValue={levelValue} />
+        {/* section Right */}
       </div>
     </CommonLayout>
   );

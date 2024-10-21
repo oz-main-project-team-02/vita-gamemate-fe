@@ -1,9 +1,9 @@
+import { Game } from '@/config/const';
 import { useNavigate } from 'react-router-dom';
-import { Games } from '@/config/const';
 
 type Props = {
   game: string;
-  gameData: Games;
+  gameData: Game;
 };
 
 export default function GameCard({ game, gameData }: Props) {

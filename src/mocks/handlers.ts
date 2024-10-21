@@ -7,7 +7,7 @@ const delay = (ms: number) =>
     setTimeout(res, ms);
   });
 
-const mateData: Record<string, GameMate[]> = {
+export const mateData: Record<string, GameMate[]> = {
   '1': [
     {
       id: 1,

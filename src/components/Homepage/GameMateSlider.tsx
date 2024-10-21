@@ -9,8 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getGame } from '../../config/const';
 import { mock } from '@/api/mock';
 import { User } from '@/config/types';
-// import { User } from '../../config/types';
-// import { client } from '@/api/client';
+// import { mateApi } from '@/api';
 
 export default function GameMateSlider() {
   const { data: recommendMates } = useQuery<User[]>({
@@ -25,14 +24,7 @@ export default function GameMateSlider() {
 
   // const { data: recommendMates } = useQuery<User[]>({
   //   queryKey: ['user', 'mate', 'recommend'],
-  //   queryFn: async () => {
-  //     try {
-  //       const { data } = await client.get(`/api/v1/mates`);
-  //       return data;
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   },
+  //   queryFn: () => mateApi.mateProfileAllCategory({ pageParam: 1 }),
   // });
 
   return (

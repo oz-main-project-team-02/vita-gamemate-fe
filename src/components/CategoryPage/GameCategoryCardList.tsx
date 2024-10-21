@@ -8,6 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import MateCard from '../Common/MateCard';
 import Spinner from '../Common/Spinner';
+// import { mateApi } from '@/api';
 
 type Props = {
   gameId: string | undefined;
@@ -96,7 +97,7 @@ export default function GameCategoryCardList({ gameId }: Props) {
 //     number
 //   >({
 //     queryKey: ['user', 'mate', gameId as string, sortValue, genderValue, levelValue],
-//     queryFn: () => getGameMatesByCategory({ gameId, sortValue, genderValue, levelValue, pageParam }),
+//     queryFn: ({ pageParam }) => mateApi.mateProfileByGameId({ gameId, sortValue, genderValue, levelValue, pageParam }),
 //     initialPageParam: 1,
 //     getNextPageParam: (lastPage, allPages) => {
 //       console.log('lastPage 데이터:', lastPage);

@@ -21,6 +21,7 @@ export type Game = {
   description: string;
   level: string[];
   gameCardImg: string;
+  engLevel: string[];
 };
 
 type GameCategories = 'lol' | 'tft' | 'bg' | 'overwatch';
@@ -46,10 +47,34 @@ export const Games: Record<GameCategories, Game> = {
       '브론즈',
       '아이언',
     ],
+    engLevel: [
+      'challenger',
+      'grandmaster',
+      'master',
+      'diamond',
+      'emerald',
+      'platinum',
+      'gold',
+      'silver',
+      'bronze',
+      'iron',
+    ],
     gameCardImg: gameCardLOL,
   },
-  tft: {
+  overwatch: {
     id: 2,
+    img: overwatch,
+    icon: overwatchIcon,
+    title: '오버워치',
+    subTitle: 'OVERWATCH',
+    type: 'PC • FPS',
+    description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
+    level: ['챔피언', '그랜드 마스터', '마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
+    gameCardImg: gameCardOVERWATCH,
+    engLevel: ['champion', 'grandmaster', 'master', 'diamond', 'platinum', 'gold', 'silver', 'bronze'],
+  },
+  tft: {
+    id: 3,
     img: tft,
     icon: tftIcon,
     title: '전략적 팀 전투',
@@ -68,10 +93,22 @@ export const Games: Record<GameCategories, Game> = {
       '브론즈',
       '아이언',
     ],
+    engLevel: [
+      'challenger',
+      'grandmaster',
+      'master',
+      'diamond',
+      'emerald',
+      'platinum',
+      'gold',
+      'silver',
+      'bronze',
+      'iron',
+    ],
     gameCardImg: gameCardTFT,
   },
   bg: {
-    id: 3,
+    id: 4,
     img: bg,
     icon: bgIcon,
     title: '배틀그라운드',
@@ -79,23 +116,13 @@ export const Games: Record<GameCategories, Game> = {
     type: 'PC • FPS',
     description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
     level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
+    engLevel: ['master', 'diamond', 'platinum', 'gold', 'silver', 'bronze'],
     gameCardImg: gameCardBG,
-  },
-  overwatch: {
-    id: 4,
-    img: overwatch,
-    icon: overwatchIcon,
-    title: '오버워치',
-    subTitle: 'OVERWATCH',
-    type: 'PC • FPS',
-    description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
-    level: ['챔피언', '그랜드 마스터', '마스터', '다이아몬드', '에메랄드', '플래티넘', '골드', '실버', '브론즈'],
-    gameCardImg: gameCardOVERWATCH,
   },
 };
 
 // 게임을 가져오는 함수
-export const getGame = (gameKey: number | string) => {
+export const getGame = (gameKey: number | string | undefined) => {
   if (typeof gameKey === 'number') {
     // gameId를 기반으로 게임의 데이터들을 찾아야할 때,
     return Object.values(Games).find((game) => game.id === gameKey);
@@ -105,9 +132,9 @@ export const getGame = (gameKey: number | string) => {
     // 게임의 이름을 기반으로 게임의 데이터들을 찾아야할 때, || value.title 을 통해 찾으면됩니다.
     return Object.entries(Games).find(([, value]) => value.title === gameKey)?.[1];
   }
-};
 
-// ------------------------------------------------------------------------
+  return undefined;
+};
 
 export type CoinPackage = {
   coin: number;
@@ -165,4 +192,17 @@ export const CoinPackages: CoinPackage[] = [
     discountPrice: 864000,
     discountRate: 28,
   },
+];
+
+export const SortArr: [string, string][] = [
+  ['추천순', 'recommendation'],
+  ['신규 가입', 'new'],
+  ['최고 평가', 'rating_desc'],
+  ['최저 가격', 'price_asc'],
+  ['최고 가격', 'price_desc'],
+];
+export const GenderArr: [string, string][] = [
+  ['모두', 'all'],
+  ['여성', 'female'],
+  ['남성', 'male'],
 ];

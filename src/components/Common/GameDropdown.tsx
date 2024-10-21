@@ -13,8 +13,8 @@ export default function GameDropdown({ setGameHover }: HoverProps) {
       className='absolute left-[130px] top-[40px] z-20 h-[180px] w-[58%] min-w-[200px] justify-between py-5'
     >
       <div className='flex w-full flex-wrap rounded-3xl bg-gray-100 px-5 py-4'>
-        {Object.entries(Games).map(([key, value]) => (
-          <GameCard game={key} gameData={value} />
+        {Object.entries(Games).map(([key, value], i) => (
+          <GameCard key={i} game={key} gameData={value} />
         ))}
       </div>
     </div>

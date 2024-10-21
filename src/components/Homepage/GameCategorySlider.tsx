@@ -6,8 +6,10 @@ import { GrPrevious } from 'react-icons/gr';
 import { GrNext } from 'react-icons/gr';
 import MateCard from '../Common/MateCard';
 import { useQuery } from '@tanstack/react-query';
-import { GameMate } from '../../config/types';
 import { mock } from '@/api/mock';
+import { GameMate } from '../../config/types';
+// import { GameMate, User } from '../../config/types';
+// import { client } from '@/api/client';
 
 type Props = {
   gameId: string;
@@ -23,6 +25,20 @@ export default function GameCategorySlider({ gameId }: Props) {
     },
   });
 
+  // FIXME: API 완료 시, 아래 코드로 변경
+
+  // const { data: gameMates, isLoading } = useQuery<User[]>({
+  //   queryKey: ['user', 'mate', gameId, 'main'],
+  //   queryFn: async () => {
+  //     try {
+  //       const { data } = await client.get(`/api/v1/mates/${gameId}/?page=1`);
+  //       return data;
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   },
+  // });
+
   console.log('카테고리별 게임메이트', gameMates);
 
   if (isLoading) return <div></div>;
@@ -30,7 +46,6 @@ export default function GameCategorySlider({ gameId }: Props) {
   return (
     <div className='relative mx-auto max-w-[672px]'>
       <Swiper
-        loop={true}
         slidesPerView={3} // 한 화면에 3개의 슬라이드 표시
         slidesPerGroup={3} // 버튼 클릭 시 3개의 슬라이드 이동
         navigation={{

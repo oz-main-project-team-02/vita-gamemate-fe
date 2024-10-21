@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
 import ErrorPage from './ErrorPage';
+import { getGame } from '@/config/const';
 
 export default function UserDetailPage() {
   const { userId } = useParams();
@@ -34,8 +35,6 @@ export default function UserDetailPage() {
   if (!mate) {
     return <ErrorPage />;
   }
-
-  console.log(`/user/${userId}`, mate);
 
   return (
     <CommonLayout>
@@ -104,11 +103,11 @@ export default function UserDetailPage() {
                     }}
                   ></div>
                   <div className='h-[82px] w-3/5 px-4 py-1'>
-                    <h1 className='pb-1 text-2xl font-bold'>리그오브레전드</h1>
+                    <h1 className='pb-1 text-2xl font-bold'>{getGame(mate.mate_game_info?.[0]?.game_id)?.title}</h1>
                     <p className='flex items-center pb-1'>
                       <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
-                      &nbsp;5.00&nbsp;
-                      <span className='text-sm text-gray-300'>| 받은 의뢰수 10</span>
+                      &nbsp;{mate.average_rating}&nbsp;
+                      <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
                     </p>
                     <VitaPrice mate={mate} />
                   </div>
@@ -135,7 +134,8 @@ export default function UserDetailPage() {
                       <PiCrownSimpleFill />
                     </div>
                     <p className='text-[15px] text-gray-300'>
-                      <span className='text-gray-500'>레벨:</span> 다이아몬드
+                      <span className='text-gray-500'>레벨:</span>
+                      {mate.mate_game_info?.[0]?.level}
                     </p>
                   </div>
                 </div>
@@ -144,7 +144,9 @@ export default function UserDetailPage() {
                 <div className='h-[350px] w-[62%] min-w-[350px] rounded-3xl border bg-[#FFFFFF] p-5'>
                   <div className='mb-2 flex items-center'>
                     <img className='w-7' src='/src/assets/imgs/star.svg' alt='star' />
-                    <h1 className='px-2 text-2xl font-bold'>4.98 • 사용자 의견 (63)</h1>
+                    <h1 className='px-2 text-2xl font-bold'>
+                      {mate.average_rating} • 사용자 의견 ({mate.amount})
+                    </h1>
                   </div>
                   <ReviewList userId={userId!} />
 

@@ -1,6 +1,6 @@
 import getGameMatesByCategory from '@/api/getGameMatesByCategory';
 import { getGame } from '@/config/const';
-import { GameMate } from '@/config/types';
+import { User } from '@/config/types';
 import ErrorPage from '@/pages/ErrorPage';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -24,9 +24,9 @@ export default function GameCategoryCardList({ gameId }: Props) {
   }, [gameId, navigate]);
 
   const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
-    GameMate[],
+    User[],
     Error,
-    InfiniteData<GameMate[]>,
+    InfiniteData<User[]>,
     [string, string, string],
     number
   >({
@@ -70,8 +70,6 @@ export default function GameCategoryCardList({ gameId }: Props) {
     </div>
   );
 }
-
-// // FIXME: API 개발 완료 시 교체만 하면됩니다.
 
 // type Props = {
 //   gameId: string | undefined;

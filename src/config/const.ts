@@ -122,7 +122,7 @@ export const Games: Record<GameCategories, Game> = {
 };
 
 // 게임을 가져오는 함수
-export const getGame = (gameKey: number | string) => {
+export const getGame = (gameKey: number | string | undefined) => {
   if (typeof gameKey === 'number') {
     // gameId를 기반으로 게임의 데이터들을 찾아야할 때,
     return Object.values(Games).find((game) => game.id === gameKey);

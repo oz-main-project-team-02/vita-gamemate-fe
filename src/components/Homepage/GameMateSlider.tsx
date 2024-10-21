@@ -22,7 +22,6 @@ export default function GameMateSlider() {
   return (
     <div className='relative mx-auto max-w-[672px]'>
       <Swiper
-        loop={true}
         slidesPerView={1} // 한 화면에 3개의 슬라이드 표시
         spaceBetween={40}
         navigation={{

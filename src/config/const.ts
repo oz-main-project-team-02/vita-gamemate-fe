@@ -23,7 +23,7 @@ export type Game = {
   gameCardImg: string;
 };
 
-type GameCategories = 'lol' | 'tft' | 'bg' | 'overwatch';
+type GameCategories = 'lol' | 'tft' | 'bg' | 'overwatch' | 'bg1' | 'bg2';
 
 export const Games: Record<GameCategories, Game> = {
   lol: {
@@ -48,8 +48,19 @@ export const Games: Record<GameCategories, Game> = {
     ],
     gameCardImg: gameCardLOL,
   },
-  tft: {
+  overwatch: {
     id: 2,
+    img: overwatch,
+    icon: overwatchIcon,
+    title: '오버워치',
+    subTitle: 'OVERWATCH',
+    type: 'PC • FPS',
+    description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
+    level: ['챔피언', '그랜드 마스터', '마스터', '다이아몬드', '에메랄드', '플래티넘', '골드', '실버', '브론즈'],
+    gameCardImg: gameCardOVERWATCH,
+  },
+  tft: {
+    id: 3,
     img: tft,
     icon: tftIcon,
     title: '전략적 팀 전투',
@@ -71,7 +82,7 @@ export const Games: Record<GameCategories, Game> = {
     gameCardImg: gameCardTFT,
   },
   bg: {
-    id: 3,
+    id: 4,
     img: bg,
     icon: bgIcon,
     title: '배틀그라운드',
@@ -81,16 +92,27 @@ export const Games: Record<GameCategories, Game> = {
     level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
     gameCardImg: gameCardBG,
   },
-  overwatch: {
-    id: 4,
-    img: overwatch,
-    icon: overwatchIcon,
-    title: '오버워치',
-    subTitle: 'OVERWATCH',
+  bg1: {
+    id: 5,
+    img: bg,
+    icon: bgIcon,
+    title: '배틀그라운드',
+    subTitle: 'BATTLEGROUNDS',
     type: 'PC • FPS',
     description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
-    level: ['챔피언', '그랜드 마스터', '마스터', '다이아몬드', '에메랄드', '플래티넘', '골드', '실버', '브론즈'],
-    gameCardImg: gameCardOVERWATCH,
+    level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
+    gameCardImg: gameCardBG,
+  },
+  bg2: {
+    id: 6,
+    img: bg,
+    icon: bgIcon,
+    title: '배틀그라운드',
+    subTitle: 'BATTLEGROUNDS',
+    type: 'PC • FPS',
+    description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
+    level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
+    gameCardImg: gameCardBG,
   },
 };
 
@@ -105,6 +127,8 @@ export const getGame = (gameKey: number | string) => {
     // 게임의 이름을 기반으로 게임의 데이터들을 찾아야할 때, || value.title 을 통해 찾으면됩니다.
     return Object.entries(Games).find(([, value]) => value.title === gameKey)?.[1];
   }
+
+  return undefined;
 };
 
 // ------------------------------------------------------------------------

@@ -30,7 +30,6 @@ export default function GameCategorySlider({ gameId }: Props) {
   return (
     <div className='relative mx-auto max-w-[672px]'>
       <Swiper
-        loop={true}
         slidesPerView={3} // 한 화면에 3개의 슬라이드 표시
         slidesPerGroup={3} // 버튼 클릭 시 3개의 슬라이드 이동
         navigation={{

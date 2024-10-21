@@ -4,6 +4,7 @@ export default function FilterSidebar() {
   const [sort, setSort] = useState<string>('');
   const [gender, setGender] = useState<string>('');
   const sortArr = ['추천순', '신규 가입', '최고 평가', '최저 가격', '최고 가격'];
+  // const sortArr1 = [{ type: '추천순', api: '/api/v1/mates/1' }, '신규 가입', '최고 평가', '최저 가격', '최고 가격'];
   const genderArr = ['모두', '여성', '남성'];
 
   return (

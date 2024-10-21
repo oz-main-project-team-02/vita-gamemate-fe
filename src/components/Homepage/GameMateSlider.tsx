@@ -8,12 +8,11 @@ import VitaPrice from '../Common/VitaPrice';
 import { useQuery } from '@tanstack/react-query';
 import { getGame } from '../../config/const';
 import { mock } from '@/api/mock';
-import { GameMate } from '../../config/types';
-// import { User } from '../../config/types';
-// import { client } from '@/api/client';
+import { User } from '@/config/types';
+// import { mateApi } from '@/api';
 
 export default function GameMateSlider() {
-  const { data: recommendMates } = useQuery<GameMate[]>({
+  const { data: recommendMates } = useQuery<User[]>({
     queryKey: ['user', 'recommend'],
     queryFn: async () => {
       const response = await mock.get(`/api/v1/users/todayrecommend`);
@@ -25,14 +24,7 @@ export default function GameMateSlider() {
 
   // const { data: recommendMates } = useQuery<User[]>({
   //   queryKey: ['user', 'mate', 'recommend'],
-  //   queryFn: async () => {
-  //     try {
-  //       const { data } = await client.get(`/api/v1/mates`);
-  //       return data;
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   },
+  //   queryFn: () => mateApi.mateProfileAllCategory({ pageParam: 1 }),
   // });
 
   return (
@@ -63,21 +55,15 @@ export default function GameMateSlider() {
                   <h2 className='text-2xl font-bold'>{mate.nickname}</h2>
                   <p className='mb-4 font-light text-gray-200'>{mate.description}</p>
                   <div className='flex gap-4'>
-                    <img src={getGame(mate.game_id)?.img} alt='' className='h-[60px] w-[60px]' />
-                    <div>
-                      <h2 className='text-2xl font-bold'>{getGame(mate.game_id)?.title}</h2>
-                      <VitaPrice mate={mate} />
-                    </div>
-
-                    {/* <img
-                      src={getGame(mate?.mate_game_info?.[0].game_id)?.img}
+                    <img
+                      src={getGame(mate.mate_game_info?.[0].game_id)?.img}
                       alt='게임 이미지'
                       className='h-[60px] w-[60px]'
                     />
                     <div>
-                      <h2 className='text-2xl font-bold'>{getGame(mate?.mate_game_info?.[0].game_id)?.title}</h2>
+                      <h2 className='text-2xl font-bold'>{getGame(mate.mate_game_info?.[0].game_id)?.title}</h2>
                       <VitaPrice mate={mate} />
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>

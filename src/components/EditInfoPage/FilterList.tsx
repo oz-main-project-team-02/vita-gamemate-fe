@@ -1,4 +1,4 @@
-import { client } from '@/api/client';
+import { authApi } from '@/api';
 import { useUserStore } from '@/config/store';
 import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -17,12 +17,12 @@ export default function FilterList() {
 
   const handleLogoutClick = async () => {
     try {
-      const response = await client.post('/api/v1/users/auth/logout/');
+      const response = await authApi.authLogout();
 
       if (response.status === 200) {
         localStorage.removeItem('accessToken');
         unSetUser();
-        navigate('/');
+        navigate('/', { replace: true });
       }
     } catch (error) {
       console.error(error);

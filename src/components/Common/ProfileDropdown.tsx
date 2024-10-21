@@ -41,7 +41,7 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
     >
       <div className='z-20 h-[370px] w-full rounded-3xl bg-[#FFFFFF] p-5 shadow'>
         <div
-          onClick={() => navigate('/user/:userId')}
+          onClick={() => navigate(`/user/${user.id}`)}
           className='mb-3 flex h-[60px] w-full cursor-pointer items-center rounded-full hover:bg-slate-50'
         >
           <div className='h-[50px] w-[50px] rounded-full bg-slate-200'>

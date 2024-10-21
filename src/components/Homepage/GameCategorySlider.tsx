@@ -7,9 +7,8 @@ import { GrNext } from 'react-icons/gr';
 import MateCard from '../Common/MateCard';
 import { useQuery } from '@tanstack/react-query';
 import { mock } from '@/api/mock';
-import { GameMate } from '../../config/types';
-// import { GameMate, User } from '../../config/types';
-// import { client } from '@/api/client';
+import { User } from '@/config/types';
+// import { mateApi } from '@/api';
 
 type Props = {
   gameId: string;
@@ -17,7 +16,7 @@ type Props = {
 
 export default function GameCategorySlider({ gameId }: Props) {
   // WARNING: 카테고리별 데이터 패칭이랑 같은 API를 사용하고 있음, delay(3000) 사용으로 로딩이 느린 현상. 버그X
-  const { data: gameMates, isLoading } = useQuery<GameMate[]>({
+  const { data: gameMates, isLoading } = useQuery<User[]>({
     queryKey: ['user', 'mate', gameId, 'main'],
     queryFn: async () => {
       const { data } = await mock.get(`/api/v1/users/${Number(gameId)}/mate?cursor=0`);
@@ -26,20 +25,10 @@ export default function GameCategorySlider({ gameId }: Props) {
   });
 
   // FIXME: API 완료 시, 아래 코드로 변경
-
   // const { data: gameMates, isLoading } = useQuery<User[]>({
   //   queryKey: ['user', 'mate', gameId, 'main'],
-  //   queryFn: async () => {
-  //     try {
-  //       const { data } = await client.get(`/api/v1/mates/${gameId}/?page=1`);
-  //       return data;
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   },
+  //   queryFn: () => mateApi.mateProfileByGameId({ gameId, pageParam: 1 }),
   // });
-
-  console.log('카테고리별 게임메이트', gameMates);
 
   if (isLoading) return <div></div>;
 

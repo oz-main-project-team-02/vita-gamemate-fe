@@ -9,53 +9,35 @@ import UserRanking from '@/components/UserDetailPage/UserRanking';
 import VitaPrice from '@/components/Common/VitaPrice';
 import lol from '@/assets/imgs/lol.png';
 import ReviewList from '@/components/UserDetailPage/ReviewList';
-import { GameMate, MateUser, User } from '@/config/types';
+import { User } from '@/config/types';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
+import ErrorPage from './ErrorPage';
+import { getGame } from '@/config/const';
 import { useChatModalStore } from '@/config/store';
 import { createChat } from '@/api/chat';
 
 export default function UserDetailPage() {
-  const mate: GameMate = {
-    id: 1,
-    nickname: 'Summoner123',
-    email: 'summoner123@example.com',
-    gender: 'male',
-    description: '즐겁게 게임할 파트너를 찾고 있습니다.',
-    birthday: '1995-08-15',
-    profile_image: 'https://picsum.photos/200/300?random=1',
-    is_mate: true,
-    is_online: true,
-    game_id: 1,
-    level: 'Diamond',
-    price: 9999,
-    average_rating: 4,
-    amount: 500,
-    social_provider: 'kakao',
-  };
-
   const { userId } = useParams();
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
 
   // FIX: 서버 API 통합 요청 상태, 사용자 정보, 메이트 정보 따로 요청하는 불필요 API 개선
-  const { data } = useQuery<User>({
+  const { data: mate } = useQuery<User>({
     queryKey: ['user', userId],
     queryFn: async () => {
       try {
-        const response = await client.get(`/api/v1/users/${userId}/profile/`);
-
-        if (response.data.is_mate) {
-          const { data }: { data: MateUser } = await client.get(`/api/v1/mates/${userId}/`);
-          return data;
-        }
-        return response.data;
+        const { data } = await client.get(`/api/v1/users/${userId}/profile/`);
+        return data;
       } catch (err) {
         console.error(err);
       }
     },
   });
-  console.log(data);
+
+  if (!mate) {
+    return <ErrorPage />;
+  }
 
   // 채팅방 생성 api 요청 후 채팅 모달 open
   const createChatHandler = async (mateNickname: string | null) => {
@@ -87,7 +69,7 @@ export default function UserDetailPage() {
             <div className='h-[70px] w-[70px] rounded-full border bg-slate-50'>
               <img
                 className='h-[70px] w-[70px] rounded-full object-cover'
-                src={mate.profile_image !== null || undefined ? mate.profile_image! : '/src/assets/imgs/user.png'}
+                src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
                 alt='user'
               />
             </div>
@@ -111,81 +93,100 @@ export default function UserDetailPage() {
             <div className='h-[610px] w-[36%] min-w-[200px] rounded-3xl border bg-[#FFFFFF]'>
               <img
                 className='h-[400px] w-full rounded-t-3xl object-cover'
-                src={mate.profile_image !== null || undefined ? mate.profile_image! : '/src/assets/imgs/user.png'}
+                src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
                 alt='user'
               />
               <h1 className='px-5 pt-5 text-xl font-bold'>소개</h1>
               <p className='px-5 py-3'>{mate.description}</p>
             </div>
 
-            <div className='h-[512px] w-[36%] min-w-[200px] rounded-3xl border bg-gradient-to-b from-softYellow from-0% via-[#FFFFFF] via-20% to-[#FFFFFF] to-90% px-5'>
-              <h1 className='pt-5 text-2xl font-bold'>후원자 랭킹</h1>
-              <p className='py-2 text-base font-medium underline decoration-primary decoration-4'>의뢰</p>
-              <UserRanking />
-              <UserRanking />
-              <UserRanking />
-              <UserRanking />
-              <UserRanking />
-              <UserRanking />
-              <UserRanking />
-            </div>
-
-            <div className='flex h-[193px] w-[62%] min-w-[350px] rounded-3xl border bg-[#FFFFFF] p-8'>
-              <div
-                className='h-[130px] w-[130px] overflow-hidden rounded-3xl bg-gray-100'
-                style={{
-                  backgroundImage: `url(${lol})`, // 배경 이미지 설정
-                  backgroundSize: '130px 130px', // 이미지 크기를 322px x 331px으로 설정
-                  backgroundRepeat: 'no-repeat', // 배경 이미지가 반복되지 않도록 설정
-                  backgroundPosition: '0px',
-                }}
-              ></div>
-              <div className='h-[82px] w-3/5 px-4 py-1'>
-                <h1 className='pb-1 text-2xl font-bold'>리그오브레전드</h1>
-                <p className='flex items-center pb-1'>
-                  <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
-                  &nbsp;5.00&nbsp;
-                  <span className='text-sm text-gray-300'>| 받은 의뢰수 10</span>
-                </p>
-                <VitaPrice mate={mate} />
-              </div>
-              <button className='my-8 h-[50px] w-[120px] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'>
-                의뢰
-              </button>
-            </div>
-
-            <div className='flex h-[560px] w-[62%] min-w-[350px] flex-col justify-between rounded-3xl border bg-[#FFFFFF] p-5'>
-              <div className='mb-1 flex items-center'>
-                <p className='rounded bg-primary text-xl text-[#FFFFFF]'>
-                  <MdNotes />
-                </p>
-                <h1 className='px-2 text-2xl font-bold'>게임 정보</h1>
-              </div>
-
-              <div className='h-[120px] w-full rounded-3xl bg-gray-100 p-4 text-sm'>게임메이트등록 소개글</div>
-              <div className='h-[230px] w-full rounded-3xl bg-gray-100'>이미지 들어갈 자리(width 값 조정해도 됨)</div>
-              <div className='flex h-[60px] w-full items-center rounded-3xl bg-gray-100 p-4 text-sm'>
-                <div className='mr-2 h-6 w-6 rounded-full bg-slate-200 p-[4px] text-base text-[#FFFFFF]'>
-                  <PiCrownSimpleFill />
+            {mate.is_mate && mate.mate_game_info?.length !== undefined ? (
+              <>
+                {/* 후원자 정보 */}
+                <div className='h-[512px] w-[36%] min-w-[200px] rounded-3xl border bg-gradient-to-b from-softYellow from-0% via-[#FFFFFF] via-20% to-[#FFFFFF] to-90% px-5'>
+                  <h1 className='pt-5 text-2xl font-bold'>후원자 랭킹</h1>
+                  <p className='py-2 text-base font-medium underline decoration-primary decoration-4'>의뢰</p>
+                  <UserRanking />
+                  <UserRanking />
+                  <UserRanking />
+                  <UserRanking />
+                  <UserRanking />
+                  <UserRanking />
+                  <UserRanking />
                 </div>
-                <p className='text-[15px] text-gray-300'>
-                  <span className='text-gray-500'>레벨:</span> 다이아몬드
-                </p>
-              </div>
-            </div>
 
-            <div className='h-[350px] w-[62%] min-w-[350px] rounded-3xl border bg-[#FFFFFF] p-5'>
-              <div className='mb-2 flex items-center'>
-                <img className='w-7' src='/src/assets/imgs/star.svg' alt='star' />
-                <h1 className='px-2 text-2xl font-bold'>4.98 • 사용자 의견 (63)</h1>
+                {/* 게임 의뢰 정보 */}
+                <div className='flex h-[193px] w-[62%] min-w-[350px] rounded-3xl border bg-[#FFFFFF] p-8'>
+                  <div
+                    className='h-[130px] w-[130px] overflow-hidden rounded-3xl bg-gray-100'
+                    style={{
+                      backgroundImage: `url(${lol})`, // 배경 이미지 설정
+                      backgroundSize: '130px 130px', // 이미지 크기를 322px x 331px으로 설정
+                      backgroundRepeat: 'no-repeat', // 배경 이미지가 반복되지 않도록 설정
+                      backgroundPosition: '0px',
+                    }}
+                  ></div>
+                  <div className='h-[82px] w-3/5 px-4 py-1'>
+                    <h1 className='pb-1 text-2xl font-bold'>{getGame(mate.mate_game_info?.[0]?.game_id)?.title}</h1>
+                    <p className='flex items-center pb-1'>
+                      <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
+                      &nbsp;{mate.average_rating}&nbsp;
+                      <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
+                    </p>
+                    <VitaPrice mate={mate} />
+                  </div>
+                  <button className='my-8 h-[50px] w-[120px] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'>
+                    의뢰
+                  </button>
+                </div>
+
+                {/* 게임 정보 */}
+                <div className='flex h-[560px] w-[62%] min-w-[350px] flex-col justify-between rounded-3xl border bg-[#FFFFFF] p-5'>
+                  <div className='mb-1 flex items-center'>
+                    <p className='rounded bg-primary text-xl text-[#FFFFFF]'>
+                      <MdNotes />
+                    </p>
+                    <h1 className='px-2 text-2xl font-bold'>게임 정보</h1>
+                  </div>
+
+                  <div className='h-[120px] w-full rounded-3xl bg-gray-100 p-4 text-sm'>게임메이트등록 소개글</div>
+                  <div className='h-[230px] w-full rounded-3xl bg-gray-100'>
+                    이미지 들어갈 자리(width 값 조정해도 됨)
+                  </div>
+                  <div className='flex h-[60px] w-full items-center rounded-3xl bg-gray-100 p-4 text-sm'>
+                    <div className='mr-2 h-6 w-6 rounded-full bg-slate-200 p-[4px] text-base text-[#FFFFFF]'>
+                      <PiCrownSimpleFill />
+                    </div>
+                    <p className='text-[15px] text-gray-300'>
+                      <span className='text-gray-500'>레벨:</span>
+                      {mate.mate_game_info?.[0]?.level}
+                    </p>
+                  </div>
+                </div>
+
+                {/* 리뷰 정보 */}
+                <div className='h-[350px] w-[62%] min-w-[350px] rounded-3xl border bg-[#FFFFFF] p-5'>
+                  <div className='mb-2 flex items-center'>
+                    <img className='w-7' src='/src/assets/imgs/star.svg' alt='star' />
+                    <h1 className='px-2 text-2xl font-bold'>
+                      {mate.average_rating} • 사용자 의견 ({mate.amount})
+                    </h1>
+                  </div>
+                  <ReviewList userId={userId!} />
+
+                  <div className='flex justify-center'>
+                    <button className='h-[35px] w-[110px] rounded-xl bg-softYellow hover:font-semibold'>
+                      자세히 보기
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div>
+                <div>이 사용자는 현재 lita 게임 메이트가 아닙니다</div>
+                <div>수정 해야됨</div>
               </div>
-              <ReviewList />
-              <ReviewList />
-              <ReviewList />
-              <div className='flex justify-center'>
-                <button className='h-[35px] w-[110px] rounded-xl bg-softYellow hover:font-semibold'>자세히 보기</button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

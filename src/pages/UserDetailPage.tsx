@@ -13,6 +13,8 @@ import { GameMate, MateUser, User } from '@/config/types';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
+import { useChatModalStore } from '@/config/store';
+import { createChat } from '@/api/chat';
 
 export default function UserDetailPage() {
   const mate: GameMate = {
@@ -34,6 +36,7 @@ export default function UserDetailPage() {
   };
 
   const { userId } = useParams();
+  const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
 
   // FIX: 서버 API 통합 요청 상태, 사용자 정보, 메이트 정보 따로 요청하는 불필요 API 개선
   const { data } = useQuery<User>({
@@ -53,6 +56,27 @@ export default function UserDetailPage() {
     },
   });
   console.log(data);
+
+  // 채팅방 생성 api 요청 후 채팅 모달 open
+  const createChatHandler = async (mateNickname: string | null) => {
+    if (mateNickname) {
+      try {
+        const response = await createChat(mateNickname);
+        console.log(response.data);
+
+        if (response.status === 200 || response.status === 201) {
+          setChatModalOpen();
+        } else {
+          console.log('채팅방 생성 실패');
+          alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error('채팅방 생성 요청 실패: ', error);
+        alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    }
+    return;
+  };
 
   return (
     <CommonLayout>
@@ -79,7 +103,7 @@ export default function UserDetailPage() {
               </div>
             </div>
             <button className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
-              <AiOutlineMessage size={24} />
+              {<AiOutlineMessage size={24} onClick={() => createChatHandler(mate.nickname)} />}
             </button>
           </div>
 

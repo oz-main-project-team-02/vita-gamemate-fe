@@ -22,7 +22,7 @@ export default function Header() {
 
   // 채팅 모달창 preloading
   const chatIconMouseEnterHandler = () => {
-    import('../../components/Common/ChatModal');
+    import('@/components/Common/ChatModal');
   };
 
   return (

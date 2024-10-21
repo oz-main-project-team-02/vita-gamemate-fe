@@ -23,7 +23,7 @@ export type Game = {
   gameCardImg: string;
 };
 
-type GameCategories = 'lol' | 'tft' | 'bg' | 'overwatch' | 'bg1' | 'bg2';
+type GameCategories = 'lol' | 'tft' | 'bg' | 'overwatch';
 
 export const Games: Record<GameCategories, Game> = {
   lol: {
@@ -92,28 +92,6 @@ export const Games: Record<GameCategories, Game> = {
     level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
     gameCardImg: gameCardBG,
   },
-  bg1: {
-    id: 5,
-    img: bg,
-    icon: bgIcon,
-    title: '배틀그라운드',
-    subTitle: 'BATTLEGROUNDS',
-    type: 'PC • FPS',
-    description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
-    level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
-    gameCardImg: gameCardBG,
-  },
-  bg2: {
-    id: 6,
-    img: bg,
-    icon: bgIcon,
-    title: '배틀그라운드',
-    subTitle: 'BATTLEGROUNDS',
-    type: 'PC • FPS',
-    description: '다양한 챔피언과 함께 친구들과 즐거운 순간을 만들어보세요!',
-    level: ['마스터', '다이아몬드', '플래티넘', '골드', '실버', '브론즈'],
-    gameCardImg: gameCardBG,
-  },
 };
 
 // 게임을 가져오는 함수
@@ -130,8 +108,6 @@ export const getGame = (gameKey: number | string) => {
 
   return undefined;
 };
-
-// ------------------------------------------------------------------------
 
 export type CoinPackage = {
   coin: number;
@@ -189,4 +165,17 @@ export const CoinPackages: CoinPackage[] = [
     discountPrice: 864000,
     discountRate: 28,
   },
+];
+
+export const SortArr: [string, string][] = [
+  ['추천순', 'recommendation'],
+  ['신규 가입', 'new'],
+  ['최고 평가', 'rating_desc'],
+  ['최저 가격', 'price_asc'],
+  ['최고 가격', 'price_desc'],
+];
+export const GenderArr: [string, string][] = [
+  ['모두', 'all'],
+  ['여성', 'female'],
+  ['남성', 'male'],
 ];

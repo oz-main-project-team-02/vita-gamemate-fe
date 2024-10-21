@@ -4,9 +4,12 @@ import { useParams } from 'react-router-dom';
 import { getGame } from '../config/const';
 import FilterSidebar from '@/components/CategoryPage/FilterSidebar';
 import GameCategoryCardList from '@/components/CategoryPage/GameCategoryCardList';
+import { useState } from 'react';
 
 export default function CategoryPage() {
   const { gameId } = useParams();
+  const [sortValue, setSortValue] = useState<string>('recommendation');
+  const [genderValue, setGenderValue] = useState<string>('all');
 
   return (
     <CommonLayout>
@@ -16,8 +19,14 @@ export default function CategoryPage() {
         content={getGame(Number(gameId))?.description}
       />
       <div className='flex'>
-        <FilterSidebar /> {/* Section left */}
-        <GameCategoryCardList gameId={gameId} /> {/* section Right */}
+        <FilterSidebar
+          sortValue={sortValue}
+          setSortValue={setSortValue}
+          genderValue={genderValue}
+          setGenderValue={setGenderValue}
+        />{' '}
+        {/* Section left */}
+        <GameCategoryCardList gameId={gameId} sortValue={sortValue} genderValue={genderValue} /> {/* section Right */}
       </div>
     </CommonLayout>
   );

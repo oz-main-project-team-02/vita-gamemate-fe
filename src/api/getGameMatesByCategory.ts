@@ -15,3 +15,31 @@ export default async function getGameMatesByCategory({ pageParam, queryKey }: Pr
     return [];
   }
 }
+
+// FIXME: API 개발 완료 시 교체만 하면됩니다.
+
+// import { client } from './client';
+
+// type Props = {
+//   queryKey: [string, string, string, string, string];
+//   gameId: string;
+//   sortValue: string;
+//   genderValue: string;
+//   pageParam: number;
+// };
+
+// export default async function getGameMatesByCategory({ gameId, sortValue, genderValue, pageParam }: Props) {
+//   try {
+//     const { data } = await client.get(`/api/v1/mates/${gameId}`, {
+//       params: {
+//         sort: sortValue,
+//         gender: genderValue,
+//         pageParam: pageParam,
+//       },
+//     });
+//     return data;
+//   } catch (err) {
+//     console.error(err);
+//     return [];
+//   }
+// }

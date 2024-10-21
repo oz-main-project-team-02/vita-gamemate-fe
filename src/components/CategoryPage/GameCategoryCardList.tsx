@@ -36,6 +36,29 @@ export default function GameCategoryCardList({ gameId }: Props) {
     getNextPageParam: (lastPage) => lastPage?.at(-1)?.id,
   });
 
+  // FIXME: API 개발 완료 시 교체만 하면됩니다.
+
+  // const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
+  //   GameMate[],
+  //   Error,
+  //   InfiniteData<GameMate[]>,
+  //   [string, string, string, string, string],
+  //   number
+  // >({
+  //   queryKey: ['user', 'mate', gameId as string, sortValue, genderValue],
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage, allPages) => {
+  //     console.log('lastPage 데이터:', lastPage);
+
+  //     if (lastPage.length === 0) {
+  //       return undefined;
+  //     }
+
+  //     const nextPage = allPages.length + 1;
+  //     return nextPage;
+  //   },
+  // });
+
   const { ref, inView } = useInView({
     threshold: 0,
     delay: 0,

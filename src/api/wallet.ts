@@ -1,7 +1,7 @@
 import { client } from './client';
 
 /**
- * /api/v1/wallets/coin/
+ * GET /api/v1/wallets/coin/
  * @returns 내 지갑 코인 정보
  */
 export const walletCheckMyCoin = () => {
@@ -9,7 +9,7 @@ export const walletCheckMyCoin = () => {
 };
 
 /**
- * /api/v1/wallets/coin/recharge/
+ * POST /api/v1/wallets/coin/recharge/
  * @param coin 충전할 코인
  * @returns 충전된 코인
  */

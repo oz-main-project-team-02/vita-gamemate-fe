@@ -1,6 +1,7 @@
 import { client } from './client';
 
 /**
+ * POST /api/v1/users/kakao/login/callback/
  * @param kakaoCode 카카오 로그인 인가코드
  * @returns 카카오 로그인 유저정보
  */
@@ -11,6 +12,7 @@ export const authKakaoLogin = (kakaoCode: string | null) => {
 };
 
 /**
+ * POST /api/v1/users/google/login/callback/
  * @param googleCode 구글 로그인 인가코드
  * @returns 구글 로그인 유저정보
  */
@@ -21,6 +23,7 @@ export const authGoogleLogin = (googleCode: string | null) => {
 };
 
 /**
+ * GET /api/v1/users/auth/accesstoken/
  * @returns accessToken 재발급
  */
 export const authRefreshToken = () => {
@@ -28,6 +31,7 @@ export const authRefreshToken = () => {
 };
 
 /**
+ * POST /api/v1/users/auth/logout/
  * @returns 로그아웃: refresh_token 무효화
  */
 export const authLogout = () => {

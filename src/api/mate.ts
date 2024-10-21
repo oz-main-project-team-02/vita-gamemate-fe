@@ -1,6 +1,7 @@
 import { client } from './client';
 
 /**
+ * POST /api/v1/mates/register/
  * @param mateInfo 사용자 정보 { game_id, level, description, image, request_price }
  * @returns 등록된 사용자 메이트 정보
  */
@@ -27,6 +28,7 @@ interface MateParams {
   pageParam?: number;
 }
 /**
+ * GET /api/v1/mates/${gameId}/
  * @param param0 쿼리스트링 { gameId, sortValue, genderValue, levelValue, pageParam }
  * @returns 게임 ID에 해당하는 메이트 프로필들
  */

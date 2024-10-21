@@ -21,6 +21,7 @@ export default function KakaoCallback() {
         setUser(data);
         const { data: coin }: { data: Wallet } = await client.get('/api/v1/wallets/coin/');
         setUser({ coin: coin.coin }); // 사용자 지갑 업데이트
+        console.log(data);
         navigate('/', { replace: true });
       } catch (err) {
         console.error(err);

@@ -6,9 +6,11 @@ import { GrPrevious } from 'react-icons/gr';
 import { GrNext } from 'react-icons/gr';
 import VitaPrice from '../Common/VitaPrice';
 import { useQuery } from '@tanstack/react-query';
-import { GameMate } from '../../config/types';
 import { getGame } from '../../config/const';
 import { mock } from '@/api/mock';
+import { GameMate } from '../../config/types';
+// import { User } from '../../config/types';
+// import { client } from '@/api/client';
 
 export default function GameMateSlider() {
   const { data: recommendMates } = useQuery<GameMate[]>({
@@ -19,10 +21,23 @@ export default function GameMateSlider() {
     },
   });
 
+  // // FIXME: API 완료 시, 아래 코드로 변경
+
+  // const { data: recommendMates } = useQuery<User[]>({
+  //   queryKey: ['user', 'mate', 'recommend'],
+  //   queryFn: async () => {
+  //     try {
+  //       const { data } = await client.get(`/api/v1/mates`);
+  //       return data;
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   },
+  // });
+
   return (
     <div className='relative mx-auto max-w-[672px]'>
       <Swiper
-        loop={true}
         slidesPerView={1} // 한 화면에 3개의 슬라이드 표시
         spaceBetween={40}
         navigation={{
@@ -53,6 +68,16 @@ export default function GameMateSlider() {
                       <h2 className='text-2xl font-bold'>{getGame(mate.game_id)?.title}</h2>
                       <VitaPrice mate={mate} />
                     </div>
+
+                    {/* <img
+                      src={getGame(mate?.mate_game_info?.[0].game_id)?.img}
+                      alt='게임 이미지'
+                      className='h-[60px] w-[60px]'
+                    />
+                    <div>
+                      <h2 className='text-2xl font-bold'>{getGame(mate?.mate_game_info?.[0].game_id)?.title}</h2>
+                      <VitaPrice mate={mate} />
+                    </div> */}
                   </div>
                 </div>
               </div>

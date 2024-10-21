@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { client } from '../api/client';
 import { useUserStore } from '../config/store';
-import { User } from '../config/types';
+import { User, Wallet } from '../config/types';
 
 export default function KakaoCallback() {
   const [searchParams] = useSearchParams();
@@ -19,6 +19,8 @@ export default function KakaoCallback() {
         const { data }: { data: User } = await client.get(`/api/v1/users/${response.data.id}/profile`);
         localStorage.setItem('accessToken', response.data.access_token);
         setUser(data);
+        const { data: coin }: { data: Wallet } = await client.get('/api/v1/wallets/coin/');
+        setUser({ coin: coin.coin }); // 사용자 지갑 업데이트
         navigate('/', { replace: true });
       } catch (err) {
         console.error(err);

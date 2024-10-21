@@ -5,11 +5,25 @@ export interface User {
   nickname: string | null;
   email: string | null;
   gender: string | null;
-  description: string | null;
+  profile_image: string | null;
   birthday: string | null;
-  profile_image?: string | null;
-  is_mate: boolean;
+  description: string | null;
+  social_provider: string | null;
   is_online: boolean;
+  is_mate: boolean;
+  coin: number;
+}
+
+export interface MateUser {
+  user_nickname: string;
+  user_gender: string | null;
+  user_profile_image: string | null;
+  user_description: string | null;
+  game_id: number;
+  description: string | null;
+  image: string;
+  level: string;
+  coin_price: number;
 }
 
 export interface GameMate extends User {
@@ -35,3 +49,36 @@ export type MateRegister = {
   image: string | null;
   request_price: number | null;
 };
+
+export type Wallet = {
+  user_id: number;
+  coin: number;
+};
+
+export interface ChatList {
+  chat_room_id: number;
+  profile_image: string | null;
+  nickname: string;
+  last_message: string;
+  last_message_time: Date;
+}
+
+export interface Participant {
+  user_id: number;
+  nickname: string;
+  profile_image: string | null;
+}
+
+export interface Message {
+  message_id: number;
+  user_id: number;
+  message: string;
+  created_at: Date;
+  profile_image: string | null;
+}
+
+export interface ChatMessage {
+  chat_room_id: number;
+  participants: Participant[];
+  messages: Message[];
+}

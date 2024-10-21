@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { IoSearchSharp } from 'react-icons/io5';
-import { useModalStore, useUserStore } from '@/config/store';
+import { useChatModalStore, useModalStore, useUserStore } from '../../config/store';
 import LoginModal from './LoginModal';
 import { useState } from 'react';
 import { AiOutlineMessage } from 'react-icons/ai';
@@ -13,9 +13,15 @@ export default function Header() {
   const [gameHover, setGameHover] = useState(false);
   const [profileHover, setProfileHover] = useState(false);
   const { user } = useUserStore();
+  const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
 
   const handleLoginClick = () => {
     setModalStatus('login', true);
+  };
+
+  // 채팅 모달창 preloading
+  const chatIconMouseEnterHandler = () => {
+    import('../../components/Common/ChatModal');
   };
 
   return (
@@ -37,10 +43,21 @@ export default function Header() {
         VI<span className='text-white'>TA</span>
       </div>
       <div className='flex gap-6'>
-        <div className='flex items-center'>
+        <div className='flex items-center gap-4'>
           {localStorage.getItem('accessToken') ? (
             <>
-              <button className='mr-6 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
+              <Link to={'/coin'}>
+                <div className='flex items-center gap-2 rounded-md bg-slate-200 px-4 py-2'>
+                  <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
+                  <span className='font-semibold'>{user.coin}</span>
+                  <img src='/src/assets/imgs/button_plus.svg' alt='충전버튼' />
+                </div>
+              </Link>
+              <button
+                className='flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
+                onClick={setChatModalOpen}
+                onMouseEnter={chatIconMouseEnterHandler}
+              >
                 <AiOutlineMessage size={24} />
               </button>
               <button

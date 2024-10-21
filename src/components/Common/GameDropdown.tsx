@@ -1,4 +1,4 @@
-import { GAMES } from '@/config/const';
+import { Games } from '@/config/const';
 import GameCard from './GameCard';
 
 type HoverProps = {
@@ -13,7 +13,7 @@ export default function GameDropdown({ setGameHover }: HoverProps) {
       className='absolute left-[130px] top-[40px] z-20 h-[180px] w-[58%] min-w-[500px] justify-between py-5'
     >
       <div className='flex w-auto rounded-3xl bg-gray-100 px-5 py-4'>
-        {Object.entries(GAMES).map(([key, value]) => (
+        {Object.entries(Games).map(([key, value]) => (
           <GameCard game={key} gameData={value} />
         ))}
       </div>

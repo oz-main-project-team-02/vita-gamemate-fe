@@ -1,4 +1,4 @@
-import { GAMES } from '@/config/const';
+import { Games } from '@/config/const';
 import { MateRegister } from '@/config/types';
 
 type Props = {
@@ -21,7 +21,7 @@ export default function GameSection({ isDropdownOpen, setIsDropdownOpen, game_id
       {isDropdownOpen.game && (
         <div className='mt-4 rounded-xl bg-white p-4 outline outline-gray-200'>
           <div className='flex gap-4'>
-            {Object.values(GAMES).map((game, i) => (
+            {Object.values(Games).map((game, i) => (
               <div
                 key={i}
                 onClick={() => setFormData((prev) => ({ ...prev, game_id: game.title }))}

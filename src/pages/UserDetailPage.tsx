@@ -9,7 +9,10 @@ import UserRanking from '@/components/UserDetailPage/UserRanking';
 import VitaPrice from '@/components/Common/VitaPrice';
 import lol from '@/assets/imgs/lol.png';
 import ReviewList from '@/components/UserDetailPage/ReviewList';
-import { GameMate } from '@/config/types';
+import { GameMate, MateUser, User } from '@/config/types';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { client } from '@/api/client';
 
 export default function UserDetailPage() {
   const mate: GameMate = {
@@ -27,7 +30,30 @@ export default function UserDetailPage() {
     price: 9999,
     average_rating: 4,
     amount: 500,
+    social_provider: 'kakao',
+    coin: 0,
   };
+
+  const { userId } = useParams();
+
+  // FIX: 서버 API 통합 요청 상태, 사용자 정보, 메이트 정보 따로 요청하는 불필요 API 개선
+  const { data } = useQuery<User>({
+    queryKey: ['user', userId],
+    queryFn: async () => {
+      try {
+        const response = await client.get(`/api/v1/users/${userId}/profile/`);
+
+        if (response.data.is_mate) {
+          const { data }: { data: MateUser } = await client.get(`/api/v1/mates/${userId}/`);
+          return data;
+        }
+        return response.data;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+  });
+  console.log(data);
 
   return (
     <CommonLayout>

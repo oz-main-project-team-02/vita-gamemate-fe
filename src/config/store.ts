@@ -26,7 +26,7 @@ export const useModalStore = create<ModalStore>((set) => ({
 
 interface UserStore {
   user: User;
-  setUser: (user: User) => void;
+  setUser: (newUserData: Partial<User>) => void;
   unSetUser: () => void;
 }
 
@@ -39,10 +39,15 @@ export const useUserStore = create<UserStore>((set) => ({
     description: null,
     birthday: null,
     profile_image: null,
+    social_provider: null,
     is_mate: false,
     is_online: false,
+    coin: 0,
   },
-  setUser: (user: User) => set({ user }),
+  setUser: (newUserData) =>
+    set((state) => ({
+      user: { ...state.user, ...newUserData },
+    })),
   unSetUser: () =>
     set({
       user: {
@@ -53,8 +58,32 @@ export const useUserStore = create<UserStore>((set) => ({
         description: null,
         birthday: null,
         profile_image: null,
+        social_provider: null,
         is_mate: false,
         is_online: false,
+        coin: 0,
       },
     }),
+}));
+
+interface ChatModalState {
+  isChatModalOpen: boolean;
+  setChatModalOpen: () => void;
+  setChatModalClose: () => void;
+}
+
+export const useChatModalStore = create<ChatModalState>((set) => ({
+  isChatModalOpen: false,
+  setChatModalOpen: () => set({ isChatModalOpen: true }),
+  setChatModalClose: () => set({ isChatModalOpen: false }),
+}));
+
+interface ChatState {
+  selectedRoomId: number | null;
+  setSelectedRoomId: (roomId: number) => void;
+}
+
+export const useChatStore = create<ChatState>((set) => ({
+  selectedRoomId: null,
+  setSelectedRoomId: (id: number) => set({ selectedRoomId: id }),
 }));

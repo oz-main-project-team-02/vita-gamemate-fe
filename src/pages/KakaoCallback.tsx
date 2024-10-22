@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { client } from '../api/client';
 import { useUserStore } from '../config/store';
 import { User, Wallet } from '../config/types';
+import { authApi, userApi, walletApi } from '@/api';
 
 export default function KakaoCallback() {
   const [searchParams] = useSearchParams();
@@ -13,18 +13,18 @@ export default function KakaoCallback() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await client.post('/api/v1/users/kakao/login/callback/', {
-          code: kakaoCode,
-        });
-        const { data }: { data: User } = await client.get(`/api/v1/users/${response.data.id}/profile`);
-        localStorage.setItem('accessToken', response.data.access_token);
-        setUser(data);
-        const { data: coin }: { data: Wallet } = await client.get('/api/v1/wallets/coin/');
+        const { data } = await authApi.authKakaoLogin(kakaoCode);
+        localStorage.setItem('accessToken', data.access_token);
+
+        const { data: user }: { data: User } = await userApi.userProfileById(data.id);
+        setUser(user); // 사용자 정보 업데이트
+
+        const { data: coin }: { data: Wallet } = await walletApi.walletCheckMyCoin();
         setUser({ coin: coin.coin }); // 사용자 지갑 업데이트
-        console.log(data);
         navigate('/', { replace: true });
       } catch (err) {
         console.error(err);
+        navigate('/', { replace: true });
       }
     })();
   }, [kakaoCode, navigate, setUser]);

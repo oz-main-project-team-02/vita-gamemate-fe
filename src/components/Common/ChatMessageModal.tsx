@@ -52,7 +52,7 @@ const ChatMessageModal = () => {
             )
         )}
       <div className='flex h-full max-w-[420px] flex-col overflow-y-auto' ref={scrollRef}>
-        {chatData && <ChatRenderMessages chatMessages={chatData.messages} />}
+        {chatData?.messages && chatData?.messages.length > 0 && <ChatRenderMessages chatMessages={chatData.messages} />}
       </div>
       <ChatSubmitForm />
     </div>

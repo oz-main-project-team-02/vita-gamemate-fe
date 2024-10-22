@@ -14,15 +14,17 @@ export default function KakaoCallback() {
     (async () => {
       try {
         const { data } = await authApi.authKakaoLogin(kakaoCode);
-        const { data: user }: { data: User } = await userApi.userProfileById(data.id);
-        const { data: coin }: { data: Wallet } = await walletApi.walletCheckMyCoin();
-
         localStorage.setItem('accessToken', data.access_token);
+
+        const { data: user }: { data: User } = await userApi.userProfileById(data.id);
         setUser(user); // 사용자 정보 업데이트
+
+        const { data: coin }: { data: Wallet } = await walletApi.walletCheckMyCoin();
         setUser({ coin: coin.coin }); // 사용자 지갑 업데이트
         navigate('/', { replace: true });
       } catch (err) {
         console.error(err);
+        navigate('/', { replace: true });
       }
     })();
   }, [kakaoCode, navigate, setUser]);

@@ -9,11 +9,18 @@ import { useQuery } from '@tanstack/react-query';
 import { getGame } from '../../config/const';
 import { UserResponse } from '@/config/types';
 import { mateApi } from '@/api';
+import SkeletonTodayGameMate from '../skeleton/SkeletonTodayGameMate';
+import { delay } from '@/utils/delay';
 
 export default function GameMateSlider() {
-  const { data } = useQuery<UserResponse>({
+  const { data, isLoading } = useQuery<UserResponse>({
     queryKey: ['user', 'mate', 'recommend'],
-    queryFn: () => mateApi.fetchAllCategoryMates({ pageParam: 1 }),
+    queryFn: async () => {
+      // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
+      // FIXME: delay 함수 제거시 async await 구문 제거
+      await delay(5000);
+      return await mateApi.fetchAllCategoryMates({ pageParam: 1 });
+    },
   });
   console.log(data);
 
@@ -29,9 +36,12 @@ export default function GameMateSlider() {
         modules={[Navigation]}
         className='mySwiper'
       >
-        {/* 각 슬라이드 */}
-        {data?.results.map((mate) => {
-          return (
+        {isLoading ? (
+          <SwiperSlide>
+            <SkeletonTodayGameMate />
+          </SwiperSlide>
+        ) : (
+          data?.results.map((mate) => (
             <SwiperSlide key={mate.id}>
               <div className='relative flex h-[206px] w-full items-center gap-4 rounded-3xl bg-[#293883] px-[10px]'>
                 <div className='h-[186px] w-[30%] rounded-2xl bg-blue-400'>
@@ -58,8 +68,9 @@ export default function GameMateSlider() {
                 </div>
               </div>
             </SwiperSlide>
-          );
-        })}
+          ))
+        )}
+        {/* 각 슬라이드 */}
       </Swiper>
       <div className='gameMate-prev absolute left-[-40px] top-1/2 z-10'>
         <GrPrevious />

@@ -6,7 +6,6 @@ import { IoMdClose } from 'react-icons/io';
 import ProfileImage from './ProfileImage';
 import { useOrderModalStore } from '@/config/store';
 import { getGame } from '@/config/const';
-import VitaPrice from './VitaPrice';
 
 export function OrderModal({ mate }: { mate: User }) {
   const [amount, setAmount] = useState(1);

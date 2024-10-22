@@ -8,6 +8,8 @@ import MateCard from '../Common/MateCard';
 import { useQuery } from '@tanstack/react-query';
 import { UserResponse } from '@/config/types';
 import { mateApi } from '@/api';
+import SkeletonMateCard from '../skeleton/skeletonMateCard';
+import { delay } from '@/utils/delay';
 
 type Props = {
   gameId: string;
@@ -16,11 +18,14 @@ type Props = {
 export default function GameCategorySlider({ gameId }: Props) {
   const { data, isLoading } = useQuery<UserResponse>({
     queryKey: ['user', 'mate', gameId, 'main'],
-    queryFn: () => mateApi.fetchGameMateProfiles({ gameId, pageParam: 1 }),
+    queryFn: async () => {
+      // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
+      // FIXME: delay 함수 제거시 async await 구문 제거
+      await delay(5000);
+      return await mateApi.fetchGameMateProfiles({ gameId, pageParam: 1 });
+    },
   });
   console.log(data);
-
-  if (isLoading) return <div></div>;
 
   return (
     <div className='relative mx-auto max-w-[672px]'>
@@ -34,12 +39,19 @@ export default function GameCategorySlider({ gameId }: Props) {
         modules={[Navigation]}
         className='mySwiper'
       >
-        {/* 각 슬라이드 */}
-        {data?.results?.map((mate) => (
-          <SwiperSlide key={mate.id}>
-            <MateCard mate={mate} />
-          </SwiperSlide>
-        ))}
+        {isLoading
+          ? Array.from({ length: 3 }).map((_, i) => (
+              <SwiperSlide key={i}>
+                <SkeletonMateCard />
+              </SwiperSlide>
+            ))
+          : data?.results?.map((mate) => (
+              <SwiperSlide key={mate.id}>
+                <MateCard mate={mate} />
+              </SwiperSlide>
+            ))}
+
+        {}
       </Swiper>
       <div className='gameCategory-prev absolute left-[-40px] top-1/2 z-10'>
         <GrPrevious />

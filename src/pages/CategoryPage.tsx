@@ -29,7 +29,7 @@ export default function CategoryPage() {
           levelValue={levelValue}
           setLevelValue={setLevelValue}
         />
-        {/* FIXME: API 개발 완료 시 교체만 하면됩니다. */}
+
         <GameCategoryCardList gameId={gameId} sortValue={sortValue} genderValue={genderValue} levelValue={levelValue} />
       </div>
     </CommonLayout>

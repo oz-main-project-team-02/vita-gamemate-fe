@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import MateCard from '../Common/MateCard';
 import Spinner from '../Common/Spinner';
 import { mateApi } from '@/api';
+import SkeletonMateCard from '../skeleton/skeletonMateCard';
+import { delay } from '@/utils/delay';
 
 type Props = {
   gameId: string | undefined;
@@ -26,7 +28,7 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
     navigate('/', { replace: true });
   }, [gameId, navigate]);
 
-  const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
+  const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
     UserResponse,
     Error,
     InfiniteData<UserResponse>,
@@ -34,8 +36,12 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
     number
   >({
     queryKey: ['user', 'mate', gameId as string, sortValue, genderValue, levelValue],
-    queryFn: ({ pageParam }) =>
-      mateApi.fetchGameMateProfiles({ gameId, sortValue, genderValue, levelValue, pageParam }),
+    queryFn: async ({ pageParam }) => {
+      // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
+      // FIXME: delay 함수 제거시 async await 구문 제거
+      await delay(5000);
+      return mateApi.fetchGameMateProfiles({ gameId, sortValue, genderValue, levelValue, pageParam });
+    },
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       console.log('lastPage 데이터:', lastPage);
@@ -70,16 +76,18 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
       style={{ width: `calc(100% - 200px)` }}
     >
       <div className='flex max-w-[1120px] flex-wrap gap-[10px] p-[20px]'>
-        {data?.pages?.map((page) =>
-          page?.results?.map((mate) => (
-            <div key={mate.id} className='mb-4'>
-              <MateCard mate={mate} />
-            </div>
-          ))
-        )}
+        {isLoading
+          ? Array.from({ length: 30 }).map((_, index) => <SkeletonMateCard key={index} />)
+          : data?.pages?.map((page) =>
+              page?.results?.map((mate) => (
+                <div key={mate.id} className='mb-4'>
+                  <MateCard mate={mate} />
+                </div>
+              ))
+            )}
       </div>
-      {isFetching ? <Spinner /> : null}
-      <div ref={ref} className='h-5 w-full bg-transparent'></div>
+      {isFetching && <Spinner />}
+      {hasNextPage && !isFetching && <div ref={ref} className='h-5 w-full bg-transparent'></div>}
     </div>
   );
 }

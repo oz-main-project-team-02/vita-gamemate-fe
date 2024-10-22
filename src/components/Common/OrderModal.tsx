@@ -4,10 +4,16 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import ProfileImage from './ProfileImage';
+import { useOrderModalStore } from '@/config/store';
+import { getGame } from '@/config/const';
+import VitaPrice from './VitaPrice';
 
 export function OrderModal({ mate }: { mate: User }) {
   const [amount, setAmount] = useState(1);
   const [price] = useState(mate?.mate_game_info?.[0]?.request_price || 0);
+  const { setOrderModalClose } = useOrderModalStore();
+
+  console.log(mate);
 
   const orderRequest = useMutation({
     mutationFn: async ({ price, amount }: { price: number; amount: number }) => {
@@ -17,7 +23,8 @@ export function OrderModal({ mate }: { mate: User }) {
           price,
           amount,
         });
-
+        console.log('주문 요청:', price, amount);
+        alert('주문이 완료되었습니다.');
         return data;
       } catch (err) {
         console.error(err);
@@ -27,13 +34,18 @@ export function OrderModal({ mate }: { mate: User }) {
 
   const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log('주문 요청:', price, amount);
     orderRequest.mutate({ price, amount });
   };
 
+  const game = getGame(mate?.mate_game_info?.[0]?.game_id);
+  console.log('game', game);
+
   return (
-    <div className='fixed inset-0 z-50 bg-black/50'>
-      <div className='fixed right-0 h-full w-[780px] overflow-hidden bg-white px-4 py-2 shadow-sm'>
+    <div className='fixed inset-0 z-50 bg-black/50' onClick={() => setOrderModalClose()}>
+      <div
+        className='fixed right-0 h-full w-[780px] overflow-hidden bg-white px-4 py-2 shadow-sm'
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* X 버튼, 채팅 */}
         <div className='flex h-full flex-col gap-7'>
           <div className='flex items-center gap-3'>
@@ -47,7 +59,14 @@ export function OrderModal({ mate }: { mate: User }) {
             {/* 사용자 정보 */}
             <div className='flex min-h-[49px] min-w-[49px] items-center gap-4 py-3'>
               <ProfileImage className='max-h-[84px] max-w-[84px] rounded-full' src={mate?.profile_image} />
-              <span className='text-3xl font-semibold'>nickname</span>
+              <div>
+                <div className='text-3xl font-semibold'>{mate.nickname}</div>
+                <p className='flex items-center pb-1'>
+                  <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
+                  &nbsp;{mate.average_rating}&nbsp;
+                  <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
+                </p>
+              </div>
             </div>
 
             {/* 결제 내용 */}

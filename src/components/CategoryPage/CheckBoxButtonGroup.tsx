@@ -14,9 +14,8 @@ export default function CheckBoxButtonGroup({ gameId, label, selectedValue, setS
     return null;
   }
 
-  const levelOptions = game?.level.map((korValue, i) => {
-    const engValue = game?.engLevel[i] || '';
-    return [korValue, engValue];
+  const levelOptions = game?.level.map((korValue) => {
+    return [korValue, korValue];
   });
 
   console.log(levelOptions);

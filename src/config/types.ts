@@ -82,3 +82,10 @@ export interface ChatMessage {
   participants: Participant[];
   messages: Message[];
 }
+
+export interface UserResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: User[];
+}

@@ -7,25 +7,15 @@ import { GrNext } from 'react-icons/gr';
 import VitaPrice from '../Common/VitaPrice';
 import { useQuery } from '@tanstack/react-query';
 import { getGame } from '../../config/const';
-import { mock } from '@/api/mock';
-import { User } from '@/config/types';
-// import { mateApi } from '@/api';
+import { UserResponse } from '@/config/types';
+import { mateApi } from '@/api';
 
 export default function GameMateSlider() {
-  const { data: recommendMates } = useQuery<User[]>({
-    queryKey: ['user', 'recommend'],
-    queryFn: async () => {
-      const response = await mock.get(`/api/v1/users/todayrecommend`);
-      return response.data;
-    },
+  const { data } = useQuery<UserResponse>({
+    queryKey: ['user', 'mate', 'recommend'],
+    queryFn: () => mateApi.fetchAllCategoryMates({ pageParam: 1 }),
   });
-
-  // // FIXME: API 완료 시, 아래 코드로 변경
-
-  // const { data: recommendMates } = useQuery<User[]>({
-  //   queryKey: ['user', 'mate', 'recommend'],
-  //   queryFn: () => mateApi.mateProfileAllCategory({ pageParam: 1 }),
-  // });
+  console.log(data);
 
   return (
     <div className='relative mx-auto max-w-[672px]'>
@@ -40,7 +30,7 @@ export default function GameMateSlider() {
         className='mySwiper'
       >
         {/* 각 슬라이드 */}
-        {recommendMates?.map((mate) => {
+        {data?.results.map((mate) => {
           return (
             <SwiperSlide key={mate.id}>
               <div className='relative flex h-[206px] w-full items-center gap-4 rounded-3xl bg-[#293883] px-[10px]'>

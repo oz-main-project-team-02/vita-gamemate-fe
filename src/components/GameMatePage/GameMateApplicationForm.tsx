@@ -1,4 +1,3 @@
-import { client } from '@/api/client';
 import { getGame } from '@/config/const';
 import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
@@ -8,6 +7,7 @@ import DescriptionSection from './DescriptionSection';
 import PriceSection from './PriceSection';
 import ImageSection from './ImageSection';
 import { MateRegister } from '@/config/types';
+import { mateApi } from '@/api';
 
 type Dropdown = {
   game: boolean;
@@ -32,13 +32,7 @@ export default function GameMateApplicationForm() {
 
   // 게임메이트 등록하기 Mutation
   const mateRegisterMutation = useMutation({
-    mutationFn: (mateInfo: FormData) => {
-      return client.post('/api/v1/mates/register/', mateInfo, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-    },
+    mutationFn: (mateInfo: FormData) => mateApi.mateRegister(mateInfo),
   });
 
   // 게임메이트 등록하기 submit 함수

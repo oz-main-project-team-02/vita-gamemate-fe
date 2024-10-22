@@ -42,7 +42,10 @@ export const useUserStore = create<UserStore>((set) => ({
     social_provider: null,
     is_mate: false,
     is_online: false,
+    average_rating: 0,
+    amount: 0,
     coin: 0,
+    mate_game_info: [],
   },
   setUser: (newUserData) =>
     set((state) => ({
@@ -62,6 +65,9 @@ export const useUserStore = create<UserStore>((set) => ({
         is_mate: false,
         is_online: false,
         coin: 0,
+        average_rating: 0,
+        amount: 0,
+        mate_game_info: [],
       },
     }),
 }));

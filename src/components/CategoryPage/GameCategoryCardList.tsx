@@ -1,6 +1,6 @@
 import getGameMatesByCategory from '@/api/getGameMatesByCategory';
 import { getGame } from '@/config/const';
-import { GameMate } from '@/config/types';
+import { User } from '@/config/types';
 import ErrorPage from '@/pages/ErrorPage';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -8,6 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import MateCard from '../Common/MateCard';
 import Spinner from '../Common/Spinner';
+// import { mateApi } from '@/api';
 
 type Props = {
   gameId: string | undefined;
@@ -24,9 +25,9 @@ export default function GameCategoryCardList({ gameId }: Props) {
   }, [gameId, navigate]);
 
   const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
-    GameMate[],
+    User[],
     Error,
-    InfiniteData<GameMate[]>,
+    InfiniteData<User[]>,
     [string, string, string],
     number
   >({
@@ -71,8 +72,6 @@ export default function GameCategoryCardList({ gameId }: Props) {
   );
 }
 
-// // FIXME: API 개발 완료 시 교체만 하면됩니다.
-
 // type Props = {
 //   gameId: string | undefined;
 //   sortValue: string;
@@ -91,13 +90,14 @@ export default function GameCategoryCardList({ gameId }: Props) {
 //   }, [gameId, navigate]);
 
 //   const { data, hasNextPage, isFetching, fetchNextPage } = useInfiniteQuery<
-//     GameMate[],
+//     User[],
 //     Error,
-//     InfiniteData<GameMate[]>,
+//     InfiniteData<User[]>,
 //     [string, string, string, string, string, string],
 //     number
 //   >({
 //     queryKey: ['user', 'mate', gameId as string, sortValue, genderValue, levelValue],
+//     queryFn: ({ pageParam }) => mateApi.mateProfileByGameId({ gameId, sortValue, genderValue, levelValue, pageParam }),
 //     initialPageParam: 1,
 //     getNextPageParam: (lastPage, allPages) => {
 //       console.log('lastPage 데이터:', lastPage);

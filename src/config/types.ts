@@ -19,6 +19,8 @@ export interface User {
   profile_image: string | null;
   social_provider: string | null;
   coin: number;
+  average_rating: number;
+  amount: number;
 }
 
 export interface MateUser {
@@ -33,17 +35,8 @@ export interface MateUser {
   coin_price: number;
 }
 
-export interface GameMate extends User {
-  game_id: number;
-  level: string;
-  price: number;
-  average_rating?: number;
-  amount: number;
-}
-
 export interface Review {
-  id: string;
-  request_id: string;
+  game_request_id: string;
   rating: number;
   content: string;
   created_at: Date;

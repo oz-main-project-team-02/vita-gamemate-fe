@@ -1,4 +1,4 @@
-import { client } from '@/api/client';
+import { walletApi } from '@/api';
 import { CoinPackage } from '@/config/const';
 import { useUserStore } from '@/config/store';
 import { useMutation } from '@tanstack/react-query';
@@ -16,9 +16,7 @@ export default function CoinBox({ coinData }: Props) {
   const { setUser } = useUserStore();
   const rechargeMutation = useMutation({
     mutationFn: async () => {
-      const { data }: { data: RechargeResponse } = await client.post('/api/v1/wallets/coin/recharge/', {
-        coin: coinData.coin,
-      });
+      const { data }: { data: RechargeResponse } = await walletApi.walletRechargeCoin(coinData.coin);
       return data;
     },
     onSuccess: (data) => {

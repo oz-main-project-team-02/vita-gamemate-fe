@@ -43,8 +43,11 @@ export default function GameMateSlider() {
         ) : (
           data?.results.map((mate) => (
             <SwiperSlide key={mate.id}>
-              <div className='relative flex h-[206px] w-full items-center gap-4 rounded-3xl bg-[#293883] px-[10px]'>
-                <div className='h-[186px] w-[30%] rounded-2xl bg-blue-400'>
+              <div
+                className='relative flex items-center gap-4 rounded-3xl bg-[#293883]'
+                style={{ boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
+              >
+                <div className='m-3 h-[186px] w-[30%] rounded-2xl bg-blue-400'>
                   <img
                     src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
                     alt='사용자 이미지'
@@ -53,7 +56,7 @@ export default function GameMateSlider() {
                 </div>
                 <div className='w-[70%] text-white'>
                   <h2 className='text-2xl font-bold'>{mate.nickname}</h2>
-                  <p className='mb-4 font-light text-gray-200'>{mate.description}</p>
+                  <p className='mb-2 font-light text-gray-200'>{mate.description}</p>
                   <div className='flex gap-4'>
                     <img
                       src={getGame(mate.mate_game_info?.[0].game_id)?.img}

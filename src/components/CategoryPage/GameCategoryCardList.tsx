@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import MateCard from '../Common/MateCard';
-import Spinner from '../Common/Spinner';
 import { mateApi } from '@/api';
 import SkeletonMateCard from '../skeleton/skeletonMateCard';
 import { delay } from '@/utils/delay';
@@ -86,7 +85,6 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
               ))
             )}
       </div>
-      {isFetching && <Spinner />}
       {hasNextPage && !isFetching && <div ref={ref} className='h-5 w-full bg-transparent'></div>}
     </div>
   );

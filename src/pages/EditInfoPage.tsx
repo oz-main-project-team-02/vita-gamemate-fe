@@ -4,7 +4,6 @@ import TitleIntro from '../components/Common/TitleIntro';
 import ProfileImg from '../components/Common/ProfileImg';
 import CommonLayout from '../layouts/CommonLayout';
 import { useUserStore } from '@/config/store';
-import { profilePatch } from '@/api/profilePatch';
 import Nickname from '@/components/EditInfoPage/Nickname';
 import Description from '@/components/EditInfoPage/Description';
 import GenderCheck from '@/components/EditInfoPage/GenderCheck';
@@ -80,7 +79,7 @@ export default function EditInfoPage() {
 
   useEffect(() => {
     if (isPatch) {
-      profilePatch(user);
+      setIsPatch(false);
     }
   }, [isPatch]);
 

@@ -2,13 +2,17 @@ import { useState } from 'react';
 import Gender from '../Common/Gender';
 import OnlineFlag from '../Common/OnlineFlag';
 import Review from './Review';
+import { OrderRequest, ReceivedRequest } from '@/config/types';
 
 interface ReviewProps {
   review: boolean;
+  order?: OrderRequest;
+  received?: ReceivedRequest;
 }
 
-export default function OrderBox({ review }: ReviewProps) {
+export default function OrderBox({ review, order, received }: ReviewProps) {
   const [showReview, setShowReview] = useState(false);
+  console.log(order, received);
 
   return (
     <div className='mt-[38px] flex h-[213px] w-full rounded-xl border border-gray-200 bg-[#FFFFFF] px-[37px] py-[25px]'>

@@ -17,7 +17,7 @@ export default function FilterList() {
 
   const handleLogoutClick = async () => {
     try {
-      const response = await authApi.authLogout();
+      const response = await authApi.logout();
 
       if (response.status === 200) {
         localStorage.removeItem('accessToken');

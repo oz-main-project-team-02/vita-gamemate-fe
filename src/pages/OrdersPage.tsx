@@ -1,55 +1,47 @@
-import FilterList from "../components/EditInfoPage/FilterList";
-import TitleIntro from "../components/Common/TitleIntro";
-import ProfileImg from "../components/EditInfoPage/ProfileImg";
-import CommonLayout from "../layouts/CommonLayout";
-import Request from "../components/OrderPage/Request";
-import Response from "../components/OrderPage/Response";
-import { useEffect, useState } from "react";
+import FilterList from '../components/EditInfoPage/FilterList';
+import TitleIntro from '../components/Common/TitleIntro';
+import ProfileImg from '../components/EditInfoPage/ProfileImg';
+import CommonLayout from '../layouts/CommonLayout';
+import Request from '../components/OrderPage/Request';
+import Response from '../components/OrderPage/Response';
+import { useEffect, useState } from 'react';
 
 export default function OrdersPage() {
-  const [selectButton, setSelectButton] = useState("request");
+  const [selectButton, setSelectButton] = useState('request');
 
   useEffect(() => {
     console.log(selectButton); // 상태가 변경될 때마다 출력
   }, [selectButton]);
   return (
     <CommonLayout>
-      <div className="w-full h-[4105px]">
-        <TitleIntro
-          titleE={"MY ORDER"}
-          titleK={"나의 의뢰"}
-          content={"즐거운 매칭을 비타와 함께하세요!"}
-        />
-        <div className="w-full h-[1866px] relative bg-gray-100">
+      <div className='h-[4105px] w-full'>
+        <TitleIntro titleE={'MY ORDER'} titleK={'나의 의뢰'} content={'즐거운 매칭을 비타와 함께하세요!'} />
+        <div className='relative h-[1866px] w-full bg-gray-100'>
           <ProfileImg />
-          <p className="absolute top-[30px] left-[57%] font-bold text-2xl text-gray-500">
-            닉네임
-          </p>
-          <p className="absolute top-[75px] left-[57%] font-bold text-xl text-[#898989]">
-            아이디
-          </p>
-          <div className="w-[50%] h-[1500px] absolute top-[260px] left-[40.5%]">
-            <p className="pb-[26px] font-bold text-2xl text-gray-500">닉네임</p>
+          <p className='absolute left-[57%] top-[30px] text-2xl font-bold text-gray-500'>닉네임</p>
+          <p className='absolute left-[57%] top-[75px] text-xl font-bold text-[#898989]'>아이디</p>
+          <div className='absolute left-[40.5%] top-[260px] h-[1500px] w-[50%]'>
+            <p className='pb-[26px] text-2xl font-bold text-gray-500'>닉네임</p>
             <button
-              onClick={() => setSelectButton(() => "request")}
-              className={`w-[149px] h-[50px] ${
-                selectButton === "request" ? "bg-primary" : ""
-              } active:bg-primary font-extrabold text-2xl`}
+              onClick={() => setSelectButton(() => 'request')}
+              className={`h-[50px] w-[149px] ${
+                selectButton === 'request' ? 'bg-primary' : ''
+              } text-2xl font-extrabold active:bg-primary`}
             >
               나의 주문
             </button>
             <button
-              onClick={() => setSelectButton(() => "response")}
-              className={`w-[214px] h-[50px] ${
-                selectButton === "response" ? "bg-primary" : ""
-              } active:bg-primary font-extrabold text-2xl`}
+              onClick={() => setSelectButton(() => 'response')}
+              className={`h-[50px] w-[214px] ${
+                selectButton === 'response' ? 'bg-primary' : ''
+              } text-2xl font-extrabold active:bg-primary`}
             >
               주문을 받았습니다
             </button>
-            <hr className="h-[1px] border-[1px]" />
-            {selectButton === "request" ? <Request /> : <Response />}
+            <hr className='h-[1px] border-[1px]' />
+            {selectButton === 'request' ? <Request /> : <Response />}
           </div>
-          <div className="w-[30%] h-[1866px] absolute flex justify-end bg-[#E2E2E2]">
+          <div className='absolute flex h-[1866px] w-[30%] justify-end bg-[#E2E2E2]'>
             <FilterList />
           </div>
         </div>

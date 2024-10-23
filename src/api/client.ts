@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useUserStore } from '../config/store';
+import { authApi } from '.';
 
 axios.defaults.withCredentials = true;
 
@@ -44,7 +45,7 @@ client.interceptors.response.use(
       request._retryCount += 1;
       console.log('request', request);
       try {
-        const { data } = await client.get('/api/v1/users/auth/accesstoken/');
+        const { data } = await authApi.refreshToken();
         console.log('토큰 재발급 성공', data);
         localStorage.setItem('accessToken', data.access_token);
         request.headers['Authorization'] = `Bearer ${data.access_token}`;

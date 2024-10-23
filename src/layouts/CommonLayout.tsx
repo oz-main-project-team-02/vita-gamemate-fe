@@ -11,6 +11,7 @@ type Props = {
 
 export default function CommonLayout({ children }: Props) {
   const isChatModalOpen = useChatModalStore((state) => state.isChatModalOpen);
+  // const { isOrderModalOpen } = useOrderModalStore();
 
   return (
     <>
@@ -20,6 +21,8 @@ export default function CommonLayout({ children }: Props) {
       {isChatModalOpen && (
         <Suspense fallback={<div>Loading chat...</div>}>
           <ChatModal />
+          {/* FIXME: ChatModal 내부에서 조건부 렌더링, 의뢰하는 상대방 정보 mate를 프롭으로 받아야됨 */}
+          {/* {isOrderModalOpen && <OrderModal mate={mate} />} */}
         </Suspense>
       )}
     </>

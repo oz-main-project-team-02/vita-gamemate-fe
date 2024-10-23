@@ -31,8 +31,8 @@ export default function CategorySlider() {
         {Object.values(Games).map((game) => (
           <SwiperSlide key={game.id}>
             <div
-              className='relative flex h-[326px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-yellow-100'
-              style={{ backgroundImage: `url(${game.img})` }}
+              className='relative flex h-[326px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-primary'
+              style={{ backgroundImage: `url(${game.img})`, boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
               onClick={() => handleCategoryClick(game.id)}
             >
               <div className='absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent'></div>

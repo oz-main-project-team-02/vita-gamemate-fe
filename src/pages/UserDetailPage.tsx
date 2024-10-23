@@ -15,14 +15,15 @@ import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
 import ErrorPage from './ErrorPage';
 import { getGame } from '@/config/const';
-import { useChatModalStore } from '@/config/store';
+import { useChatModalStore, useOrderModalStore } from '@/config/store';
 import { createChat } from '@/api/chat';
+import { OrderModal } from '@/components/Common/OrderModal';
 
 export default function UserDetailPage() {
   const { userId } = useParams();
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
+  const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
 
-  // FIX: 서버 API 통합 요청 상태, 사용자 정보, 메이트 정보 따로 요청하는 불필요 API 개선
   const { data: mate } = useQuery<User>({
     queryKey: ['user', userId],
     queryFn: async () => {
@@ -60,8 +61,14 @@ export default function UserDetailPage() {
     return;
   };
 
+  const handleOrdersClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setOrderModalOpen();
+  };
+
   return (
     <CommonLayout>
+      {isOrderModalOpen && <OrderModal mate={mate} />}
       <div className='h-[4105px] w-full'>
         <TitleIntro titleE={'Vita User'} titleK={'사용자 정보'} content={'비타 유저를 구경하세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100 pt-[93px]'>
@@ -135,7 +142,10 @@ export default function UserDetailPage() {
                     </p>
                     <VitaPrice mate={mate} />
                   </div>
-                  <button className='my-8 h-[50px] w-[120px] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'>
+                  <button
+                    onClick={(e) => handleOrdersClick(e)}
+                    className='my-8 h-[50px] w-[120px] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold'
+                  >
                     의뢰
                   </button>
                 </div>

@@ -19,9 +19,9 @@ export default function LoginStatusChecker({ children }: Props) {
     if (accessToken) {
       (async () => {
         try {
-          const { data } = await userApi.userMyProfile();
-          const { data: user }: { data: User } = await userApi.userProfileById(data.id);
-          const { data: coin }: { data: Wallet } = await walletApi.walletCheckMyCoin();
+          const { data } = await userApi.fetchMyProfile();
+          const { data: user }: { data: User } = await userApi.fetchUserProfileById(data.id);
+          const { data: coin }: { data: Wallet } = await walletApi.fetchMyWalletCoins();
 
           setUser(user); // 사용자 정보 업데이트
           setUser({ coin: coin.coin }); // 사용자 지갑 업데이트

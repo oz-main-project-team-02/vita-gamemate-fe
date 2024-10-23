@@ -61,7 +61,7 @@ export default function Birthday({
             birthday: `${e.target.value}-${birthMonth}-${birthDay}`,
           });
         }}
-        className='form-control mx-3 h-[35px] w-[133px] rounded-md border border-gray-200 focus:outline-none'
+        className='form-control mx-3 h-[35px] w-[133px] cursor-pointer rounded-md border border-gray-200 px-2 focus:outline-none'
       >
         <option value=''>년</option>
         {years.map((year) => (
@@ -80,7 +80,7 @@ export default function Birthday({
             birthday: `${birthYear}-${e.target.value}-${birthDay}`,
           });
         }}
-        className='form-control mx-3 h-[35px] w-[133px] rounded-md border border-gray-200 focus:outline-none'
+        className='form-control mx-3 h-[35px] w-[133px] cursor-pointer rounded-md border border-gray-200 px-2 focus:outline-none'
       >
         <option value=''>월</option>
         {months.map((month) => (
@@ -99,7 +99,7 @@ export default function Birthday({
             birthday: `${birthYear}-${birthMonth}-${e.target.value}`,
           });
         }}
-        className='form-control mx-3 h-[35px] w-[133px] rounded-md border border-gray-200 focus:outline-none'
+        className='form-control mx-3 h-[35px] w-[133px] cursor-pointer rounded-md border border-gray-200 px-2 focus:outline-none'
       >
         <option value=''>일</option>
         {days.map((day) => (

@@ -10,6 +10,8 @@ import GenderCheck from '@/components/EditInfoPage/GenderCheck';
 import Birthday from '@/components/EditInfoPage/Birthday';
 import { updateMyProfile } from '@/api/user';
 import { UserProfileUpdateData } from '@/config/types';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function EditInfoPage() {
   const { user, setUser } = useUserStore();
@@ -52,6 +54,20 @@ export default function EditInfoPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (profile.nickname.length < 2) {
+      toast.error('최소 2자 이상입니다!', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+      return null;
+    }
+
     const data = new FormData();
 
     if (fileRef.current?.files?.[0]) {
@@ -65,10 +81,22 @@ export default function EditInfoPage() {
     await updateMyProfile(data);
 
     setUser(profile);
+
+    toast.success('저장 되었습니다!', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
 
   return (
     <CommonLayout>
+      <ToastContainer />
       <div className='h-[4105px] w-full'>
         <TitleIntro titleE={'MY PROFILE'} titleK={'프로필 편집'} content={'멋진 실력을 자랑해주세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100'>
@@ -87,7 +115,7 @@ export default function EditInfoPage() {
               onClick={() => {
                 fileRef.current?.click();
               }}
-              className='absolute left-[69%] top-[-210px] h-[60px] w-[31%] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold hover:text-[25px]'
+              className='absolute left-[69%] top-[-210px] h-[60px] w-[31%] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold hover:scale-95'
             >
               프로필 사진 올리기
             </button>
@@ -108,7 +136,7 @@ export default function EditInfoPage() {
             />
 
             <button
-              className='h-[66px] w-full rounded-xl bg-gradient-to-r from-primary to-limeGreen text-2xl font-bold text-gray-500 hover:text-[26px]'
+              className='h-[66px] w-full rounded-xl bg-gradient-to-r from-primary to-limeGreen text-2xl font-bold text-gray-500 hover:scale-95'
               type='submit'
             >
               저장

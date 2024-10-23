@@ -1,3 +1,4 @@
+import { UserProfileUpdateData } from '@/config/types';
 import { client } from './client';
 
 /**
@@ -17,13 +18,6 @@ export const userMyProfile = () => {
   return client.get(`/api/v1/users/profile/me/`);
 };
 
-interface UserProfileUpdateData {
-  nickname?: string;
-  gender?: string;
-  profile_image?: string;
-  birthdata?: string;
-  description?: string;
-}
 /**
  * PATCH /api/v1/users/profile/me/
  * @param data 사용자 프로필 수정 정보

@@ -82,3 +82,11 @@ export interface ChatMessage {
   participants: Participant[];
   messages: Message[];
 }
+
+export interface UserProfileUpdateData {
+  nickname: string;
+  gender?: string | null;
+  profile_image?: string | null;
+  birthday?: string | null;
+  description?: string | null;
+}

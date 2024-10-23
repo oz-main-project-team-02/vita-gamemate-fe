@@ -1,17 +1,10 @@
+import { UserProfileUpdateData } from '@/config/types';
 import Female from './Female';
 import Male from './Male';
 
-type Profile = {
-  profile_image: string | null;
-  nickname: string;
-  description: string | null;
-  gender: string | null;
-  birthday: string;
-};
-
 type ProfileProps = {
-  profile: Profile;
-  setProfile: React.Dispatch<React.SetStateAction<Profile>>;
+  profile: UserProfileUpdateData;
+  setProfile: React.Dispatch<React.SetStateAction<UserProfileUpdateData>>;
 };
 
 export default function GenderCheck({ profile, setProfile }: ProfileProps) {

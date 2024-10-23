@@ -8,10 +8,10 @@ import Nickname from '@/components/EditInfoPage/Nickname';
 import Description from '@/components/EditInfoPage/Description';
 import GenderCheck from '@/components/EditInfoPage/GenderCheck';
 import Birthday from '@/components/EditInfoPage/Birthday';
+import { userUpdateProfile } from '@/api/user';
 
 export default function EditInfoPage() {
   const { user, setUser } = useUserStore();
-  const [isPatch, setIsPatch] = useState(false);
 
   const birthDate = user.birthday !== null ? new Date(user.birthday!) : null;
   const yearStr = birthDate !== null ? birthDate.getFullYear().toString() : '';
@@ -32,7 +32,7 @@ export default function EditInfoPage() {
     nickname: user.nickname!,
     description: user.description,
     gender: user.gender,
-    birthday: `${birthYear}-${birthMonth}-${birthDay}`,
+    birthday: birthDate === null ? null : `${birthYear}-${birthMonth}-${birthDay}`,
   });
 
   // 윤년 확인 함수
@@ -72,17 +72,13 @@ export default function EditInfoPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    userUpdateProfile(profile);
     setUser(profile);
-    setIsPatch(true);
     console.log('profile', profile);
   };
 
-  useEffect(() => {
-    if (isPatch) {
-      setIsPatch(false);
-    }
-  }, [isPatch]);
-
+  console.log('profile', profile);
   console.log('user', user);
 
   return (
@@ -90,6 +86,15 @@ export default function EditInfoPage() {
       <div className='h-[4105px] w-full'>
         <TitleIntro titleE={'MY PROFILE'} titleK={'프로필 편집'} content={'멋진 실력을 자랑해주세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100'>
+          {profile.profile_image ? (
+            <div className='absolute left-[35%] top-[-120px] z-40 h-[300px] w-[30%]'>
+              <img
+                className='w-min-[100px] h-[300px] w-[52.6%] rounded-full object-cover'
+                src={profile.profile_image!}
+                alt='이미지 미리보기'
+              />
+            </div>
+          ) : null}
           <ProfileImg />
           <form onSubmit={handleSubmit} className='absolute left-[40.5%] top-[260px] h-[1028px] w-[50%]'>
             <button

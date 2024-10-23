@@ -1,14 +1,8 @@
-type Profile = {
-  profile_image: string | null;
-  nickname: string;
-  description: string | null;
-  gender: string | null;
-  birthday: string;
-};
+import { UserProfileUpdateData } from '@/config/types';
 
 type ProfileProps = {
-  profile: Profile;
-  setProfile: React.Dispatch<React.SetStateAction<Profile>>;
+  profile: UserProfileUpdateData;
+  setProfile: React.Dispatch<React.SetStateAction<UserProfileUpdateData>>;
 };
 
 export default function Male({ profile, setProfile }: ProfileProps) {

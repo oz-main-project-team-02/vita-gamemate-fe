@@ -10,9 +10,9 @@ export default function GameDropdown({ setGameHover }: HoverProps) {
     <div
       onMouseEnter={() => setGameHover(true)}
       onMouseLeave={() => setGameHover(false)}
-      className='absolute left-[130px] top-[40px] z-20 h-[180px] w-[58%] min-w-[500px] justify-between py-5'
+      className='absolute left-[130px] top-[40px] z-30 h-[180px] w-[58%] min-w-[500px] justify-between py-5'
     >
-      <div className='flex w-full flex-wrap rounded-3xl bg-gray-100 px-5 py-4'>
+      <div className='z-20 flex w-full flex-wrap rounded-3xl bg-gray-100 px-5 py-4'>
         {Object.entries(Games).map(([key, value], i) => (
           <GameCard key={i} game={key} gameData={value} />
         ))}

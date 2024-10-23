@@ -40,7 +40,7 @@ const ChatMessageModal = () => {
   }
 
   return (
-    <div className='flex h-full flex-col shadow-sm'>
+    <div className='flex h-full max-w-[420px] flex-col shadow-sm'>
       {chatData &&
         chatData.participants.map(
           (participant: Participant) =>

@@ -42,9 +42,9 @@ export const dummyChatLists: ChatList[] = [
     main_user_nickname: '이희주',
     other_user_nickname: '초보자',
     other_user_profile_image: 'https://picsum.photos/100/100?random=4',
-    latest_message: null,
-    latest_message_time: null,
-    updated_at: new Date('2024-10-22 10:30:00'),
+    latest_message: '지금 시작할 수 있나요?',
+    latest_message_time: new Date('2024-10-19 10:30:00'),
+    updated_at: new Date('2024-10-19 10:30:00'),
   },
   {
     id: 6,

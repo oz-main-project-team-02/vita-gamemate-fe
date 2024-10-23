@@ -33,15 +33,17 @@ export default function Header() {
         <div
           onMouseEnter={() => setGameHover(true)}
           onMouseLeave={() => setGameHover(false)}
-          className='hover:text-primaryText'
+          className='cursor-pointer hover:text-primaryText'
         >
           모든 서비스
         </div>
       </div>
       {gameHover && <GameDropdown setGameHover={setGameHover} />}
-      <div className='text-[48px] font-bold'>
-        VI<span className='text-white'>TA</span>
-      </div>
+      <Link to={'/'}>
+        <div className='text-[48px] font-bold'>
+          VI<span className='text-white'>TA</span>
+        </div>
+      </Link>
       <div className='flex gap-6'>
         <div className='flex items-center gap-4'>
           {localStorage.getItem('accessToken') ? (

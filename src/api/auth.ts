@@ -5,7 +5,7 @@ import { client } from './client';
  * @param kakaoCode 카카오 로그인 인가코드
  * @returns 카카오 로그인 유저정보
  */
-export const authKakaoLogin = (kakaoCode: string | null) => {
+export const kakaoLogin = (kakaoCode: string | null) => {
   return client.post('/api/v1/users/kakao/login/callback/', {
     code: kakaoCode,
   });
@@ -16,7 +16,7 @@ export const authKakaoLogin = (kakaoCode: string | null) => {
  * @param googleCode 구글 로그인 인가코드
  * @returns 구글 로그인 유저정보
  */
-export const authGoogleLogin = (googleCode: string | null) => {
+export const googleLogin = (googleCode: string | null) => {
   return client.post('/api/v1/users/google/login/callback/', {
     code: googleCode,
   });
@@ -26,7 +26,7 @@ export const authGoogleLogin = (googleCode: string | null) => {
  * GET /api/v1/users/auth/accesstoken/
  * @returns accessToken 재발급
  */
-export const authRefreshToken = () => {
+export const refreshToken = () => {
   return client.get('/api/v1/users/auth/accesstoken/');
 };
 
@@ -34,6 +34,6 @@ export const authRefreshToken = () => {
  * POST /api/v1/users/auth/logout/
  * @returns 로그아웃: refresh_token 무효화
  */
-export const authLogout = () => {
+export const logout = () => {
   return client.post('/api/v1/users/auth/logout/');
 };

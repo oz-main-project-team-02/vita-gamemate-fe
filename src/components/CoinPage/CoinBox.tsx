@@ -16,7 +16,7 @@ export default function CoinBox({ coinData }: Props) {
   const { setUser } = useUserStore();
   const rechargeMutation = useMutation({
     mutationFn: async () => {
-      const { data }: { data: RechargeResponse } = await walletApi.walletRechargeCoin(coinData.coin);
+      const { data }: { data: RechargeResponse } = await walletApi.rechargeWalletCoin(coinData.coin);
       return data;
     },
     onSuccess: (data) => {

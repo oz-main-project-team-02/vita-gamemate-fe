@@ -93,3 +93,15 @@ export const useChatStore = create<ChatState>((set) => ({
   selectedRoomId: null,
   setSelectedRoomId: (id: number) => set({ selectedRoomId: id }),
 }));
+
+interface OrderModalState {
+  isOrderModalOpen: boolean;
+  setOrderModalOpen: () => void;
+  setOrderModalClose: () => void;
+}
+
+export const useOrderModalStore = create<OrderModalState>((set) => ({
+  isOrderModalOpen: false,
+  setOrderModalOpen: () => set({ isOrderModalOpen: true }),
+  setOrderModalClose: () => set({ isOrderModalOpen: false }),
+}));

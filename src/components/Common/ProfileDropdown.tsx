@@ -5,10 +5,10 @@ import { PiCoins } from 'react-icons/pi';
 import { SlNotebook } from 'react-icons/sl';
 import { TbLogout2 } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
-import { client } from '@/api/client';
 import { useUserStore } from '@/config/store';
 import { User } from '@/config/types';
 import { TiUser } from 'react-icons/ti';
+import { authApi } from '@/api';
 
 type HoverProps = {
   user: User;
@@ -21,7 +21,7 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
 
   const handleLogoutClick = async () => {
     try {
-      const response = await client.post('/api/v1/users/auth/logout/');
+      const response = await authApi.logout();
 
       if (response.status === 200) {
         localStorage.removeItem('accessToken');

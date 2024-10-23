@@ -9,7 +9,7 @@ export default function Male({ profile, setProfile }: ProfileProps) {
   return (
     <input
       onClick={() => setProfile({ ...profile, gender: 'male' })}
-      className='mr-1 h-[60px] w-[365px] cursor-pointer rounded-xl bg-primary text-[24px] font-bold'
+      className='mr-1 h-[60px] w-[365px] cursor-pointer rounded-xl bg-primary text-[24px] font-bold hover:text-[25px]'
       type='button'
       value='남성'
     />

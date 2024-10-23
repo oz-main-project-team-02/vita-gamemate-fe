@@ -4,6 +4,7 @@ export const dummyChatLists: ChatList[] = [
   {
     id: 1,
     main_user_nickname: '이희주',
+    other_user_id: 3,
     other_user_nickname: 'PlayerOne',
     other_user_profile_image: null,
     latest_message: 'Are you ready for the game?',
@@ -13,6 +14,7 @@ export const dummyChatLists: ChatList[] = [
   {
     id: 2,
     main_user_nickname: '이희주',
+    other_user_id: 2,
     other_user_nickname: 'GamerPro',
     other_user_profile_image: 'https://picsum.photos/100/100?random=1',
     latest_message: "Let's meet in the lobby. Let's meet in the lobby. Let's meet in the lobby.",
@@ -22,6 +24,7 @@ export const dummyChatLists: ChatList[] = [
   {
     id: 3,
     main_user_nickname: '이희주',
+    other_user_id: 7,
     other_user_nickname: 'NoobMaster',
     other_user_profile_image: 'https://picsum.photos/100/100?random=2',
     latest_message: "I just joined, what's next?",
@@ -31,6 +34,7 @@ export const dummyChatLists: ChatList[] = [
   {
     id: 4,
     main_user_nickname: '이희주',
+    other_user_id: 9,
     other_user_nickname: '게임왕',
     other_user_profile_image: 'https://picsum.photos/100/100?random=3',
     latest_message: '오늘 저녁에 게임 가능?',
@@ -40,6 +44,7 @@ export const dummyChatLists: ChatList[] = [
   {
     id: 5,
     main_user_nickname: '이희주',
+    other_user_id: 11,
     other_user_nickname: '초보자',
     other_user_profile_image: 'https://picsum.photos/100/100?random=4',
     latest_message: '지금 시작할 수 있나요?',
@@ -49,6 +54,7 @@ export const dummyChatLists: ChatList[] = [
   {
     id: 6,
     main_user_nickname: '이희주',
+    other_user_id: 72,
     other_user_nickname: '전설의고수',
     other_user_profile_image: null,
     latest_message: '그래. 이따 8시에 봐!',
@@ -66,7 +72,7 @@ export const dummyChatMessage: ChatMessage = {
       profile_image: 'https://picsum.photos/100/100?random=3',
     },
     {
-      user_id: 1,
+      user_id: 72,
       nickname: '전설의고수',
       profile_image: null,
     },
@@ -89,7 +95,7 @@ export const dummyChatMessage: ChatMessage = {
     },
     {
       message_id: 3,
-      user_id: 1,
+      user_id: 72,
       message:
         '그 전략 나쁘지 않은 것 같아! 초반에 너무 무리하는 것보다는 안정적으로 가면서 상대방의 실수를 기다리는 게 더 나을지도 몰라',
       created_at: new Date('2024-10-19 20:02:50'),
@@ -97,7 +103,7 @@ export const dummyChatMessage: ChatMessage = {
     },
     {
       message_id: 4,
-      user_id: 1,
+      user_id: 72,
       message:
         '그리고 내가 추천한 아이템, 확실히 초반 방어력에서는 탁월하니까 우리 전략에 잘 맞을 거야. 근데, 중반 이후에도 그 아이템이 유효할지 고민이야. 중반에는 좀 더 공격적인 장비로 교체하는 게 좋을지도 몰라',
       created_at: new Date('2024-10-19 20:03:30'),
@@ -105,7 +111,7 @@ export const dummyChatMessage: ChatMessage = {
     },
     {
       message_id: 5,
-      user_id: 1,
+      user_id: 72,
       message: '어떻게 생각해?',
       created_at: new Date('2024-10-19 20:03:40'),
       profile_image: null,
@@ -127,7 +133,7 @@ export const dummyChatMessage: ChatMessage = {
     },
     {
       message_id: 8,
-      user_id: 1,
+      user_id: 72,
       message: '그래. 이따 8시에 봐!',
       created_at: new Date('2024-10-20 14:05:00'),
       profile_image: null,

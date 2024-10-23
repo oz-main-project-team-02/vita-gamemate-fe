@@ -58,6 +58,7 @@ export type Wallet = {
 export interface ChatList {
   id: number;
   main_user_nickname: string;
+  other_user_id: number;
   other_user_nickname: string;
   other_user_profile_image: string | null;
   latest_message: string | null;

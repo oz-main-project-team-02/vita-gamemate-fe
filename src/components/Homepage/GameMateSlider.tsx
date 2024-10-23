@@ -11,6 +11,7 @@ import { UserResponse } from '@/config/types';
 import { mateApi } from '@/api';
 import SkeletonTodayGameMate from '../skeleton/SkeletonTodayGameMate';
 import { delay } from '@/utils/delay';
+import { Link } from 'react-router-dom';
 
 export default function GameMateSlider() {
   const { data, isLoading } = useQuery<UserResponse>({
@@ -43,8 +44,9 @@ export default function GameMateSlider() {
         ) : (
           data?.results.map((mate) => (
             <SwiperSlide key={mate.id}>
-              <div
-                className='relative flex items-center gap-4 rounded-3xl bg-[#293883]'
+              <Link
+                to={`/user/${mate.id}`}
+                className='relative flex w-full items-center gap-4 rounded-3xl bg-[#293883]'
                 style={{ boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
               >
                 <div className='m-3 h-[186px] w-[30%] rounded-2xl bg-blue-400'>
@@ -69,7 +71,7 @@ export default function GameMateSlider() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))
         )}

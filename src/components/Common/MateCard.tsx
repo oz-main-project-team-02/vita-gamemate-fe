@@ -2,9 +2,33 @@ import { Link } from 'react-router-dom';
 import OnlineFlag from './OnlineFlag';
 import VitaPrice from './VitaPrice';
 import { User } from '../../config/types';
+// import { useEffect, useState } from 'react';
+
+// const accessToken = localStorage.getItem('accessToken');
+// const socket: WebSocket = new WebSocket(`ws://resdineconsulting.com/ws/status/?token=${accessToken}`);
 
 export default function MateCard({ mate }: { mate: User }) {
-  // TODO: 리뷰 API 호출 후 리뷰 평균 별점으로 변경
+  // const [isOnline, setIsOnline] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   socket.onopen = () => {
+  //     // 특정 유저의 온라인 상태를 서버에 요청
+  //     socket.send(JSON.stringify({ type: 'check_status', userId: mate.id }));
+  //   };
+
+  //   // 서버로부터 해당 유저의 상태를 수신
+  //   socket.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
+  //     if (data.type === 'user_status' && data.userId === mate.id) {
+  //       setIsOnline(data.isOnline); // 해당 유저가 온라인인지 상태 설정
+  //       console.log(isOnline);
+  //     }
+  //   };
+
+  //   return () => {
+  //     socket.close();
+  //   };
+  // }, [mate.id, isOnline]);
 
   return (
     <Link to={`/user/${mate.id}`}>

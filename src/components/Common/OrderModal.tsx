@@ -12,8 +12,6 @@ export function OrderModal({ mate }: { mate: User }) {
   const [price] = useState(mate?.mate_game_info?.[0]?.request_price || 0);
   const { setOrderModalClose } = useOrderModalStore();
 
-  console.log(mate);
-
   const orderRequest = useMutation({
     mutationFn: async ({ price, amount }: { price: number; amount: number }) => {
       try {

@@ -22,6 +22,8 @@ export default function LoginStatusChecker({ children }: Props) {
           const { data } = await userApi.fetchMyProfile();
           const { data: user }: { data: User } = await userApi.fetchUserProfileById(data.id);
           const { data: coin }: { data: Wallet } = await walletApi.fetchMyWalletCoins();
+          console.log('data', data);
+          console.log('user', user);
 
           setUser(user); // 사용자 정보 업데이트
           setUser({ coin: coin.coin }); // 사용자 지갑 업데이트

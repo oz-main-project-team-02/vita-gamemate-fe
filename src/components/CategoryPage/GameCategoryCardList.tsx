@@ -1,13 +1,11 @@
-import { getGame } from '@/config/const';
 import { UserResponse } from '@/config/types';
-import ErrorPage from '@/pages/ErrorPage';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import MateCard from '../Common/MateCard';
 import { mateApi } from '@/api';
-import SkeletonMateCard from '../skeleton/skeletonMateCard';
+import SkeletonMateCard from '../skeleton/SkeletonMateCard';
 import { delay } from '@/utils/delay';
 
 type Props = {
@@ -64,10 +62,6 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetching, fetchNextPage]);
-
-  if (!getGame(Number(gameId))) {
-    return <ErrorPage />;
-  }
 
   return (
     <div

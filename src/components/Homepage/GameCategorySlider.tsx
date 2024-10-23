@@ -6,31 +6,26 @@ import { GrPrevious } from 'react-icons/gr';
 import { GrNext } from 'react-icons/gr';
 import MateCard from '../Common/MateCard';
 import { useQuery } from '@tanstack/react-query';
-import { mock } from '@/api/mock';
-import { User } from '@/config/types';
-// import { mateApi } from '@/api';
+import { UserResponse } from '@/config/types';
+import { mateApi } from '@/api';
+import SkeletonMateCard from '../skeleton/skeletonMateCard';
+import { delay } from '@/utils/delay';
 
 type Props = {
   gameId: string;
 };
 
 export default function GameCategorySlider({ gameId }: Props) {
-  // WARNING: 카테고리별 데이터 패칭이랑 같은 API를 사용하고 있음, delay(3000) 사용으로 로딩이 느린 현상. 버그X
-  const { data: gameMates, isLoading } = useQuery<User[]>({
+  const { data, isLoading } = useQuery<UserResponse>({
     queryKey: ['user', 'mate', gameId, 'main'],
     queryFn: async () => {
-      const { data } = await mock.get(`/api/v1/users/${Number(gameId)}/mate?cursor=0`);
-      return data;
+      // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
+      // FIXME: delay 함수 제거시 async await 구문 제거
+      await delay(5000);
+      return await mateApi.fetchGameMateProfiles({ gameId, pageParam: 1 });
     },
   });
-
-  // FIXME: API 완료 시, 아래 코드로 변경
-  // const { data: gameMates, isLoading } = useQuery<User[]>({
-  //   queryKey: ['user', 'mate', gameId, 'main'],
-  //   queryFn: () => mateApi.mateProfileByGameId({ gameId, pageParam: 1 }),
-  // });
-
-  if (isLoading) return <div></div>;
+  console.log(data);
 
   return (
     <div className='relative mx-auto max-w-[672px]'>
@@ -44,12 +39,19 @@ export default function GameCategorySlider({ gameId }: Props) {
         modules={[Navigation]}
         className='mySwiper'
       >
-        {/* 각 슬라이드 */}
-        {gameMates?.map((mate) => (
-          <SwiperSlide key={mate.id}>
-            <MateCard mate={mate} />
-          </SwiperSlide>
-        ))}
+        {isLoading
+          ? Array.from({ length: 3 }).map((_, i) => (
+              <SwiperSlide key={i}>
+                <SkeletonMateCard />
+              </SwiperSlide>
+            ))
+          : data?.results?.map((mate) => (
+              <SwiperSlide key={mate.id}>
+                <MateCard mate={mate} />
+              </SwiperSlide>
+            ))}
+
+        {}
       </Swiper>
       <div className='gameCategory-prev absolute left-[-40px] top-1/2 z-10'>
         <GrPrevious />

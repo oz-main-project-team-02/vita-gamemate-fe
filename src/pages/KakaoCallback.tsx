@@ -13,13 +13,13 @@ export default function KakaoCallback() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await authApi.authKakaoLogin(kakaoCode);
+        const { data } = await authApi.kakaoLogin(kakaoCode);
         localStorage.setItem('accessToken', data.access_token);
 
-        const { data: user }: { data: User } = await userApi.userProfileById(data.id);
+        const { data: user }: { data: User } = await userApi.fetchUserProfileById(data.id);
         setUser(user); // 사용자 정보 업데이트
 
-        const { data: coin }: { data: Wallet } = await walletApi.walletCheckMyCoin();
+        const { data: coin }: { data: Wallet } = await walletApi.fetchMyWalletCoins();
         setUser({ coin: coin.coin }); // 사용자 지갑 업데이트
         navigate('/', { replace: true });
       } catch (err) {

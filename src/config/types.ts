@@ -83,6 +83,49 @@ export interface ChatMessage {
   messages: Message[];
 }
 
+export interface UserResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: User[];
+}
+
+export interface OrderRequest {
+  game_request_id: number;
+  mate_nickname: string;
+  mate_profile_image: string | null;
+  mate_gender: string | null;
+  mate_online: boolean;
+  status: boolean;
+  request_date: string;
+  request_amount: number;
+}
+
+export interface OrderRequestResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: OrderRequest[];
+}
+
+export interface ReceivedRequest {
+  game_request_id: number;
+  user_nickname: string;
+  user_profile_image: string | null;
+  user_gender: string | null;
+  user_online: boolean;
+  status: boolean;
+  request_date: string;
+  request_amount: number;
+}
+
+export interface ReceivedRequestResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: ReceivedRequest[];
+}
+
 export interface UserProfileUpdateData {
   nickname: string;
   gender?: string | null;

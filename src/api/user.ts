@@ -6,7 +6,7 @@ import { client } from './client';
  * @param userId 사용자 ID
  * @returns 사용자 프로필 정보
  */
-export const userProfileById = (userId: string) => {
+export const fetchUserProfileById = (userId: string) => {
   return client.get(`/api/v1/users/${userId}/profile/`);
 };
 
@@ -14,7 +14,7 @@ export const userProfileById = (userId: string) => {
  * GET /api/v1/users/profile/me/
  * @returns 내 프로필 정보
  */
-export const userMyProfile = () => {
+export const fetchMyProfile = () => {
   return client.get(`/api/v1/users/profile/me/`);
 };
 
@@ -23,6 +23,6 @@ export const userMyProfile = () => {
  * @param data 사용자 프로필 수정 정보
  * @returns 수정된 사용자 프로필 정보
  */
-export const userUpdateProfile = (data: UserProfileUpdateData) => {
+export const updateMyProfile = (data: UserProfileUpdateData) => {
   return client.patch(`/api/v1/users/profile/me/`, data);
 };

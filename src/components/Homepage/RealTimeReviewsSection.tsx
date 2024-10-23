@@ -1,18 +1,23 @@
 import { mock } from '@/api/mock';
 import { useQuery } from '@tanstack/react-query';
+import SkeletonReveiwCard from '../skeleton/SkeletonReviewCard';
+import { delay } from '@/utils/delay';
 // import { Review } from '@/config/types';
 // import { reviewApi } from '@/api';
 
 export default function RealTimeReviewsSection() {
-  const { data: reviews } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['review', 'new'], // 쿼리 키
     queryFn: async () => {
+      // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
+      // FIXME: delay 함수 제거시 async await 구문 제거
+      await delay(5000);
       const response = await mock.get(`/api/v1/users/review`);
       return response.data;
     },
   });
   // FIXME: API 완료 시 교체 예정
-  // const { data: reviews } = useQuery<Review[]>({
+  // const { data } = useQuery<Review[]>({
   //   queryKey: ['review', 'new'], // 쿼리 키
   //   queryFn: () => reviewApi.fetchReviews(),
   // });
@@ -31,15 +36,21 @@ export default function RealTimeReviewsSection() {
       </div>
       <div className='relative w-full max-w-[720px]'>
         <div className='flex flex-col gap-5'>
-          {reviews?.map((review) => (
-            <div key={review.id} className='flex h-[100px] justify-between rounded-3xl bg-gray-200 px-4 py-3 shadow-lg'>
-              <div>
-                <h1 className='text-lg font-bold'>{review.request_id}</h1>
-                <p>{review.content}</p>
-              </div>
-              <p className='text-gray-400'>{review.created_at.toLocaleString()}</p>
-            </div>
-          ))}
+          {isLoading
+            ? Array.from({ length: 5 }).map((_, i) => <SkeletonReveiwCard key={i} />)
+            : data?.map((review) => (
+                <div
+                  key={review.id}
+                  className='flex h-[100px] justify-between rounded-3xl bg-gray-200 px-4 py-3 shadow-lg'
+                >
+                  <div>
+                    <h1 className='text-lg font-bold'>{review.request_id}</h1>
+                    <p>{review.content}</p>
+                  </div>
+                  <p className='text-gray-400'>{review.created_at.toLocaleString()}</p>
+                </div>
+              ))}
+
           {/* FIXME: API 완료 시 교체 예정 */}
           {/* {reviews?.map((review: Review, i) => (
             <div key={i} className='flex h-[100px] justify-between rounded-3xl bg-gray-200 px-4 py-3 shadow-lg'>

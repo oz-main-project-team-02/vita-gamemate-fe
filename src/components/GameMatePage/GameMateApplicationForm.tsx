@@ -32,7 +32,7 @@ export default function GameMateApplicationForm() {
 
   // 게임메이트 등록하기 Mutation
   const mateRegisterMutation = useMutation({
-    mutationFn: (mateInfo: FormData) => mateApi.mateRegister(mateInfo),
+    mutationFn: (mateInfo: FormData) => mateApi.registerGameMate(mateInfo),
   });
 
   // 게임메이트 등록하기 submit 함수

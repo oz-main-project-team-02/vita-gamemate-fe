@@ -25,8 +25,8 @@ const PaymentsPage = React.lazy(() => import('@/pages/user/PaymentsPage'));
 function App() {
   return (
     <LoginStatusChecker>
-      <CommonLayout>
-        <Routes>
+      <Routes>
+        <CommonLayout>
           {/* Private Routes */}
           <Route element={<VitaPrivateRoute />}>
             <Route
@@ -112,20 +112,20 @@ function App() {
               </Suspense>
             }
           />
+        </CommonLayout>
 
-          {/* TOSS WIDGETS 테스트 결제 페이지 */}
-          {/* <Route path='/payment' element={<CheckoutPage />} /> */}
-          {/* <Route path='/fail' element={<FailPage />} /> */}
+        {/* TOSS WIDGETS 테스트 결제 페이지 */}
+        {/* <Route path='/payment' element={<CheckoutPage />} /> */}
+        {/* <Route path='/fail' element={<FailPage />} /> */}
 
-          {/* TOSS 개별 API 결제 페이지 */}
-          <Route path='/payment' element={<PaymentCheckoutPage />} />
-          <Route path='/payment/billing' element={<PaymentBillingPage />} />
+        {/* TOSS 개별 API 결제 페이지 */}
+        <Route path='/payment' element={<PaymentCheckoutPage />} />
+        <Route path='/payment/billing' element={<PaymentBillingPage />} />
 
-          {/* TOSS Success, Fail 페이지 */}
-          <Route path='/payment/success' element={<SuccessPage />} />
-          <Route path='/fail' element={<FailPage />} />
-        </Routes>
-      </CommonLayout>
+        {/* TOSS Success, Fail 페이지 */}
+        <Route path='/payment/success' element={<SuccessPage />} />
+        <Route path='/fail' element={<FailPage />} />
+      </Routes>
     </LoginStatusChecker>
   );
 }

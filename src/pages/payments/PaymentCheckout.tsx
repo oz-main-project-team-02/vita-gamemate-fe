@@ -196,7 +196,7 @@ export function PaymentCheckoutPage() {
   return (
     <div className='wrapper'>
       <div className='box_section'>
-        <h1>일반 결제</h1>
+        <h1 className='text-4xl font-semibold'>일반 결제</h1>
         <div id='payment-method' style={{ display: 'flex' }}>
           <button
             id='CARD'
@@ -246,7 +246,7 @@ export function PaymentCheckoutPage() {
         </button>
       </div>
       <div className='box_section'>
-        <h1>정기 결제</h1>
+        <h1 className='text-4xl font-semibold'>정기 결제</h1>
         <button className='button' onClick={() => requestBillingAuth()}>
           빌링키 발급하기
         </button>

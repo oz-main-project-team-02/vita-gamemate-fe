@@ -9,7 +9,7 @@ export function FailPage() {
     <div id='info' className='box_section max-w-[640px]'>
       <div className='flex flex-col items-center'>
         <img width='100px' src='https://static.toss.im/lotties/error-spot-no-loop-space-apng.png' alt='에러 이미지' />
-        <h2>결제를 실패했어요</h2>
+        <h2 className='text-2xl font-semibold'>결제를 실패했어요</h2>
 
         <div>
           <div className='p-grid typography--p' style={{ marginTop: '50px' }}>

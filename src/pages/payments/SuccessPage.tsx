@@ -81,7 +81,7 @@ export function SuccessPage() {
       {/* box section  */}
       <div className='mx-auto mt-[30px] flex max-w-[800px] flex-col items-center rounded-lg bg-white p-[50px] text-center shadow-lg'>
         <img width='100px' src='https://static.toss.im/illusts/check-blue-spot-ending-frame.png' />
-        <h2>결제를 완료했어요</h2>
+        <h2 className='text-2xl font-semibold'>결제를 완료했어요</h2>
         <div>
           <div className='p-grid typography--p' style={{ marginTop: '50px' }}>
             <div className='p-grid-col text--left'>

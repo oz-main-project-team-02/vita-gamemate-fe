@@ -88,7 +88,9 @@ export default function PaymentBillingPage() {
     <div className='wrapper'>
       <div className='box_section' style={{ width: '600px' }}>
         <img width='100px' src='https://static.toss.im/illusts/check-blue-spot-ending-frame.png' />
-        <h2 id='title'>{billingConfirmed ? '빌링키로 결제에 성공했어요' : '빌링키 발급을 완료했어요'}</h2>
+        <h2 className='text-4xl font-semibold' id='title'>
+          {billingConfirmed ? '빌링키로 결제에 성공했어요' : '빌링키 발급을 완료했어요'}
+        </h2>
 
         {billingConfirmed === false ? (
           <button id='confirm' className='button' onClick={confirm}>

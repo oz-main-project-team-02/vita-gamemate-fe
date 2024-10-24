@@ -26,7 +26,7 @@ function App() {
   return (
     <LoginStatusChecker>
       <Routes>
-        <CommonLayout>
+        <Route element={<CommonLayout />}>
           {/* Private Routes */}
           <Route element={<VitaPrivateRoute />}>
             <Route
@@ -112,12 +112,7 @@ function App() {
               </Suspense>
             }
           />
-        </CommonLayout>
-
-        {/* TOSS WIDGETS 테스트 결제 페이지 */}
-        {/* <Route path='/payment' element={<CheckoutPage />} /> */}
-        {/* <Route path='/fail' element={<FailPage />} /> */}
-
+        </Route>
         {/* TOSS 개별 API 결제 페이지 */}
         <Route path='/payment' element={<PaymentCheckoutPage />} />
         <Route path='/payment/billing' element={<PaymentBillingPage />} />

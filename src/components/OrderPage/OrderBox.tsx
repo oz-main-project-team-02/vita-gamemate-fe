@@ -12,7 +12,6 @@ interface ReviewProps {
 
 export default function OrderBox({ review, order, received }: ReviewProps) {
   const [showReview, setShowReview] = useState(false);
-  console.log(order, received);
 
   return (
     <div className='mt-[38px] flex h-[213px] w-full rounded-xl border border-gray-200 bg-[#FFFFFF] px-[37px] py-[25px]'>
@@ -20,7 +19,7 @@ export default function OrderBox({ review, order, received }: ReviewProps) {
         <img className='h-[160px] w-[160px] p-1' src='/src/assets/imgs/user.png' alt='user' />
       </div>
       <div className='mx-8 h-[163px] w-1/2 py-2'>
-        <p className='text-base'>닉네임</p>
+        <p className='text-base'>닉네임{order?.mate_nickname}</p>
         <div className='relative mb-[42px] mt-1 flex h-[20px] w-full items-start'>
           <Gender gender={'male'} birthday={null} />
           <div className='relative ml-[-8px] mt-[-9px] w-[100px]'>

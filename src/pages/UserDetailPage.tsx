@@ -18,11 +18,16 @@ import { getGame } from '@/config/const';
 import { useChatModalStore, useOrderModalStore } from '@/config/store';
 import { createChat } from '@/api/chat';
 import { OrderModal } from '@/components/Common/OrderModal';
+import { useEffect } from 'react';
 
 export default function UserDetailPage() {
   const { userId } = useParams();
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
   const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { data: mate } = useQuery<User>({
     queryKey: ['user', userId],
@@ -35,6 +40,8 @@ export default function UserDetailPage() {
       }
     },
   });
+
+  console.log(mate);
 
   if (!mate) {
     return <ErrorPage />;

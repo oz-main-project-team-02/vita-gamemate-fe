@@ -19,7 +19,7 @@ export default function GameMateSlider() {
     queryFn: async () => {
       // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
       // FIXME: delay 함수 제거시 async await 구문 제거
-      await delay(5000);
+      await delay();
       return await mateApi.fetchAllCategoryMates({ pageParam: 1 });
     },
   });

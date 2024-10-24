@@ -6,7 +6,8 @@ import LoginStatusChecker from './components/Common/LoginStatusChecker';
 import Spinner from './components/Common/Spinner'; // 공통 스피너 컴포넌트
 import { SuccessPage } from './pages/payments/SuccessPage';
 import { FailPage } from './pages/payments/FailPage';
-import { CheckoutPage } from './pages/payments/CheckoutPage';
+import { PaymentCheckoutPage } from './pages/payments/PaymentCheckout';
+import PaymentBillingPage from './pages/payments/PaymentBilling';
 
 const CategoryPage = React.lazy(() => import('@/pages/CategoryPage'));
 const CoinPage = React.lazy(() => import('@/pages/CoinPage'));
@@ -110,10 +111,17 @@ function App() {
           }
         />
 
-        {/* TOSS 테스트 결제 페이지 */}
-        <Route path='/payment' element={<CheckoutPage />} />
+        {/* TOSS WIDGETS 테스트 결제 페이지 */}
+        {/* <Route path='/payment' element={<CheckoutPage />} /> */}
+        {/* <Route path='/fail' element={<FailPage />} /> */}
+
+        {/* TOSS 개별 API 결제 페이지 */}
+        <Route path='/payment' element={<PaymentCheckoutPage />} />
+        <Route path='/payment/billing' element={<PaymentBillingPage />} />
+
+        {/* TOSS Success, Fail 페이지 */}
         <Route path='/payment/success' element={<SuccessPage />} />
-        <Route path='/payment/fail' element={<FailPage />} />
+        <Route path='/fail' element={<FailPage />} />
       </Routes>
     </LoginStatusChecker>
   );

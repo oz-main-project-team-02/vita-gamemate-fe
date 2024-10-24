@@ -1,3 +1,4 @@
+import '@/toss.css';
 import { walletApi } from '@/api';
 import { useUserStore } from '@/config/store';
 import { useMutation } from '@tanstack/react-query';
@@ -9,10 +10,9 @@ export function SuccessPage() {
   const paymentKey = searchParams.get('paymentKey');
   const orderId = searchParams.get('orderId');
   const amount = searchParams.get('amount');
-  const coin = searchParams.get('coin'); // string\
+  const coin = searchParams.get('coin'); // string
   const { setUser } = useUserStore();
   const navigate = useNavigate();
-
   console.log(coin);
 
   const rechargeMutation = useMutation({
@@ -44,14 +44,15 @@ export function SuccessPage() {
           return;
         }
 
-        const response = await fetch('http://localhost:4242/sandbox-dev/api/v1/payments/confirm', {
+        const response = await fetch(`${import.meta.env.VITE_PUBLIC_BASE_URL}/api/v1/payments/toss/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
           body: JSON.stringify({
-            paymentKey,
-            orderId,
+            payment_key: paymentKey,
+            order_id: orderId,
             amount,
           }),
         });
@@ -73,14 +74,14 @@ export function SuccessPage() {
       }
     };
     confirmPayment();
-  }, [coin, orderId, amount, paymentKey, rechargeMutation, setUser]);
+  }, []);
 
   return (
     <>
       {/* box section  */}
       <div className='mx-auto mt-[30px] flex max-w-[800px] flex-col items-center rounded-lg bg-white p-[50px] text-center shadow-lg'>
         <img width='100px' src='https://static.toss.im/illusts/check-blue-spot-ending-frame.png' />
-        <h2 className='text-2xl font-semibold'>결제를 완료했어요</h2>
+        <h2>결제를 완료했어요</h2>
         <div>
           <div className='p-grid typography--p' style={{ marginTop: '50px' }}>
             <div className='p-grid-col text--left'>

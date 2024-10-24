@@ -1,7 +1,18 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 export function FailPage() {
   const [searchParams] = useSearchParams();
+  const message = searchParams.get('message');
+  const code = searchParams.get('code');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!message || !code) {
+      navigate('/');
+      alert('비정상적인 접근입니다.');
+    }
+  }, [code, message, navigate]);
 
   return (
     <div id='info' className='box_section max-w-[640px]'>
@@ -14,13 +25,17 @@ export function FailPage() {
             <div className='p-grid-col text--left'>
               <b>에러메시지</b>
             </div>
-            <div className='p-grid-col text--right' id='message'>{`${searchParams.get('message')}`}</div>
+            <div className='p-grid-col text--right' id='message'>
+              {message}
+            </div>
           </div>
           <div className='p-grid typography--p' style={{ marginTop: '10px' }}>
             <div className='p-grid-col text--left'>
               <b>에러코드</b>
             </div>
-            <div className='p-grid-col text--right' id='code'>{`${searchParams.get('code')}`}</div>
+            <div className='p-grid-col text--right' id='code'>
+              {code}
+            </div>
           </div>
 
           <div className='p-grid-col'>

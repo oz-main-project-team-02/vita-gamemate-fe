@@ -2,15 +2,16 @@ import { walletApi } from '@/api';
 import { useUserStore } from '@/config/store';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 export function SuccessPage() {
   const [searchParams] = useSearchParams();
   const paymentKey = searchParams.get('paymentKey');
   const orderId = searchParams.get('orderId');
   const amount = searchParams.get('amount');
-  const coin = searchParams.get('coin'); // string
+  const coin = searchParams.get('coin'); // string\
   const { setUser } = useUserStore();
+  const navigate = useNavigate();
 
   console.log(coin);
 
@@ -24,6 +25,13 @@ export function SuccessPage() {
       setUser({ coin: data.coin });
     },
   });
+
+  useEffect(() => {
+    if (!orderId || !amount || !paymentKey) {
+      navigate('/');
+      alert('비정상적인 접근입니다.');
+    }
+  }, [orderId, amount, paymentKey, navigate]);
 
   useEffect(() => {
     const confirmPayment = async () => {
@@ -65,7 +73,7 @@ export function SuccessPage() {
       }
     };
     confirmPayment();
-  }, [paymentKey]);
+  }, [coin, orderId, amount, paymentKey, rechargeMutation, setUser]);
 
   return (
     <>

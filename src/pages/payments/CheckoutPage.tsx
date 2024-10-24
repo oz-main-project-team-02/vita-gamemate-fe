@@ -28,7 +28,7 @@ export function CheckoutPage() {
     }
 
     fetchPaymentWidgets();
-  }, [clientKey]);
+  }, []);
 
   useEffect(() => {
     async function renderPaymentWidgets() {
@@ -65,7 +65,7 @@ export function CheckoutPage() {
     }
 
     renderPaymentWidgets();
-  }, [widgets]);
+  }, [widgets, coinData.discountPrice]);
 
   const handlePayments = async () => {
     if (!widgets || !user) return;

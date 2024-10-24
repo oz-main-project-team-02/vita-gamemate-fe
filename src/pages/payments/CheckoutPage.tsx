@@ -1,3 +1,5 @@
+import '@/toss.css';
+
 import { useEffect, useState } from 'react';
 import { loadTossPayments, ANONYMOUS, TossPaymentsWidgets } from '@tosspayments/tosspayments-sdk';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,6 +13,7 @@ export function CheckoutPage() {
   const { user } = useUserStore();
   const [ready, setReady] = useState<boolean>(false);
   const [widgets, setWidgets] = useState<TossPaymentsWidgets | null>(null);
+
   const location = useLocation();
   const { coinData }: { coinData: CoinPackage } = location.state || {};
   console.log(coinData);
@@ -47,9 +50,6 @@ export function CheckoutPage() {
          */
         widgets.renderPaymentMethods({
           selector: '#payment-method',
-          // 렌더링하고 싶은 결제 UI의 variantKey
-          // 결제 수단 및 스타일이 다른 멀티 UI를 직접 만들고 싶다면 계약이 필요해요.
-          // @docs https://docs.tosspayments.com/guides/v2/payment-widget/admin#새로운-결제-ui-추가하기
           variantKey: 'DEFAULT',
         }),
         /**
@@ -61,50 +61,47 @@ export function CheckoutPage() {
           variantKey: 'AGREEMENT',
         }),
       ]);
-
       setReady(true);
     }
 
     renderPaymentWidgets();
   }, [widgets]);
 
+  const handlePayments = async () => {
+    if (!widgets || !user) return;
+
+    /**
+     * 결제 요청
+     * 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+     * 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+     * @docs https://docs.tosspayments.com/sdk/v2/js#widgetsrequestpayment
+     */
+    try {
+      const result = await widgets.requestPayment({
+        orderId: `${user.id}-${generateRandomString()}`,
+        orderName: `비타코인 ${coinData.coin}개 구매`,
+        customerName: `${user.nickname}님`,
+        customerEmail: `${user.email}`,
+        successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
+        failUrl: window.location.origin + '/payment/fail' + window.location.search,
+      });
+
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+      navigate('/', { replace: true });
+      alert('결제 요청 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
-    <div className='wrapper w-100'>
-      <div className='max-w-540 w-100'>
-        <div id='payment-method' className='w-100' />
-        <div id='agreement' className='w-100' />
-        <div className='btn-wrapper w-100'>
-          {ready && (
-            <button
-              className='btn primary w-100'
-              onClick={async () => {
-                try {
-                  /**
-                   * 결제 요청
-                   * 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
-                   * 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-                   * @docs https://docs.tosspayments.com/sdk/v2/js#widgetsrequestpayment
-                   */
-                  await widgets?.requestPayment({
-                    orderId: `${user.id}-${generateRandomString()}`,
-                    orderName: `비타코인 ${coinData.coin}개 구매`,
-                    customerName: `${user.nickname}님`,
-                    customerEmail: `${user.email}`,
-                    successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
-                    failUrl: window.location.origin + '/payment/fail' + window.location.search,
-                  });
-                } catch (error) {
-                  // TODO: 에러 처리
-                  console.error(error);
-                  navigate('/', { replace: true });
-                  alert('결제 요청 중 오류가 발생했습니다.');
-                }
-              }}
-            >
-              결제하기
-            </button>
-          )}
-        </div>
+    <div className='wrapper min-h-screen'>
+      <div className='box_section'>
+        <div id='payment-method' />
+        <div id='agreement' />
+        <button className='button' style={{ marginTop: '30px' }} disabled={!ready} onClick={handlePayments}>
+          결제하기
+        </button>
       </div>
     </div>
   );

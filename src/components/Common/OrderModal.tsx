@@ -46,7 +46,7 @@ export function OrderModal({ mate }: { mate: User }) {
         {/* X 버튼, 채팅 */}
         <div className='flex h-full flex-col gap-7'>
           <div className='flex items-center gap-3'>
-            <span className='cursor-pointer' onClick={setOrderModalClose}>
+            <span className='cursor-pointer'>
               <IoMdClose size={20} />
             </span>
             <span className='text-2xl font-semibold'>주문 확인</span>

@@ -21,6 +21,7 @@ const UserDetailPage = React.lazy(() => import('@/pages/UserDetailPage'));
 
 function App() {
   return (
+    // TODO: fallback: spinner 만 넣었을 경우 플리킹 현상이 있음. commonlayout 컴포넌트를 상단으로 넣던지 해결 필요
     <LoginStatusChecker>
       <Routes>
         {/* Private Routes */}

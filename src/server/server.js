@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-
 import router from './payments.router'; // default export를 사용하는 경우
 
 const app = express();

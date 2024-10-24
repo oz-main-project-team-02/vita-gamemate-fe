@@ -4,14 +4,11 @@ import ProfileImg from '../components/Common/ProfileImg';
 import CommonLayout from '../layouts/CommonLayout';
 import Request from '../components/OrderPage/Request';
 import Response from '../components/OrderPage/Response';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function OrdersPage() {
   const [selectButton, setSelectButton] = useState('request');
 
-  useEffect(() => {
-    console.log(selectButton); // 상태가 변경될 때마다 출력
-  }, [selectButton]);
   return (
     <CommonLayout>
       <div className='h-[4105px] w-full'>

@@ -100,7 +100,7 @@ export interface OrderRequest {
   mate_gender: string | null;
   mate_online: boolean;
   status: boolean;
-  request_date: string;
+  request_date: Date;
   request_amount: number;
 }
 
@@ -118,7 +118,7 @@ export interface ReceivedRequest {
   user_gender: string | null;
   user_online: boolean;
   status: boolean;
-  request_date: string;
+  request_date: Date;
   request_amount: number;
 }
 

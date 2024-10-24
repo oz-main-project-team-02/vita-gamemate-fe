@@ -34,3 +34,23 @@ export const fetchReviewsById = async (userId: string, page: number): Promise<Re
     return [];
   }
 };
+
+interface ReviewData {
+  rating: number;
+  content: string;
+}
+
+/**
+ * POST /api/v1/reviews/${gameRequestId}/write/
+ * @param id 게임 메이트 ID
+ * @param reviewData 리뷰 데이터
+ * @returns 리뷰 등록 정보 { rating, content }
+ */
+export const fetchPostReview = async (id: number, reviewData: ReviewData) => {
+  try {
+    const { data } = await client.post(`/api/v1/reviews/${id}/write/`, reviewData);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};

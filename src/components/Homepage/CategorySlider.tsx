@@ -4,7 +4,7 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { GrPrevious } from 'react-icons/gr';
 import { GrNext } from 'react-icons/gr';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Games } from '../../config/const';
 
 export default function CategorySlider() {
@@ -30,7 +30,8 @@ export default function CategorySlider() {
         {/* 각 슬라이드 */}
         {Object.values(Games).map((game) => (
           <SwiperSlide key={game.id}>
-            <div
+            <Link
+              to={`/category/${game.id}`}
               className='relative flex h-[326px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-primary'
               style={{ backgroundImage: `url(${game.img})`, boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
               onClick={() => handleCategoryClick(game.id)}
@@ -40,7 +41,7 @@ export default function CategorySlider() {
                 <h2 className='text-2xl font-bold'>{game.title}</h2>
                 <p>{game.subTitle}</p>
               </div>
-            </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

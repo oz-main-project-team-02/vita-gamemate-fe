@@ -1,12 +1,11 @@
-import FilterList from '../components/Common/FilterList';
-import TitleIntro from '../components/Common/TitleIntro';
-import ProfileImg from '../components/Common/ProfileImg';
-import CommonLayout from '../layouts/CommonLayout';
+import FilterList from '../../components/Common/FilterList';
+import TitleIntro from '../../components/Common/TitleIntro';
+import ProfileImg from '../../components/Common/ProfileImg';
 import GameMateApplicationForm from '@/components/GameMatePage/GameMateApplicationForm';
 
 export default function GameMatePage() {
   return (
-    <CommonLayout>
+    <>
       <div className='w-full'>
         {/* <NavBar /> */}
         <TitleIntro titleE={'VITA GAMEMATE'} titleK={'게임 메이트'} content={'당신의 재능을 보여주세요!'} />
@@ -20,6 +19,6 @@ export default function GameMatePage() {
           </div>
         </div>
       </div>
-    </CommonLayout>
+    </>
   );
 }

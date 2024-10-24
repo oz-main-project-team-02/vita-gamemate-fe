@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import CommonLayout from '../layouts/CommonLayout';
 
 export default function ErrorPage() {
   const navigate = useNavigate();
 
   return (
-    <CommonLayout>
+    <>
       <div className='h-[2015px] w-full bg-primary pt-[70px]'>
         <div className='flex h-[1866px] w-full flex-col items-center bg-gray-100 pt-16'>
           <img className='w-[40%]' src='/src/assets/imgs/404.png' alt='404' />
@@ -23,6 +22,6 @@ export default function ErrorPage() {
           </div>
         </div>
       </div>
-    </CommonLayout>
+    </>
   );
 }

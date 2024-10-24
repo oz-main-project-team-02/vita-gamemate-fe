@@ -1,13 +1,11 @@
-import { getGame } from '@/config/const';
 import { UserResponse } from '@/config/types';
-import ErrorPage from '@/pages/ErrorPage';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import MateCard from '../Common/MateCard';
 import { mateApi } from '@/api';
-import SkeletonMateCard from '../skeleton/skeletonMateCard';
+import SkeletonMateCard from '../skeleton/SkeletonMateCard';
 import { delay } from '@/utils/delay';
 
 type Props = {
@@ -38,19 +36,12 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
     queryFn: async ({ pageParam }) => {
       // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
       // FIXME: delay 함수 제거시 async await 구문 제거
-      await delay(5000);
+      await delay();
       return mateApi.fetchGameMateProfiles({ gameId, sortValue, genderValue, levelValue, pageParam });
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      console.log('lastPage 데이터:', lastPage);
-
-      if (!lastPage?.results?.length) {
-        return;
-      }
-
-      const nextPage = allPages.length + 1;
-      return nextPage;
+      return lastPage?.results?.length ? allPages.length + 1 : null;
     },
   });
 
@@ -64,10 +55,6 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetching, fetchNextPage]);
-
-  if (!getGame(Number(gameId))) {
-    return <ErrorPage />;
-  }
 
   return (
     <div

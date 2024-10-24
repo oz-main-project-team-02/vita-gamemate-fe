@@ -8,7 +8,7 @@ import MateCard from '../Common/MateCard';
 import { useQuery } from '@tanstack/react-query';
 import { UserResponse } from '@/config/types';
 import { mateApi } from '@/api';
-import SkeletonMateCard from '../skeleton/skeletonMateCard';
+import SkeletonMateCard from '../skeleton/SkeletonMateCard';
 import { delay } from '@/utils/delay';
 
 type Props = {
@@ -21,7 +21,7 @@ export default function GameCategorySlider({ gameId }: Props) {
     queryFn: async () => {
       // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
       // FIXME: delay 함수 제거시 async await 구문 제거
-      await delay(5000);
+      await delay();
       return await mateApi.fetchGameMateProfiles({ gameId, pageParam: 1 });
     },
   });

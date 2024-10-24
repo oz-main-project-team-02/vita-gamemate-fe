@@ -1,7 +1,7 @@
 import { requestApi } from '@/api';
 import { User } from '@/config/types';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import ProfileImage from './ProfileImage';
 import { useOrderModalStore } from '@/config/store';
@@ -10,9 +10,19 @@ import { getGame } from '@/config/const';
 export function OrderModal({ mate }: { mate: User }) {
   const [amount, setAmount] = useState(1);
   const [price] = useState(mate?.mate_game_info?.[0]?.request_price || 0);
-  const { setOrderModalClose } = useOrderModalStore();
+  const { isOrderModalOpen, setOrderModalClose } = useOrderModalStore();
 
-  console.log(mate);
+  useEffect(() => {
+    if (isOrderModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOrderModalOpen]);
 
   const orderRequest = useMutation({
     mutationFn: async ({ price, amount }: { price: number; amount: number }) => {
@@ -48,7 +58,7 @@ export function OrderModal({ mate }: { mate: User }) {
         {/* X 버튼, 채팅 */}
         <div className='flex h-full flex-col gap-7'>
           <div className='flex items-center gap-3'>
-            <span className='cursor-pointer' onClick={setOrderModalClose}>
+            <span className='cursor-pointer'>
               <IoMdClose size={20} />
             </span>
             <span className='text-2xl font-semibold'>주문 확인</span>

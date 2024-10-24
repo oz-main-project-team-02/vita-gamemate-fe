@@ -11,7 +11,7 @@
   "bracketSameLine": false, 
   "arrowParens": "always", 
   "endOfLine": "lf",
-  "proseWrap": "always", 
+  "proseWrap": "always",
   "htmlWhitespaceSensitivity": "strict", 
   "plugins": ["prettier-plugin-tailwindcss"]
 }

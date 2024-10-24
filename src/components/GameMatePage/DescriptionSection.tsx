@@ -26,7 +26,7 @@ export default function DescriptionSection({ setFormData }: Props) {
         rows={5}
         placeholder='예시) 빠르게 캐리 해줄게요!&#13;당신의 뒤를 봐주고 킬을 따게 해줄 사람이 필요하다면 저를 선택하세요.&#13;어떤 모드든지 재밌기만 하면 상관없어요 :3'
         onChange={handleDescriptionChange}
-      ></textarea>
+      />
     </div>
   );
 }

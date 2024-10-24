@@ -1,33 +1,20 @@
-import { walletApi } from '@/api';
 import { CoinPackage } from '@/config/const';
-import { useUserStore } from '@/config/store';
-import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   coinData: CoinPackage;
 };
 
-type RechargeResponse = {
-  message: string;
-  coin: number;
-};
-
 export default function CoinBox({ coinData }: Props) {
-  const { setUser } = useUserStore();
-  const rechargeMutation = useMutation({
-    mutationFn: async () => {
-      const { data }: { data: RechargeResponse } = await walletApi.rechargeWalletCoin(coinData.coin);
-      return data;
-    },
-    onSuccess: (data) => {
-      console.log(data);
-      setUser({ coin: data.coin });
-    },
-  });
+  const navigate = useNavigate();
 
   const handlePaymentClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    rechargeMutation.mutate();
+    navigate('/payment', {
+      state: {
+        coinData,
+      },
+    });
   };
 
   return (

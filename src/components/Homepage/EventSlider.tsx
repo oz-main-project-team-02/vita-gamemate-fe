@@ -3,14 +3,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay'; // Autoplay 모듈 스타일
 import { Autoplay, Navigation } from 'swiper/modules';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function EventSlider() {
-  const navigate = useNavigate();
-  const handleEventClick = () => {
-    navigate('/event');
-  };
-
   return (
     <div className='relative'>
       <Swiper
@@ -26,9 +21,9 @@ export default function EventSlider() {
       >
         {new Array(4).fill(0).map((_, i) => (
           <SwiperSlide key={i}>
-            <div
+            <Link
+              to={'/event'}
               className='flex h-[360px] w-[950px] items-center justify-center gap-32 rounded-3xl bg-pink-100 shadow-lg'
-              onClick={handleEventClick}
             >
               <div>
                 <p>함께하면 더욱 즐거운~</p>
@@ -37,7 +32,7 @@ export default function EventSlider() {
                 <p>대화하며 롤 듀오를 즐겨보세요 !</p>
               </div>
               <div className='h-[220px] w-[220px] rounded-[50%] bg-white'></div>
-            </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

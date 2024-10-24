@@ -17,7 +17,7 @@ export default function CommonLayout({ children }: Props) {
   return (
     <>
       <Header />
-      {children}
+      <div className='min-h-screen'>{children}</div>
       <Footer />
       {isChatModalOpen && (
         <Suspense fallback={<Spinner />}>

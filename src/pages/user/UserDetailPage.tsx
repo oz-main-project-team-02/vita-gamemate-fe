@@ -4,7 +4,6 @@ import { PiCrownSimpleFill } from 'react-icons/pi';
 import Gender from '@/components/Common/Gender';
 import OnlineFlag from '@/components/Common/OnlineFlag';
 import TitleIntro from '@/components/Common/TitleIntro';
-import CommonLayout from '@/layouts/CommonLayout';
 import UserRanking from '@/components/UserDetailPage/UserRanking';
 import VitaPrice from '@/components/Common/VitaPrice';
 import lol from '@/assets/imgs/lol.png';
@@ -13,7 +12,7 @@ import { User } from '@/config/types';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
-import ErrorPage from './ErrorPage';
+import ErrorPage from '../ErrorPage';
 import { getGame } from '@/config/const';
 import { useChatModalStore, useOrderModalStore } from '@/config/store';
 import { createChat } from '@/api/chat';
@@ -74,7 +73,7 @@ export default function UserDetailPage() {
   };
 
   return (
-    <CommonLayout>
+    <>
       {isOrderModalOpen && <OrderModal mate={mate} />}
       <div className='h-[4105px] w-full'>
         <TitleIntro titleE={'Vita User'} titleK={'사용자 정보'} content={'비타 유저를 구경하세요!'} />
@@ -207,6 +206,6 @@ export default function UserDetailPage() {
           </div>
         </div>
       </div>
-    </CommonLayout>
+    </>
   );
 }

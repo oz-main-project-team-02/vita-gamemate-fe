@@ -41,8 +41,6 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      console.log('lastPage 데이터:', lastPage);
-
       return lastPage?.results?.length ? allPages.length + 1 : null;
     },
   });

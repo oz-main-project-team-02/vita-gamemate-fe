@@ -56,11 +56,14 @@ export type Wallet = {
 };
 
 export interface ChatList {
-  chat_room_id: number;
-  profile_image: string | null;
-  nickname: string;
-  last_message: string;
-  last_message_time: Date;
+  id: number;
+  main_user_nickname: string;
+  other_user_id: number;
+  other_user_nickname: string;
+  other_user_profile_image: string | null;
+  latest_message: string | null;
+  latest_message_time: Date | null;
+  updated_at: Date;
 }
 
 export interface Participant {
@@ -78,9 +81,9 @@ export interface Message {
 }
 
 export interface ChatMessage {
-  chat_room_id: number;
+  id: number;
   participants: Participant[];
-  messages: Message[];
+  messages: Message[] | null;
 }
 
 export interface UserResponse {

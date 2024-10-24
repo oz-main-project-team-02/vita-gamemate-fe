@@ -4,14 +4,15 @@ import ChatMessageModal from './ChatMessageModal';
 import { useEffect, useRef } from 'react';
 import { formatDate, formatTime, isToday } from '../../utils/dateUtils';
 import ProfileImage from './ProfileImage';
-import { onClickOutside } from '../../utils/onClickOutside';
+import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { useQuery } from '@tanstack/react-query';
 import { fetchChatLists } from '../../api/chat';
 import { ChatList } from '../../config/types';
 
 const ChatModal = () => {
   const { isChatModalOpen, setChatModalClose } = useChatModalStore();
-  const { selectedRoomId, setSelectedRoomId } = useChatStore();
+  const { selectedRoomId, setSelectedRoomId, setParticipantId, setParticipantNickname, setParticipantProfileImage } =
+    useChatStore();
   const chatModalRef = useRef<HTMLDivElement | null>(null);
   const chatMessageModalRef = useRef<HTMLDivElement | null>(null);
 
@@ -27,7 +28,12 @@ const ChatModal = () => {
 
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
-      setSelectedRoomId(chatList[0].chat_room_id); // 데이터를 성공적으로 가져왔을 때 처리
+      setSelectedRoomId(chatList[0].id);
+      setParticipantId(chatList[0].other_user_id);
+      setParticipantNickname(chatList[0].other_user_nickname);
+      if (chatList[0].other_user_profile_image) {
+        setParticipantProfileImage(chatList[0].other_user_profile_image);
+      } else setParticipantProfileImage('/favicon.png');
     }
   }, [isSuccess, chatList, setSelectedRoomId]);
 
@@ -43,7 +49,16 @@ const ChatModal = () => {
     };
   }, [isChatModalOpen]);
 
-  onClickOutside([chatModalRef, chatMessageModalRef], setChatModalClose);
+  const chatParticipantHandler = (chatItem: ChatList) => {
+    setSelectedRoomId(chatItem.id);
+    setParticipantId(chatItem.other_user_id);
+    setParticipantNickname(chatItem.other_user_nickname);
+    if (chatItem.other_user_profile_image) {
+      setParticipantProfileImage(chatItem.other_user_profile_image);
+    } else setParticipantProfileImage('/favicon.png');
+  };
+
+  useOnClickOutside([chatModalRef, chatMessageModalRef], setChatModalClose);
 
   if (!isChatModalOpen) return null;
   if (isError) {
@@ -68,23 +83,32 @@ const ChatModal = () => {
             {chatList && chatList.length > 0
               ? chatList.map((chatItem) => (
                   <div
-                    className={`flex gap-3 px-3 py-4 ${chatItem.chat_room_id === selectedRoomId ? 'bg-skyGray' : 'hover:bg-lightSkyGray'}`}
-                    key={chatItem.chat_room_id}
-                    onClick={() => setSelectedRoomId(chatItem.chat_room_id)}
+                    className={`flex gap-3 px-3 py-4 ${chatItem.id === selectedRoomId ? 'bg-skyGray' : 'hover:bg-lightSkyGray'}`}
+                    key={chatItem.id}
+                    onClick={() => chatParticipantHandler(chatItem)}
                   >
                     <div className='flex min-h-[49px] min-w-[49px] items-center justify-center rounded-full bg-gray-100'>
-                      <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={chatItem.profile_image} />
+                      <ProfileImage
+                        className='max-h-[49px] max-w-[49px] rounded-full'
+                        src={chatItem.other_user_profile_image}
+                      />
                     </div>
                     <div className='flex grow flex-col gap-1'>
                       <div className='flex items-center justify-between'>
-                        <span className='max-w-[240px] grow truncate font-semibold'>{chatItem.nickname}</span>
+                        <span className='max-w-[240px] grow truncate font-semibold'>
+                          {chatItem.other_user_nickname}
+                        </span>
                         <span className='text-xs text-gray-400'>
-                          {isToday(new Date(chatItem.last_message_time))
-                            ? formatTime(chatItem.last_message_time)
-                            : formatDate(chatItem.last_message_time)}
+                          {isToday(new Date(chatItem.updated_at))
+                            ? formatTime(chatItem.updated_at)
+                            : formatDate(chatItem.updated_at)}
                         </span>
                       </div>
-                      <p className='max-w-[240px] truncate text-sm'>{chatItem.last_message}</p>
+                      {
+                        <p className='max-w-[240px] truncate text-sm'>
+                          {chatItem.latest_message ? chatItem.latest_message : ''}
+                        </p>
+                      }
                     </div>
                   </div>
                 ))

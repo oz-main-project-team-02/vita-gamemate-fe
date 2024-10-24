@@ -1,6 +1,6 @@
-import FilterList from '../components/EditInfoPage/FilterList';
+import FilterList from '../components/Common/FilterList';
 import TitleIntro from '../components/Common/TitleIntro';
-import ProfileImg from '../components/EditInfoPage/ProfileImg';
+import ProfileImg from '../components/Common/ProfileImg';
 import CommonLayout from '../layouts/CommonLayout';
 import Request from '../components/OrderPage/Request';
 import Response from '../components/OrderPage/Response';
@@ -18,8 +18,6 @@ export default function OrdersPage() {
         <TitleIntro titleE={'MY ORDER'} titleK={'나의 의뢰'} content={'즐거운 매칭을 비타와 함께하세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100'>
           <ProfileImg />
-          <p className='absolute left-[57%] top-[30px] text-2xl font-bold text-gray-500'>닉네임</p>
-          <p className='absolute left-[57%] top-[75px] text-xl font-bold text-[#898989]'>아이디</p>
           <div className='absolute left-[40.5%] top-[260px] h-[1500px] w-[50%]'>
             <p className='pb-[26px] text-2xl font-bold text-gray-500'>닉네임</p>
             <button

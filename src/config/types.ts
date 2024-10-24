@@ -128,3 +128,11 @@ export interface ReceivedRequestResponse {
   previous: string | null;
   results: ReceivedRequest[];
 }
+
+export interface UserProfileUpdateData {
+  nickname: string;
+  gender?: string | null;
+  profile_image?: string | null;
+  birthday?: string | null;
+  description?: string | null;
+}

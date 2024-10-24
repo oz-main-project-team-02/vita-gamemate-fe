@@ -1,21 +1,15 @@
-type Profile = {
-  profileImage: string | null | undefined;
-  nickname: string;
-  description: string | null;
-  gender: string | null;
-  date: string;
-};
+import { UserProfileUpdateData } from '@/config/types';
 
 type ProfileProps = {
-  profile: Profile;
-  setProfile: React.Dispatch<React.SetStateAction<Profile>>;
+  profile: UserProfileUpdateData;
+  setProfile: React.Dispatch<React.SetStateAction<UserProfileUpdateData>>;
 };
 
 export default function Female({ profile, setProfile }: ProfileProps) {
   return (
     <input
       onClick={() => setProfile({ ...profile, gender: 'female' })}
-      className='h-[60px] w-[365px] cursor-pointer rounded-xl bg-primary text-[24px] font-bold'
+      className='h-[60px] w-[365px] cursor-pointer rounded-xl bg-primary text-[24px] font-bold hover:scale-95'
       type='button'
       value='여성'
     />

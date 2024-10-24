@@ -17,18 +17,15 @@ export const fetchMyProfile = () => {
   return client.get(`/api/v1/users/profile/me/`);
 };
 
-interface UserProfileUpdateData {
-  nickname?: string;
-  gender?: string;
-  profile_image?: string;
-  birthdata?: string;
-  description?: string;
-}
 /**
  * PATCH /api/v1/users/profile/me/
  * @param data 사용자 프로필 수정 정보
  * @returns 수정된 사용자 프로필 정보
  */
-export const updateMyProfile = (data: UserProfileUpdateData) => {
-  return client.patch(`/api/v1/users/profile/me/`, data);
+export const updateMyProfile = (data: FormData) => {
+  return client.patch(`/api/v1/users/profile/me/`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };

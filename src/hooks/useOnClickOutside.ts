@@ -1,7 +1,12 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { useOrderModalStore } from '@/config/store';
 
-export const onClickOutside = (refs: React.MutableRefObject<HTMLElement | null>[], handler: () => void) => {
+export const useOnClickOutside = (refs: React.MutableRefObject<HTMLElement | null>[], handler: () => void) => {
+  const isOrderModalOpen = useOrderModalStore((state) => state.isOrderModalOpen);
+
   useEffect(() => {
+    if (isOrderModalOpen) return;
+
     const mouseListener = (e: MouseEvent) => {
       if (refs.some((ref) => ref.current && ref.current.contains(e.target as Node))) {
         return;
@@ -22,5 +27,5 @@ export const onClickOutside = (refs: React.MutableRefObject<HTMLElement | null>[
       document.removeEventListener('mousedown', mouseListener);
       document.removeEventListener('keydown', keyListener);
     };
-  }, [refs, handler]);
+  }, [refs, handler, isOrderModalOpen]);
 };

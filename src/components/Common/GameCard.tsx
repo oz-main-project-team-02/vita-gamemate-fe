@@ -1,9 +1,9 @@
+import { Game } from '@/config/const';
 import { useNavigate } from 'react-router-dom';
-import { Games } from '@/config/const';
 
 type Props = {
   game: string;
-  gameData: Games;
+  gameData: Game;
 };
 
 export default function GameCard({ game, gameData }: Props) {
@@ -52,8 +52,9 @@ export default function GameCard({ game, gameData }: Props) {
         backgroundSize: `${bgSize}`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: `${bgPosition}`,
+        boxShadow: '0px 5px 7px rgba(0, 0, 0, 0.4)',
       }}
-      className={`m-2 h-[112px] w-[250px] cursor-pointer rounded-2xl hover:opacity-90 ${bgColor} p-4 text-[#FFFFFF]`}
+      className={`m-2 h-[112px] w-[23.4%] min-w-[100px] cursor-pointer rounded-2xl hover:scale-95 ${bgColor} p-4 text-[#FFFFFF]`}
     >
       <h1 className='text-lg font-bold'>{gameData.title}</h1>
       <p className='text-sm font-normal'>{gameData.type}</p>

@@ -37,7 +37,7 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
     <div
       onMouseEnter={() => setProfileHover(true)}
       onMouseLeave={() => setProfileHover(false)}
-      className='absolute right-[45px] top-[40px] z-20 h-[400px] w-[17%] min-w-[300px] py-8'
+      className='absolute right-[45px] top-[40px] z-30 h-[400px] w-[17%] min-w-[300px] py-8'
     >
       <div className='z-20 h-[370px] w-full rounded-3xl bg-[#FFFFFF] p-5 shadow'>
         <div

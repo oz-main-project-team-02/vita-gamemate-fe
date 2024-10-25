@@ -30,21 +30,19 @@ export default function Header() {
     <header className='flex items-center justify-between px-12'>
       <div className='flex gap-6 text-sm font-semibold text-primaryTextLight lg:text-base'>
         <Link to={'/'}>
-          <div className='hover:text-primaryText'>홈페이지</div>
+          <div className='py-6 hover:text-primaryText'>홈페이지</div>
         </Link>
         <div
-          className='relative cursor-pointer hover:text-primaryText'
+          className='cursor-pointer py-6 pr-4 hover:text-primaryText'
           onMouseEnter={() => setGameHover(true)}
           onMouseLeave={() => setGameHover(false)}
         >
           모든 서비스
         </div>
       </div>
-
       {/* 드롭다운 */}
-
+      <GameDropdown setGameHover={setGameHover} />
       {gameHover && <GameDropdown setGameHover={setGameHover} />}
-
       <Link to={'/'}>
         <div className='text-[36px] font-bold lg:text-[42px] xl:text-[48px]'>
           VI<span className='text-white'>TA</span>

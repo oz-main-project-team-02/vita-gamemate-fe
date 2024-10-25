@@ -2,8 +2,16 @@ import { mock } from '@/api/mock';
 import { useQuery } from '@tanstack/react-query';
 import SkeletonReveiwCard from '../skeleton/SkeletonReviewCard';
 import { delay } from '@/utils/delay';
+import { Review } from '@/config/types';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import relativeTime from 'dayjs/plugin/relativeTime';
 // import { Review } from '@/config/types';
 // import { reviewApi } from '@/api';
+
+dayjs.locale('ko');
+dayjs.extend(relativeTime);
 
 export default function RealTimeReviewsSection() {
   const { data, isLoading } = useQuery({
@@ -11,7 +19,7 @@ export default function RealTimeReviewsSection() {
     queryFn: async () => {
       // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
       // FIXME: delay 함수 제거시 async await 구문 제거
-      await delay(5000);
+      await delay();
       const response = await mock.get(`/api/v1/users/review`);
       return response.data;
     },
@@ -38,16 +46,26 @@ export default function RealTimeReviewsSection() {
         <div className='flex flex-col gap-5'>
           {isLoading
             ? Array.from({ length: 5 }).map((_, i) => <SkeletonReveiwCard key={i} />)
-            : data?.map((review) => (
-                <div
-                  key={review.id}
-                  className='flex h-[100px] justify-between rounded-3xl bg-gray-200 px-4 py-3 shadow-lg'
-                >
+            : data?.map((review: Review, i: number) => (
+                <div key={i} className='flex h-[100px] justify-between rounded-3xl bg-white px-4 py-3 shadow-lg'>
                   <div>
-                    <h1 className='text-lg font-bold'>{review.request_id}</h1>
-                    <p>{review.content}</p>
+                    <h1 className='text-lg font-bold'>{review.game_request_id}</h1>
+                    <div className='flex'>
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <img key={i} src='/src/assets/imgs/star.svg' alt='별점' />
+                      ))}
+                    </div>
+                    <div>{review.content}</div>
                   </div>
-                  <p className='text-gray-400'>{review.created_at.toLocaleString()}</p>
+                  <div className='flex flex-col items-end justify-between'>
+                    <p className='text-gray-400'>{dayjs(review.created_at).fromNow()}</p>
+                    {/* FIX: review에서 게임메이트의 아이디를 받아올 수 있어야함. */}
+                    <Link to={`/user/${review.game_request_id}`}>
+                      <button className='rounded-md bg-primary px-3 py-2 font-semibold text-primaryText'>
+                        메이트 정보 확인하기
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               ))}
 

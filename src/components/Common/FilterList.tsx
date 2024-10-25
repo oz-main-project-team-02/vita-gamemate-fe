@@ -43,7 +43,7 @@ export default function FilterList() {
         </big>{' '}
         &nbsp;게임 메이트 등록
       </p>
-      <p className={getNavigateClass('/user/coin')} onClick={() => navigate('/coin')}>
+      <p className={getNavigateClass('/user/coin')} onClick={() => navigate('/user/coin')}>
         <big>
           <strong>/</strong>
         </big>{' '}

@@ -4,8 +4,6 @@ import VitaPrice from './VitaPrice';
 import { User } from '../../config/types';
 
 export default function MateCard({ mate }: { mate: User }) {
-  // TODO: 리뷰 API 호출 후 리뷰 평균 별점으로 변경
-
   return (
     <Link to={`/user/${mate.id}`}>
       <div className='relative flex h-[288px] w-[206px] flex-col items-center justify-center overflow-hidden rounded-3xl leading-[1.3] shadow-lg'>

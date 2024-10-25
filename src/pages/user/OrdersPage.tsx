@@ -1,19 +1,15 @@
-import FilterList from '../components/Common/FilterList';
-import TitleIntro from '../components/Common/TitleIntro';
-import ProfileImg from '../components/Common/ProfileImg';
-import CommonLayout from '../layouts/CommonLayout';
-import Request from '../components/OrderPage/Request';
-import Response from '../components/OrderPage/Response';
-import { useEffect, useState } from 'react';
+import FilterList from '../../components/Common/FilterList';
+import TitleIntro from '../../components/Common/TitleIntro';
+import ProfileImg from '../../components/Common/ProfileImg';
+import Request from '../../components/OrderPage/Request';
+import Response from '../../components/OrderPage/Response';
+import { useState } from 'react';
 
 export default function OrdersPage() {
   const [selectButton, setSelectButton] = useState('request');
 
-  useEffect(() => {
-    console.log(selectButton); // 상태가 변경될 때마다 출력
-  }, [selectButton]);
   return (
-    <CommonLayout>
+    <>
       <div className='h-[4105px] w-full'>
         <TitleIntro titleE={'MY ORDER'} titleK={'나의 의뢰'} content={'즐거운 매칭을 비타와 함께하세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100'>
@@ -44,6 +40,6 @@ export default function OrdersPage() {
           </div>
         </div>
       </div>
-    </CommonLayout>
+    </>
   );
 }

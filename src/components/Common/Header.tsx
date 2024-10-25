@@ -48,7 +48,7 @@ export default function Header() {
         <div className='flex items-center gap-4'>
           {localStorage.getItem('accessToken') ? (
             <>
-              <Link to={'/coin'}>
+              <Link to={'/user/coin'}>
                 <div className='flex items-center gap-2 rounded-md bg-slate-200 px-4 py-2'>
                   <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
                   <span className='font-semibold'>{user.coin}</span>

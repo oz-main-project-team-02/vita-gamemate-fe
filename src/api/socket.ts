@@ -1,9 +1,9 @@
-import { useChatStore } from '@/config/store';
-import { useEffect, useState } from 'react';
+import { socketStore, useChatStore } from '@/config/store';
+import { useEffect } from 'react';
 
 function useSocket(): WebSocket | null {
   const selectedRoomId = useChatStore((state) => state.selectedRoomId);
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const { socket, setSocket } = socketStore();
 
   useEffect(() => {
     if (selectedRoomId) {
@@ -35,7 +35,7 @@ function useSocket(): WebSocket | null {
         setSocket(null);
       };
     }
-  }, [selectedRoomId]);
+  }, [selectedRoomId, socket]);
 
   return socket;
 }

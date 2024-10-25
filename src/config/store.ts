@@ -120,10 +120,10 @@ export const useOrderModalStore = create<OrderModalState>((set) => ({
 
 interface SocketState {
   socket: WebSocket | null;
-  setSocket: (socket: WebSocket) => void;
+  setSocket: (socket: WebSocket | null) => void;
 }
 
 export const socketStore = create<SocketState>((set) => ({
   socket: null,
-  setSocket: (socket: WebSocket) => set({ socket }),
+  setSocket: (socket: WebSocket | null) => set({ socket }),
 }));

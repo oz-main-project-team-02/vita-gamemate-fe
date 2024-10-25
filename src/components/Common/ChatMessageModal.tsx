@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Participant, MateGameInfo, User, Message } from '../../config/types';
-import { socketStore, useChatStore, useOrderModalStore } from '../../config/store';
+import { useChatStore, useOrderModalStore } from '../../config/store';
 import ChatSubmitForm from './ChatSubmitForm';
 import ProfileImage from './ProfileImage';
 import ChatRenderMessages from './ChatRenderMessages';
@@ -13,7 +13,6 @@ import useSocket from '@/api/socket';
 
 const ChatMessageModal = () => {
   const socket = useSocket();
-  const setSocket = socketStore((state) => state.setSocket);
   const { selectedRoomId, otherUserId, otherUserNickname, otherUserProfileImage } = useChatStore();
   const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
   const [chatData, setChatData] = useState<{ participants: Participant[]; messages: Message[] | null } | null>(null);
@@ -24,15 +23,12 @@ const ChatMessageModal = () => {
   // WebSocket으로 채팅 내역 불러오기
   useEffect(() => {
     if (socket && selectedRoomId) {
-      setSocket(socket);
-      fetchChatMessages(socket, selectedRoomId, (data) => {
-        setChatData(data);
-      });
+      fetchChatMessages(socket, selectedRoomId, setChatData);
     }
   }, [socket, selectedRoomId]);
 
   // 메이트 프로필 조회
-  const { data: mateData, isSuccess } = useQuery<User, Error>({
+  const { data: mateData } = useQuery<User, Error>({
     queryKey: ['mateInfo', otherUserId],
     queryFn: () => fetchUserProfileById(otherUserId?.toString() as string).then((response) => response.data),
     enabled: !!otherUserId,
@@ -40,11 +36,11 @@ const ChatMessageModal = () => {
 
   // 메이트 정보
   useEffect(() => {
-    if (isSuccess && mateData?.is_mate && mateData?.mate_game_info) {
+    if (mateData?.is_mate && mateData?.mate_game_info) {
       setMate(mateData);
       setMateGameInfo(mateData.mate_game_info[0]);
     }
-  }, [isSuccess, mateData]);
+  }, [mateData]);
 
   // 채팅창 스크롤 조정
   useEffect(() => {

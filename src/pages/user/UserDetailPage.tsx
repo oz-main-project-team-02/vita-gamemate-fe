@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
 import ErrorPage from '../ErrorPage';
 import { getGame } from '@/config/const';
-import { useChatModalStore, useOrderModalStore } from '@/config/store';
+import { useChatModalStore, useOrderModalStore, useUserStore } from '@/config/store';
 import { createChat } from '@/api/chat';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect } from 'react';
@@ -23,6 +23,7 @@ export default function UserDetailPage() {
   const { userId } = useParams();
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
   const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,23 +49,22 @@ export default function UserDetailPage() {
 
   // 채팅방 생성 api 요청 후 채팅 모달 open
   const createChatHandler = async (mateNickname: string | null) => {
-    if (mateNickname) {
-      try {
-        const response = await createChat(mateNickname);
-        console.log(response.data);
+    if (!mateNickname || mateNickname === user.nickname) return;
 
-        if (response.status === 200 || response.status === 201) {
-          setChatModalOpen();
-        } else {
-          console.log('채팅방 생성 실패');
-          alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-        }
-      } catch (error) {
-        console.error('채팅방 생성 요청 실패: ', error);
+    try {
+      const response = await createChat(mateNickname);
+      console.log(response.data);
+
+      if (response.status === 200 || response.status === 201) {
+        setChatModalOpen();
+      } else {
+        console.error('채팅방 생성 실패');
         alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }
+    } catch (error) {
+      console.error('채팅방 생성 요청 실패: ', error);
+      alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
-    return;
   };
 
   const handleOrdersClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -97,8 +97,11 @@ export default function UserDetailPage() {
                 <p className='ml-2 text-xs text-gray-200'>{mate.email}</p>
               </div>
             </div>
-            <button className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
-              {<AiOutlineMessage size={24} onClick={() => createChatHandler(mate.nickname)} />}
+            <button
+              className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
+              onClick={() => createChatHandler(mate.nickname)}
+            >
+              <AiOutlineMessage size={24} />
             </button>
           </div>
 

@@ -5,34 +5,36 @@ import { sendMessage } from '../../api/chat';
 const ChatSubmitForm = () => {
   const socket = socketStore((state) => state.socket);
   const user = useUserStore((state) => state.user);
+  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
   const otherUserNickname = useChatStore((state) => state.otherUserNickname);
   const [messageValue, setMessageValue] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const submitHandler = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
-    if (messageValue.trim() !== '' && selectedRoomId && !isSubmitting) {
-      if (socket) {
-        if (user.nickname && otherUserNickname) {
-          setIsSubmitting(true);
-          sendMessage(socket, {
-            roomId: selectedRoomId,
-            message: messageValue,
-            sender_nickname: user.nickname,
-            main_user_nickname: user.nickname,
-            other_user_nickname: otherUserNickname,
-          });
-          setMessageValue('');
-          setIsSubmitting(false);
-        } else {
-          console.error('닉네임 정보가 없습니다. 메시지를 전송할 수 없습니다.');
-        }
-      } else {
-        console.error('소켓이 연결되지 않았습니다. 메시지를 전송할 수 없습니다.');
-      }
+    if (!messageValue.trim() || !selectedRoomId || isSubmitting) return;
+
+    if (!socket) {
+      console.error('소켓이 연결되지 않았습니다. 메시지를 전송할 수 없습니다.');
+      return;
     }
+
+    if (!user.nickname || !otherUserNickname) {
+      console.error('닉네임 정보가 없습니다. 메시지를 전송할 수 없습니다.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    sendMessage(socket, {
+      roomId: selectedRoomId,
+      message: messageValue,
+      sender_nickname: user.nickname,
+      main_user_nickname: user.nickname,
+      other_user_nickname: otherUserNickname,
+    });
+    setMessageValue('');
+    setIsSubmitting(false);
   };
 
   const enterKeyHandler = (e: React.KeyboardEvent) => {

@@ -6,7 +6,7 @@ function useSocket(): WebSocket | null {
   const { socket, setSocket } = socketStore();
 
   useEffect(() => {
-    if (selectedRoomId) {
+    if (selectedRoomId && !socket) {
       console.log('WebSocket 연결 시도중...');
 
       const ws = new WebSocket(`wss://resdineconsulting.com/ws/chat/${selectedRoomId}/`);
@@ -35,7 +35,7 @@ function useSocket(): WebSocket | null {
         setSocket(null);
       };
     }
-  }, [selectedRoomId, socket]);
+  }, [selectedRoomId, socket, setSocket]);
 
   return socket;
 }

@@ -1,13 +1,13 @@
+import { useEffect, useRef } from 'react';
 import { useChatModalStore, useChatStore } from '../../config/store';
 import { IoMdClose } from 'react-icons/io';
-import ChatMessageModal from './ChatMessageModal';
-import { useEffect, useRef } from 'react';
 import { formatDate, formatTime, isToday } from '../../utils/dateUtils';
-import ProfileImage from './ProfileImage';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { useQuery } from '@tanstack/react-query';
 import { fetchChatLists } from '../../api/chat';
 import { ChatList } from '../../config/types';
+import ChatMessageModal from './ChatMessageModal';
+import ProfileImage from './ProfileImage';
 
 const ChatModal = () => {
   const { isChatModalOpen, setChatModalClose } = useChatModalStore();
@@ -26,16 +26,18 @@ const ChatModal = () => {
     queryFn: fetchChatLists,
   });
 
+  const setOtherUserInfo = (chatInfo: ChatList) => {
+    setSelectedRoomId(chatInfo.id);
+    setOtherUserId(chatInfo.other_user_id);
+    setOtherUserNickname(chatInfo.other_user_nickname);
+    setOtherUserProfileImage(chatInfo.other_user_profile_image || '/favicon.png');
+  };
+
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
-      setSelectedRoomId(chatList[0].id);
-      setOtherUserId(chatList[0].other_user_id);
-      setOtherUserNickname(chatList[0].other_user_nickname);
-      if (chatList[0].other_user_profile_image) {
-        setOtherUserProfileImage(chatList[0].other_user_profile_image);
-      } else setOtherUserProfileImage('/favicon.png');
+      setOtherUserInfo(chatList[0]);
     }
-  }, [isSuccess, chatList, setSelectedRoomId]);
+  }, [isSuccess, chatList]);
 
   useEffect(() => {
     if (isChatModalOpen) {
@@ -49,13 +51,8 @@ const ChatModal = () => {
     };
   }, [isChatModalOpen]);
 
-  const chatParticipantHandler = (chatItem: ChatList) => {
-    setSelectedRoomId(chatItem.id);
-    setOtherUserId(chatItem.other_user_id);
-    setOtherUserNickname(chatItem.other_user_nickname);
-    if (chatItem.other_user_profile_image) {
-      setOtherUserProfileImage(chatItem.other_user_profile_image);
-    } else setOtherUserProfileImage('/favicon.png');
+  const chatOtherUserInfoHandler = (chatItem: ChatList) => {
+    setOtherUserInfo(chatItem);
   };
 
   useOnClickOutside([chatModalRef, chatMessageModalRef], setChatModalClose);
@@ -63,7 +60,9 @@ const ChatModal = () => {
   if (!isChatModalOpen) return null;
   if (isError) {
     console.error('채팅 목록 조회 실패: ', isError);
-    return alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    setChatModalClose();
+    return null;
   }
 
   const chatModalPosition = chatList && chatList.length > 0 ? 'right-[420px]' : 'right-0';
@@ -85,7 +84,7 @@ const ChatModal = () => {
                   <div
                     className={`flex gap-3 px-3 py-4 ${chatItem.id === selectedRoomId ? 'bg-skyGray' : 'hover:bg-lightSkyGray'}`}
                     key={chatItem.id}
-                    onClick={() => chatParticipantHandler(chatItem)}
+                    onClick={() => chatOtherUserInfoHandler(chatItem)}
                   >
                     <div className='flex min-h-[49px] min-w-[49px] items-center justify-center rounded-full bg-gray-100'>
                       <ProfileImage

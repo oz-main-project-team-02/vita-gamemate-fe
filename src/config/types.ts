@@ -42,6 +42,13 @@ export interface Review {
   created_at: Date;
 }
 
+export interface ReviewPage {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Review[];
+}
+
 export type MateRegister = {
   game_id: string | null;
   level: string | null;

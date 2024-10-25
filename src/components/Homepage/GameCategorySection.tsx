@@ -11,7 +11,7 @@ export default function GameCategorySection() {
   };
 
   return (
-    <div className='flex h-[760px] items-center justify-center gap-36 bg-gray-100 px-[100px]'>
+    <div className='flex h-[460px] items-center justify-center gap-24 bg-gray-100 px-[100px] lg:h-[610px] xl:h-[760px] xl:gap-36'>
       <div className='flex flex-col'>
         <div className='mb-8'>
           <select defaultValue='default' onChange={handleGameChange} className='rounded-xl bg-gray-200 px-5 py-3'>
@@ -25,12 +25,12 @@ export default function GameCategorySection() {
           </select>
         </div>
         <div>
-          <p className='text-base text-gray-300'>{getGame(Number(seletedGameId))?.subTitle}</p>
-          <h1 className='text-[48px]'>
+          <p className='text-sm text-gray-300 lg:text-base xl:text-lg'>{getGame(Number(seletedGameId))?.subTitle}</p>
+          <h1 className='text-[24px] lg:text-[36px] xl:text-[44px]'>
             <span className='font-semibold'>{getGame(Number(seletedGameId))?.title}</span>
           </h1>
-          <p className='text-lg'>함께 게임할 준비가 된 메이트를 찾아봤어요,</p>
-          <p className='text-lg'>바로 이분들이에요!</p>
+          <p className='text-sm lg:text-base xl:text-lg'>함께 게임할 준비가 된 메이트를 찾아봤어요,</p>
+          <p className='text-sm lg:text-base xl:text-lg'>바로 이분들이에요!</p>
         </div>
       </div>
       <div>

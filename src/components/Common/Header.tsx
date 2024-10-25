@@ -26,7 +26,7 @@ export default function Header() {
 
   return (
     <header className='flex items-center justify-between px-12'>
-      <div className='flex gap-6 font-semibold text-primaryTextLight'>
+      <div className='flex gap-6 text-sm font-semibold text-primaryTextLight lg:text-base'>
         <Link to={'/'}>
           <div className='hover:text-primaryText'>홈페이지</div>
         </Link>
@@ -40,7 +40,7 @@ export default function Header() {
       </div>
       {gameHover && <GameDropdown setGameHover={setGameHover} />}
       <Link to={'/'}>
-        <div className='text-[48px] font-bold'>
+        <div className='text-[36px] font-bold lg:text-[42px] xl:text-[48px]'>
           VI<span className='text-white'>TA</span>
         </div>
       </Link>
@@ -48,7 +48,7 @@ export default function Header() {
         <div className='flex items-center gap-4'>
           {localStorage.getItem('accessToken') ? (
             <>
-              <Link to={'/user/coin'}>
+              <Link className='hidden xl:block' to={'/user/coin'}>
                 <div className='flex items-center gap-2 rounded-md bg-slate-200 px-4 py-2'>
                   <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
                   <span className='font-semibold'>{user.coin}</span>
@@ -87,9 +87,11 @@ export default function Header() {
             </>
           )}
         </div>
-        <div className='flex items-center border-b border-b-primaryText'>
-          <input type='search' className='w-24 border-none bg-transparent p-1 focus:outline-none' />
-          <IoSearchSharp />
+        <div className='hidden lg:block'>
+          <div className='flex items-center border-b border-b-primaryText'>
+            <input type='search' className='w-24 border-none bg-transparent p-1 focus:outline-none' />
+            <IoSearchSharp />
+          </div>
         </div>
       </div>
       {modalStatus.login && <LoginModal />}

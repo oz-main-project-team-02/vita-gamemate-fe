@@ -12,7 +12,6 @@
 * {
   margin: 0;
   padding: 0;
-  transition: all 0.3s ease;
 }
 
 :root,
@@ -32,14 +31,6 @@ input[type='search']::-webkit-search-cancel-button {
   appearance: none;
 }
 
-.swiper-slide {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  overflow: visible !important;
-  padding: 30px 10px;
-}
-
 @keyframes shimmer {
   0% {
     background-position: 100% 0; /* 시작 지점 */
@@ -53,4 +44,12 @@ input[type='search']::-webkit-search-cancel-button {
   background: linear-gradient(to right, #e0e0e0 0%, #f0f0f0 20%, #e0e0e0 40%, #e0e0e0 100%);
   background-size: 300% 100%; /* 배경 크기를 더 크게 설정 */
   animation: shimmer 1.5s infinite linear;
+}
+
+.swiper-slide {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  overflow: visible !important;
+  padding: 30px 10px;
 }

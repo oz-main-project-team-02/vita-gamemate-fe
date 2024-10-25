@@ -11,7 +11,7 @@ import { ChatList } from '../../config/types';
 
 const ChatModal = () => {
   const { isChatModalOpen, setChatModalClose } = useChatModalStore();
-  const { selectedRoomId, setSelectedRoomId, setParticipantId, setParticipantNickname, setParticipantProfileImage } =
+  const { selectedRoomId, setSelectedRoomId, setOtherUserId, setOtherUserNickname, setOtherUserProfileImage } =
     useChatStore();
   const chatModalRef = useRef<HTMLDivElement | null>(null);
   const chatMessageModalRef = useRef<HTMLDivElement | null>(null);
@@ -29,11 +29,11 @@ const ChatModal = () => {
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
       setSelectedRoomId(chatList[0].id);
-      setParticipantId(chatList[0].other_user_id);
-      setParticipantNickname(chatList[0].other_user_nickname);
+      setOtherUserId(chatList[0].other_user_id);
+      setOtherUserNickname(chatList[0].other_user_nickname);
       if (chatList[0].other_user_profile_image) {
-        setParticipantProfileImage(chatList[0].other_user_profile_image);
-      } else setParticipantProfileImage('/favicon.png');
+        setOtherUserProfileImage(chatList[0].other_user_profile_image);
+      } else setOtherUserProfileImage('/favicon.png');
     }
   }, [isSuccess, chatList, setSelectedRoomId]);
 
@@ -51,11 +51,11 @@ const ChatModal = () => {
 
   const chatParticipantHandler = (chatItem: ChatList) => {
     setSelectedRoomId(chatItem.id);
-    setParticipantId(chatItem.other_user_id);
-    setParticipantNickname(chatItem.other_user_nickname);
+    setOtherUserId(chatItem.other_user_id);
+    setOtherUserNickname(chatItem.other_user_nickname);
     if (chatItem.other_user_profile_image) {
-      setParticipantProfileImage(chatItem.other_user_profile_image);
-    } else setParticipantProfileImage('/favicon.png');
+      setOtherUserProfileImage(chatItem.other_user_profile_image);
+    } else setOtherUserProfileImage('/favicon.png');
   };
 
   useOnClickOutside([chatModalRef, chatMessageModalRef], setChatModalClose);

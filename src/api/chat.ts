@@ -25,9 +25,31 @@ export const fetchChatLists = async (): Promise<ChatList[]> => {
 };
 
 // 채팅 전송
-export const sendMessage = (socket: WebSocket, { roomId, message }: { roomId: number; message: string }) => {
+export const sendMessage = (
+  socket: WebSocket,
+  {
+    roomId,
+    message,
+    sender_nickname,
+    main_user_nickname,
+    other_user_nickname,
+  }: {
+    roomId: number;
+    message: string;
+    sender_nickname: string;
+    main_user_nickname: string;
+    other_user_nickname: string;
+  }
+) => {
   if (socket.readyState === WebSocket.OPEN) {
-    const data = JSON.stringify({ event: 'send_message', roomId, message });
+    const data = JSON.stringify({
+      event: 'send_message',
+      roomId,
+      message,
+      sender_nickname,
+      main_user_nickname,
+      other_user_nickname,
+    });
     socket.send(data);
   } else {
     console.error('WebSocket이 연결되지 않았습니다.');

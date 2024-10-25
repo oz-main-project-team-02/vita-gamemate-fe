@@ -14,7 +14,7 @@ import useSocket from '@/api/socket';
 const ChatMessageModal = () => {
   const socket = useSocket();
   const setSocket = socketStore((state) => state.setSocket);
-  const { selectedRoomId, participantId, participantNickname, participantProfileImage } = useChatStore();
+  const { selectedRoomId, otherUserId, otherUserNickname, otherUserProfileImage } = useChatStore();
   const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
   const [chatData, setChatData] = useState<{ participants: Participant[]; messages: Message[] | null } | null>(null);
   const [mate, setMate] = useState<User | null>(null);
@@ -33,9 +33,9 @@ const ChatMessageModal = () => {
 
   // 메이트 프로필 조회
   const { data: mateData, isSuccess } = useQuery<User, Error>({
-    queryKey: ['mateInfo', participantId],
-    queryFn: () => fetchUserProfileById(participantId?.toString() as string).then((response) => response.data),
-    enabled: !!participantId,
+    queryKey: ['mateInfo', otherUserId],
+    queryFn: () => fetchUserProfileById(otherUserId?.toString() as string).then((response) => response.data),
+    enabled: !!otherUserId,
   });
 
   // 메이트 정보
@@ -55,11 +55,11 @@ const ChatMessageModal = () => {
 
   return (
     <div className='flex h-full max-w-[420px] flex-col shadow-sm'>
-      {participantNickname && (
+      {otherUserNickname && (
         <div className='flex flex-col'>
           <div className='flex items-center gap-4 px-4 py-2'>
-            <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={participantProfileImage} />
-            <span className='max-w-[323px] grow truncate text-lg font-semibold'>{participantNickname}</span>
+            <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={otherUserProfileImage} />
+            <span className='max-w-[323px] grow truncate text-lg font-semibold'>{otherUserNickname}</span>
           </div>
         </div>
       )}

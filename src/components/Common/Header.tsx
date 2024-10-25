@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { IoSearchSharp } from 'react-icons/io5';
 import { useChatModalStore, useModalStore, useUserStore } from '../../config/store';
 import LoginModal from './LoginModal';
 import { useState } from 'react';
@@ -7,6 +6,7 @@ import { AiOutlineMessage } from 'react-icons/ai';
 import { TiUser } from 'react-icons/ti';
 import ProfileDropdown from './ProfileDropdown';
 import GameDropdown from './GameDropdown';
+import Search from './Search';
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
@@ -87,10 +87,7 @@ export default function Header() {
             </>
           )}
         </div>
-        <div className='flex items-center border-b border-b-primaryText'>
-          <input type='search' className='w-24 border-none bg-transparent p-1 focus:outline-none' />
-          <IoSearchSharp />
-        </div>
+        <Search />
       </div>
       {modalStatus.login && <LoginModal />}
     </header>

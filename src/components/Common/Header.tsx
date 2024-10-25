@@ -7,6 +7,8 @@ import { AiOutlineMessage } from 'react-icons/ai';
 import { TiUser } from 'react-icons/ti';
 import ProfileDropdown from './ProfileDropdown';
 import GameDropdown from './GameDropdown';
+import { Games } from '@/config/const';
+import GameCard from './GameCard';
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
@@ -31,14 +33,18 @@ export default function Header() {
           <div className='hover:text-primaryText'>홈페이지</div>
         </Link>
         <div
+          className='relative cursor-pointer hover:text-primaryText'
           onMouseEnter={() => setGameHover(true)}
           onMouseLeave={() => setGameHover(false)}
-          className='cursor-pointer hover:text-primaryText'
         >
           모든 서비스
         </div>
       </div>
+
+      {/* 드롭다운 */}
+
       {gameHover && <GameDropdown setGameHover={setGameHover} />}
+
       <Link to={'/'}>
         <div className='text-[36px] font-bold lg:text-[42px] xl:text-[48px]'>
           VI<span className='text-white'>TA</span>

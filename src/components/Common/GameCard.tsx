@@ -10,32 +10,22 @@ export default function GameCard({ game, gameData }: Props) {
   const navigate = useNavigate();
 
   let bgColor: string = '';
-  let bgSize: string = '';
-  let bgPosition: string = '';
 
   switch (game) {
     case 'lol':
       bgColor = 'bg-[#B8B13B]';
-      bgSize = '115px 102px';
-      bgPosition = '135px 9px';
       break;
 
     case 'tft':
       bgColor = 'bg-[#85B9CC]';
-      bgSize = '76px 103px';
-      bgPosition = '150px 4px';
       break;
 
     case 'bg':
       bgColor = 'bg-[#424244]';
-      bgSize = '87px 111px';
-      bgPosition = '140px 0px';
       break;
 
     case 'overwatch':
       bgColor = 'bg-[#7D7BAE]';
-      bgSize = '162px 101px';
-      bgPosition = '80px 10px';
       break;
   }
 
@@ -47,17 +37,15 @@ export default function GameCard({ game, gameData }: Props) {
   return (
     <div
       onClick={() => handleCategoryClick(gameData.id)}
-      style={{
-        backgroundImage: `url(${gameData.gameCardImg})`,
-        backgroundSize: `${bgSize}`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: `${bgPosition}`,
-        boxShadow: '0px 5px 7px rgba(0, 0, 0, 0.4)',
-      }}
-      className={`m-2 h-[112px] w-[240px] min-w-[100px] cursor-pointer rounded-2xl hover:scale-95 ${bgColor} p-4 text-[#FFFFFF]`}
+      className={`relative m-2 h-[80px] w-[200px] cursor-pointer rounded-2xl hover:scale-95 lg:h-[100px] lg:w-[200px] xl:h-[112px] xl:w-[240px] ${bgColor} p-4 text-[#FFFFFF]`}
     >
-      <h1 className='text-lg font-bold'>{gameData.title}</h1>
+      <h1 className='z-10 text-lg font-bold'>{gameData.title}</h1>
       <p className='text-sm font-normal'>{gameData.type}</p>
+      <img
+        src={gameData.gameCardImg}
+        alt=''
+        className='cover absolute bottom-0 right-0 h-[80px] w-[80px] lg:h-[100px] lg:w-[100px] xl:h-[112px] xl:w-[112px]'
+      />
     </div>
   );
 }

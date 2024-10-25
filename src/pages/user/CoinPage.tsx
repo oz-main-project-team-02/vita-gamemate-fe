@@ -1,13 +1,12 @@
-import FilterList from '../components/Common/FilterList';
-import TitleIntro from '../components/Common/TitleIntro';
-import ProfileImg from '../components/Common/ProfileImg';
-import CommonLayout from '../layouts/CommonLayout';
-import CoinBox from '../components/CoinPage/CoinBox';
+import FilterList from '../../components/Common/FilterList';
+import TitleIntro from '../../components/Common/TitleIntro';
+import ProfileImg from '../../components/Common/ProfileImg';
+import CoinBox from '../../components/CoinPage/CoinBox';
 import { CoinPackages } from '@/config/const';
 
 export default function CoinPage() {
   return (
-    <CommonLayout>
+    <>
       <div className='w-full'>
         <TitleIntro titleE={'MY WALLET'} titleK={'나의 코인'} content={'소중한 시간을 비타와 함께하세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100'>
@@ -29,6 +28,6 @@ export default function CoinPage() {
           </div>
         </div>
       </div>
-    </CommonLayout>
+    </>
   );
 }

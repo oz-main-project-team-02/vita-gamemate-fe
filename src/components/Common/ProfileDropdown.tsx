@@ -4,11 +4,12 @@ import { LuGamepad2 } from 'react-icons/lu';
 import { PiCoins } from 'react-icons/pi';
 import { SlNotebook } from 'react-icons/sl';
 import { TbLogout2 } from 'react-icons/tb';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/config/store';
 import { User } from '@/config/types';
 import { TiUser } from 'react-icons/ti';
 import { authApi } from '@/api';
+import { MdOutlinePayment } from 'react-icons/md';
 
 type HoverProps = {
   user: User;
@@ -39,9 +40,10 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
       onMouseLeave={() => setProfileHover(false)}
       className='absolute right-[45px] top-[40px] z-30 h-[400px] w-[17%] min-w-[300px] py-8'
     >
-      <div className='z-20 h-[370px] w-full rounded-3xl bg-[#FFFFFF] p-5 shadow'>
-        <div
-          onClick={() => navigate(`/user/${user.id}`)}
+      <div className='z-20 w-full rounded-3xl bg-[#FFFFFF] p-5 shadow'>
+        {/* 사용자 정보 링크 */}
+        <Link
+          to={`/user/${user.id}`}
           className='mb-3 flex h-[60px] w-full cursor-pointer items-center rounded-full hover:bg-slate-50'
         >
           <div className='h-[50px] w-[50px] rounded-full bg-slate-200'>
@@ -62,10 +64,12 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
           <div className='text-gray-300'>
             <SlArrowRight />
           </div>
-        </div>
+        </Link>
         <hr />
-        <div
-          onClick={() => navigate('/user/edit-info')}
+        {/* TODO: 컴포넌트화 충분히 가능해보임 아래 링크들 */}
+        {/* 마이페이지 링크 */}
+        <Link
+          to={`/user/edit-info`}
           className='mt-3 flex h-[40px] w-full cursor-pointer items-center justify-between hover:pl-1'
         >
           <div className='h-[20px] w-[20px]'>
@@ -75,9 +79,11 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
           <div className='float-right text-sm text-gray-300'>
             <SlArrowRight />
           </div>
-        </div>
-        <div
-          onClick={() => navigate('/user/gamemate')}
+        </Link>
+
+        {/* 게임메이트 등록 링크 */}
+        <Link
+          to={'/user/gamemate'}
           className='my-2 flex h-[40px] w-full cursor-pointer items-center justify-between hover:pl-1'
         >
           <div className='h-[20px] w-[20px]'>
@@ -87,9 +93,11 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
           <div className='float-right text-sm text-gray-300'>
             <SlArrowRight />
           </div>
-        </div>
-        <div
-          onClick={() => navigate('/coin')}
+        </Link>
+
+        {/* 나의 코인 링크 */}
+        <Link
+          to={'/user/coin'}
           className='my-2 flex h-[40px] w-full cursor-pointer items-center justify-between hover:pl-1'
         >
           <div className='h-[20px] w-[20px]'>
@@ -99,9 +107,11 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
           <div className='float-right text-xs text-gray-300'>
             <SlArrowRight />
           </div>
-        </div>
-        <div
-          onClick={() => navigate('/user/orders')}
+        </Link>
+
+        {/* 의뢰 링크 */}
+        <Link
+          to={'/user/orders'}
           className='mb-3 flex h-[40px] w-full cursor-pointer items-center justify-between hover:pl-1'
         >
           <div className='h-[20px] w-[20px]'>
@@ -111,8 +121,23 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
           <button className='float-right text-sm text-gray-300'>
             <SlArrowRight />
           </button>
-        </div>
+        </Link>
+
+        {/* 결제 내역 */}
+        <Link
+          to={'/user/payments'}
+          className='mb-3 flex h-[40px] w-full cursor-pointer items-center justify-between hover:pl-1'
+        >
+          <div className='h-[20px] w-[20px]'>
+            <MdOutlinePayment size={20} />
+          </div>
+          <p className='ml-[10px] w-full'>결제 내역</p>
+          <button className='float-right text-sm text-gray-300'>
+            <SlArrowRight />
+          </button>
+        </Link>
         <hr />
+        {/* 로그아웃 버튼 */}
         <div
           onClick={handleLogoutClick}
           className='my-3 flex h-[40px] w-full cursor-pointer items-center justify-between hover:pl-1'

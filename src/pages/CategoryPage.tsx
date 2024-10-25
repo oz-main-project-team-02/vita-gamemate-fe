@@ -1,4 +1,3 @@
-import CommonLayout from '../layouts/CommonLayout';
 import TitleIntro from '../components/Common/TitleIntro';
 import { useParams } from 'react-router-dom';
 import { getGame } from '../config/const';
@@ -13,7 +12,7 @@ export default function CategoryPage() {
   const [levelValue, setLevelValue] = useState<string[]>([]);
 
   return (
-    <CommonLayout>
+    <>
       <TitleIntro
         titleE={getGame(Number(gameId))?.subTitle}
         titleK={getGame(Number(gameId))?.title}
@@ -32,6 +31,6 @@ export default function CategoryPage() {
 
         <GameCategoryCardList gameId={gameId} sortValue={sortValue} genderValue={genderValue} levelValue={levelValue} />
       </div>
-    </CommonLayout>
+    </>
   );
 }

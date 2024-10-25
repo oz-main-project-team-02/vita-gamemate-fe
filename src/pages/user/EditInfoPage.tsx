@@ -1,8 +1,7 @@
 import { ChangeEvent, useRef, useState } from 'react';
-import FilterList from '../components/Common/FilterList';
-import TitleIntro from '../components/Common/TitleIntro';
-import ProfileImg from '../components/Common/ProfileImg';
-import CommonLayout from '../layouts/CommonLayout';
+import FilterList from '../../components/Common/FilterList';
+import TitleIntro from '../../components/Common/TitleIntro';
+import ProfileImg from '../../components/Common/ProfileImg';
 import { useUserStore } from '@/config/store';
 import Nickname from '@/components/EditInfoPage/Nickname';
 import Description from '@/components/EditInfoPage/Description';
@@ -95,9 +94,9 @@ export default function EditInfoPage() {
   };
 
   return (
-    <CommonLayout>
+    <>
       <ToastContainer />
-      <div className='h-[4105px] w-full'>
+      <div className='w-full'>
         <TitleIntro titleE={'MY PROFILE'} titleK={'프로필 편집'} content={'멋진 실력을 자랑해주세요!'} />
         <div className='relative h-[1866px] w-full bg-gray-100'>
           {previewImage ? (
@@ -148,6 +147,6 @@ export default function EditInfoPage() {
           </div>
         </div>
       </div>
-    </CommonLayout>
+    </>
   );
 }

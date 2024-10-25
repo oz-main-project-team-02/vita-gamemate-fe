@@ -54,7 +54,7 @@ export default function GameCard({ game, gameData }: Props) {
         backgroundPosition: `${bgPosition}`,
         boxShadow: '0px 5px 7px rgba(0, 0, 0, 0.4)',
       }}
-      className={`m-2 h-[112px] w-[23.4%] min-w-[100px] cursor-pointer rounded-2xl hover:scale-95 ${bgColor} p-4 text-[#FFFFFF]`}
+      className={`m-2 h-[112px] w-[240px] min-w-[100px] cursor-pointer rounded-2xl hover:scale-95 ${bgColor} p-4 text-[#FFFFFF]`}
     >
       <h1 className='text-lg font-bold'>{gameData.title}</h1>
       <p className='text-sm font-normal'>{gameData.type}</p>

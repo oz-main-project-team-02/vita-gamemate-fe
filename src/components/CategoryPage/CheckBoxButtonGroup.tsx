@@ -35,15 +35,15 @@ export default function CheckBoxButtonGroup({ gameId, label, selectedValue, setS
       <div className='text-[#8A8C99]'>{label}</div>
       {levelOptions.map(([key, value], i) => (
         <div key={i}>
-          <input
-            type='checkbox'
-            id={`${value}-${i + 1}`}
-            value={value}
-            onChange={() => handleCheckboxChange(value)}
-            checked={selectedValue.includes(value)}
-            hidden
-          />
           <label htmlFor={`${value}-${i + 1}`} className='mt-3 flex items-center gap-2'>
+            <input
+              type='checkbox'
+              id={`${value}-${i + 1}`}
+              value={value}
+              onChange={() => handleCheckboxChange(value)}
+              checked={selectedValue.includes(value)}
+              hidden
+            />
             <img
               src={selectedValue.includes(value) ? '/src/assets/imgs/radioTrue.svg' : '/src/assets/imgs/radioFalse.svg'}
               alt='체크박스 버튼 아이콘'

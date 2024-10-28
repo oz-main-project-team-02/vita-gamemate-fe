@@ -5,13 +5,12 @@ import { client } from './client';
  * GET /api/v1/users/reviews
  * @returns 실시간 생생후기
  */
-export const fetchReviews = async (): Promise<Review[]> => {
+export const fetchReviews = async () => {
   try {
-    const { data } = await client.get(`/api/v1/users/reviews`);
+    const { data } = await client.get(`/api/v1/reviews`);
     return data;
   } catch (err) {
     console.error(err);
-    return [];
   }
 };
 
@@ -21,9 +20,9 @@ export const fetchReviews = async (): Promise<Review[]> => {
  * @param page 페이지 번호
  * @returns 사용자 ID에 해당하는 리뷰 목록
  */
-export const fetchReviewsById = async (userId: string, page: number): Promise<Review[]> => {
+export const fetchReviewsById = async (userId: string, page: number) => {
   try {
-    const { data } = await client.get(`/api/v1/reviews/${userId}/`, {
+    const { data }: { data: Review[] } = await client.get(`/api/v1/reviews/${userId}/`, {
       params: {
         page,
       },

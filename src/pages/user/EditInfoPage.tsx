@@ -96,54 +96,63 @@ export default function EditInfoPage() {
   return (
     <>
       <ToastContainer />
-      <div className='w-full'>
-        <TitleIntro titleE={'MY PROFILE'} titleK={'프로필 편집'} content={'멋진 실력을 자랑해주세요!'} />
-        <div className='relative h-[1866px] w-full bg-gray-100'>
-          {previewImage ? (
-            <div className='absolute left-[35%] top-[-120px] z-40 h-[300px] w-[30%]'>
-              <img
-                className='w-min-[100px] h-[300px] w-[52.6%] rounded-full object-cover'
-                src={previewImage}
-                alt='이미지 미리보기'
-              />
-            </div>
-          ) : null}
+      <TitleIntro titleE={'MY PROFILE'} titleK={'프로필 편집'} content={'멋진 실력을 자랑해주세요!'} />
+      <div className='flex w-full'>
+        {/* 필터 섹션 */}
+        <FilterList />
+
+        {/* 메인 섹션 */}
+        <div className='relative flex-grow bg-gray-100 p-20'>
           <ProfileImg />
-          <form onSubmit={handleSubmit} className='absolute left-[40.5%] top-[260px] h-[1028px] w-[50%]'>
-            <button
-              onClick={() => {
-                fileRef.current?.click();
-              }}
-              className='absolute left-[69%] top-[-210px] h-[60px] w-[31%] rounded-xl bg-gradient-to-r from-primary to-limeGreen text-[24px] font-bold hover:scale-95'
-            >
-              프로필 사진 올리기
-            </button>
-            <input ref={fileRef} onChange={handleChangePickedImage} type='file' className='hidden' />
+          {/* 이벤트 배너 */}
+          <div className='m-auto mt-[140px] max-w-[800px]'>
+            <div className='w-full bg-gray-100'>
+              {previewImage ? (
+                <div>
+                  <img
+                    className='w-min-[100px] h-[300px] w-[52.6%] rounded-full object-cover'
+                    src={previewImage}
+                    alt='이미지 미리보기'
+                  />
+                </div>
+              ) : null}
+              <form onSubmit={handleSubmit} className='flex w-full flex-col items-end'>
+                <label
+                  htmlFor='fileInput'
+                  className='inline-block transform cursor-pointer rounded-xl bg-primary px-3 py-2 text-[24px] font-bold hover:scale-95'
+                >
+                  프로필 사진 올리기
+                  <input
+                    id='fileInput'
+                    ref={fileRef}
+                    onChange={handleChangePickedImage}
+                    type='file'
+                    className='hidden'
+                  />
+                </label>
 
-            <Nickname profile={profile} setProfile={setProfile} />
-            <Description profile={profile} setProfile={setProfile} />
-            <GenderCheck profile={profile} setProfile={setProfile} />
-            <Birthday
-              profile={profile}
-              setProfile={setProfile}
-              birthYear={birthYear}
-              setBirthYear={setBirthYear}
-              birthMonth={birthMonth}
-              setBirthMonth={setBirthMonth}
-              birthDay={birthDay}
-              setBirthDay={setBirthDay}
-            />
+                <Nickname profile={profile} setProfile={setProfile} />
+                <Description profile={profile} setProfile={setProfile} />
+                <GenderCheck profile={profile} setProfile={setProfile} />
+                <Birthday
+                  profile={profile}
+                  setProfile={setProfile}
+                  birthYear={birthYear}
+                  setBirthYear={setBirthYear}
+                  birthMonth={birthMonth}
+                  setBirthMonth={setBirthMonth}
+                  birthDay={birthDay}
+                  setBirthDay={setBirthDay}
+                />
 
-            <button
-              className='h-[66px] w-full rounded-xl bg-gradient-to-r from-primary to-limeGreen text-2xl font-bold text-gray-500 hover:scale-95'
-              type='submit'
-            >
-              저장
-            </button>
-          </form>
-
-          <div className='absolute flex h-[1866px] w-[30%] justify-end bg-[#E2E2E2]'>
-            <FilterList />
+                <button
+                  className='h-[66px] w-full rounded-xl bg-primary text-2xl font-bold text-gray-500 hover:scale-95'
+                  type='submit'
+                >
+                  저장
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

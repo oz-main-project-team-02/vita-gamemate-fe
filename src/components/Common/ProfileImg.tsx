@@ -5,7 +5,7 @@ export default function ProfileImg() {
 
   return (
     <>
-      <div className='absolute -top-[75px] left-[20%] flex w-[150px] gap-10 rounded-full bg-gray-100 md:-top-[100px] md:w-[200px] lg:-top-[125px] lg:w-[250px] xl:-top-[150px] xl:w-[300px]'>
+      <div className='absolute -top-[75px] right-[20%] flex w-[150px] gap-10 rounded-full bg-gray-100 md:-top-[100px] md:w-[200px] lg:-top-[125px] lg:w-[250px] xl:-top-[150px] xl:w-[300px]'>
         <img
           className='cover h-full w-full scale-90 rounded-full'
           src={user.profile_image !== null ? user.profile_image! : '/favicon.png'}

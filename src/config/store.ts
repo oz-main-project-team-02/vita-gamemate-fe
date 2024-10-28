@@ -127,3 +127,13 @@ export const socketStore = create<SocketState>((set) => ({
   socket: null,
   setSocket: (socket: WebSocket) => set({ socket }),
 }));
+
+interface FilterListState {
+  isFilterListOpen: boolean;
+  setIsFilterListToggle: () => void;
+}
+
+export const useFilterListStore = create<FilterListState>((set) => ({
+  isFilterListOpen: false,
+  setIsFilterListToggle: () => set((state) => ({ isFilterListOpen: !state.isFilterListOpen })),
+}));

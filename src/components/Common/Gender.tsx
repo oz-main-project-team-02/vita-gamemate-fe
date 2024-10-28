@@ -7,7 +7,7 @@ type GenderProps = {
 
 export default function Gender({ gender, birthday }: GenderProps) {
   // 한국식 연나이
-  const calculateAge = (gender: string, birthday: string | null): string | number => {
+  const calculateAge = (gender: string | null, birthday: string | null): string | number => {
     if (birthday === null) {
       return gender === 'male' ? '남성' : '여성';
     }

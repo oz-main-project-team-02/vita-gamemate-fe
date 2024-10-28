@@ -63,12 +63,12 @@ export default function Search() {
       />
       <IoSearchSharp />
       <div
-        onMouseEnter={() => setSearchHover(true)}
         onMouseLeave={() => setSearchHover(false)}
-        className='absolute right-[-20px] top-[40px] z-[25] h-[280px] w-[280px] p-5'
+        className='absolute right-[-20px] top-[33px] z-[25] h-[280px] w-[280px] p-5'
       >
         {searchHover ? (
           <ul
+            onMouseEnter={() => setSearchHover(true)}
             className='relative z-[19] h-[250px] w-[240px] overflow-scroll rounded-3xl bg-white px-2 [&::-webkit-scrollbar]:hidden'
             style={{
               scrollbarWidth: 'none',

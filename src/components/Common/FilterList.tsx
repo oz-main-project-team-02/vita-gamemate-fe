@@ -30,7 +30,7 @@ export default function FilterList() {
   };
 
   return (
-    <div className='flex w-[300px] flex-col items-end bg-[#e2e2e2] p-10 lg:w-[350px] xl:w-[400px]'>
+    <div className='flex w-[300px] min-w-[300px] flex-col items-end bg-[#e2e2e2] p-10 lg:w-[350px] xl:w-[400px]'>
       <div className='w-2/3'>
         <p className={getNavigateClass('/user/edit-info')} onClick={() => navigate('/user/edit-info')}>
           <big>

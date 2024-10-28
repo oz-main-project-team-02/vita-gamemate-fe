@@ -4,10 +4,10 @@ import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function FilterList() {
-  const location = useLocation();
   const navigate = useNavigate();
   const { unSetUser } = useUserStore();
 
+  const location = useLocation();
   const getNavigateClass = (path: string) => {
     return classNames('my-3 text-base hover:text-[#3A3A3A] cursor-pointer', {
       'text-[#3A3A3A]': location.pathname === path,

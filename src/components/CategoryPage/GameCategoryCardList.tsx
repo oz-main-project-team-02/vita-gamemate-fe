@@ -57,8 +57,13 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
   }, [inView, hasNextPage, isFetching, fetchNextPage]);
 
   return (
-    <div className='flex flex-col items-center justify-center bg-gray-100 py-11'>
-      <div className='flex flex-wrap justify-center gap-[10px] p-[20px]'>
+    <div className='w-full bg-gray-100'>
+      <div
+        className='mx-auto grid max-w-[1200px] justify-center gap-4 p-[20px] pt-10'
+        style={{
+          gridTemplateColumns: 'repeat(auto-fit, 206px)',
+        }}
+      >
         {isLoading
           ? Array.from({ length: 30 }).map((_, index) => <SkeletonMateCard key={index} />)
           : data?.pages?.map((page) =>

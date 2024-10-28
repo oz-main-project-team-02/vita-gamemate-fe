@@ -7,8 +7,6 @@ import { AiOutlineMessage } from 'react-icons/ai';
 import { TiUser } from 'react-icons/ti';
 import ProfileDropdown from './ProfileDropdown';
 import GameDropdown from './GameDropdown';
-import { Games } from '@/config/const';
-import GameCard from './GameCard';
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
@@ -41,7 +39,6 @@ export default function Header() {
         </div>
       </div>
       {/* 드롭다운 */}
-      <GameDropdown setGameHover={setGameHover} />
       {gameHover && <GameDropdown setGameHover={setGameHover} />}
       <Link to={'/'}>
         <div className='text-[36px] font-bold lg:text-[42px] xl:text-[48px]'>

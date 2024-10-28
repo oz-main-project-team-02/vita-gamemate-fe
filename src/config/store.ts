@@ -134,6 +134,6 @@ interface FilterListState {
 }
 
 export const useFilterListStore = create<FilterListState>((set) => ({
-  isFilterListOpen: false,
+  isFilterListOpen: true,
   setIsFilterListToggle: () => set((state) => ({ isFilterListOpen: !state.isFilterListOpen })),
 }));

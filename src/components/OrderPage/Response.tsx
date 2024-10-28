@@ -2,7 +2,6 @@ import { requestApi } from '@/api';
 import { useQuery } from '@tanstack/react-query';
 import { ReceivedRequest, ReceivedRequestResponse } from '@/config/types';
 import Gender from '../Common/Gender';
-import OnlineFlag from '../Common/OnlineFlag';
 import { client } from '@/api/client';
 
 export default function Response() {
@@ -40,32 +39,32 @@ export default function Response() {
   return data?.results?.map((receivedData: ReceivedRequest) => (
     <div
       key={receivedData.request_date.toString()}
-      className='mt-[38px] flex h-[213px] w-full rounded-xl border border-gray-200 bg-[#FFFFFF] px-[37px] py-[25px]'
+      className='mt-[38px] flex flex-col items-center rounded-xl border border-gray-200 bg-[#FFFFFF] p-6 md:flex-row'
     >
       {/* 유저 이미지 */}
-      <div className='min-h[160px] min-w-[160px] rounded-3xl border border-gray-200 bg-[#F8F8F8]'>
-        <img
-          className='h-[160px] w-[160px] p-1'
-          src={receivedData.user_profile_image ? receivedData.user_profile_image : '/src/assets/imgs/user.png'}
-          alt='user'
-        />
-      </div>
-
-      {/* 유저 데이터 */}
-      <div className='mx-8 h-[163px] w-1/2 py-2'>
-        <p className='text-base'>{receivedData.user_nickname}</p>
-        <div className='relative mb-[42px] mt-1 flex h-[20px] w-full items-start'>
-          <Gender gender={'male'} birthday={null} />
-          <div className='relative ml-[-8px] mt-[-9px] w-[100px]'>
-            <OnlineFlag />
-          </div>
+      <div className='flex w-full flex-grow gap-4'>
+        <div className='hidden rounded-lg border border-gray-200 bg-[#F8F8F8] lg:block lg:h-[120px] lg:w-[120px] xl:h-[160px] xl:w-[160px]'>
+          <img
+            className='rounded-lg p-1 lg:h-[120px] lg:w-[120px] xl:h-[160px] xl:w-[160px]'
+            src={receivedData.user_profile_image ? receivedData.user_profile_image : '/src/assets/imgs/user.png'}
+            alt='user'
+          />
         </div>
-        <p className='mb-1'>의뢰 신청 : {new Date(receivedData.request_date).toLocaleString('ko-KR')}</p>
-        <p>총 개수 : {receivedData.request_amount}</p>
+
+        {/* 유저 데이터 */}
+        <div className='flex-grow py-2'>
+          <p className='text-xl font-bold'>{receivedData.user_nickname}</p>
+          <div className='relative mb-2 mt-1 flex h-[20px] w-full items-start'>
+            <Gender gender={receivedData.user_gender} birthday={null} />
+            <div className='rounded-full border border-white bg-mintGreen px-2 text-sm text-white'>• 온라인</div>
+          </div>
+          <p className='mb-1'>의뢰 신청 : {new Date(receivedData.request_date).toLocaleString('ko-KR')}</p>
+          <p>총 개수 : {receivedData.request_amount}</p>
+        </div>
       </div>
 
       {/* 버튼 섹션 */}
-      <div className='flex flex-col justify-around'>
+      <div className='flex flex-row gap-4 md:flex-col'>
         <button
           type='button'
           className='rounded-xl bg-primary px-3 py-2 text-[16px] font-semibold hover:scale-110 hover:opacity-80'

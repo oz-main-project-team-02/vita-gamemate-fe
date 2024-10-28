@@ -89,10 +89,7 @@ export default function Header() {
           )}
         </div>
         <div className='hidden lg:block'>
-          <div className='flex items-center border-b border-b-primaryText'>
-            <input type='search' className='w-24 border-none bg-transparent p-1 focus:outline-none' />
-            <IoSearchSharp />
-          </div>
+          <Search />
         </div>
       </div>
       {modalStatus.login && <LoginModal />}

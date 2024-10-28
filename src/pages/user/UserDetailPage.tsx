@@ -94,8 +94,8 @@ export default function UserDetailPage() {
                 <div className='relative ml-[-8px] mt-[-9px] w-[100px]'>{mate.is_online ? <OnlineFlag /> : null}</div>
               </div>
               <div className='mt-2 flex items-center'>
-                <div className='h-[19px] w-[53px] rounded-xl bg-gray-200 px-[10px] text-sm text-[#FFFFFF]'>email</div>
-                <p className='ml-2 text-xs text-gray-200'>{mate.email}</p>
+                <div className='h-[20px] w-[40px] rounded-xl bg-gray-200 pl-[15px] text-sm text-[#FFFFFF]'>id</div>
+                <p className='ml-2 text-xs text-gray-200'>{mate.id}</p>
               </div>
             </div>
             {user.id !== Number(userId) ? (

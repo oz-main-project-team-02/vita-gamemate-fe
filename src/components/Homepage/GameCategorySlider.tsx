@@ -28,10 +28,20 @@ export default function GameCategorySlider({ gameId }: Props) {
   console.log(data);
 
   return (
-    <div className='relative mx-auto max-w-[672px]'>
+    <div className='relative mx-auto max-w-[200px] lg:max-w-[422px] xl:max-w-[672px]'>
       <Swiper
-        slidesPerView={3} // 한 화면에 3개의 슬라이드 표시
-        slidesPerGroup={3} // 버튼 클릭 시 3개의 슬라이드 이동
+        slidesPerView={1}
+        slidesPerGroup={1}
+        breakpoints={{
+          1024: {
+            slidesPerView: 2,
+            slidesPerGroup: 2,
+          },
+          1280: {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+          },
+        }}
         navigation={{
           prevEl: '.gameCategory-prev',
           nextEl: '.gameCategory-next',
@@ -50,8 +60,6 @@ export default function GameCategorySlider({ gameId }: Props) {
                 <MateCard mate={mate} />
               </SwiperSlide>
             ))}
-
-        {}
       </Swiper>
       <div className='gameCategory-prev absolute left-[-40px] top-1/2 z-10'>
         <GrPrevious />

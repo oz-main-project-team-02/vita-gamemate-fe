@@ -14,12 +14,13 @@ import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
 import ErrorPage from '../ErrorPage';
 import { getGame } from '@/config/const';
-import { useChatModalStore, useOrderModalStore } from '@/config/store';
+import { useChatModalStore, useOrderModalStore, useUserStore } from '@/config/store';
 import { createChat } from '@/api/chat';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect } from 'react';
 
 export default function UserDetailPage() {
+  const user = useUserStore((state) => state.user);
   const { userId } = useParams();
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
   const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
@@ -97,9 +98,11 @@ export default function UserDetailPage() {
                 <p className='ml-2 text-xs text-gray-200'>{mate.id}</p>
               </div>
             </div>
-            <button className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
-              {<AiOutlineMessage size={24} onClick={() => createChatHandler(mate.nickname)} />}
-            </button>
+            {user.id !== Number(userId) ? (
+              <button className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
+                {<AiOutlineMessage size={24} onClick={() => createChatHandler(mate.nickname)} />}
+              </button>
+            ) : null}
           </div>
 
           <div className='mx-auto flex h-[1140px] w-7/12 min-w-[600px] flex-col flex-wrap content-between justify-between'>

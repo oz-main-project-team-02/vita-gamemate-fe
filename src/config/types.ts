@@ -61,29 +61,16 @@ export interface ChatList {
   other_user_id: number;
   other_user_nickname: string;
   other_user_profile_image: string | null;
-  latest_message: string | null;
-  latest_message_time: Date | null;
+  latest_message: string;
+  latest_message_time: Date;
   updated_at: Date;
-}
-
-export interface Participant {
-  user_id: number;
-  nickname: string;
-  profile_image: string | null;
-}
-
-export interface Message {
-  message_id: number;
-  user_id: number;
-  message: string;
-  created_at: Date;
-  profile_image: string | null;
 }
 
 export interface ChatMessage {
   id: number;
-  participants: Participant[];
-  messages: Message[] | null;
+  sender_nickname: string;
+  message: string;
+  timestamp: Date;
 }
 
 export interface UserResponse {

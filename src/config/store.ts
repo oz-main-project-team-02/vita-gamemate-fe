@@ -118,12 +118,16 @@ export const useOrderModalStore = create<OrderModalState>((set) => ({
   setOrderModalClose: () => set({ isOrderModalOpen: false }),
 }));
 
-interface SocketState {
-  socket: WebSocket | null;
-  setSocket: (socket: WebSocket | null) => void;
+interface WebSocketState {
+  chatRoomWebSocket: WebSocket | null;
+  chatListWebSocket: WebSocket | null;
+  setChatRoomWebSocket: (socket: WebSocket | null) => void;
+  setChatListWebSocket: (socket: WebSocket | null) => void;
 }
 
-export const socketStore = create<SocketState>((set) => ({
-  socket: null,
-  setSocket: (socket: WebSocket | null) => set({ socket }),
+export const webSocketStore = create<WebSocketState>((set) => ({
+  chatRoomWebSocket: null,
+  chatListWebSocket: null,
+  setChatRoomWebSocket: (chatRoomWebSocket: WebSocket | null) => set({ chatRoomWebSocket }),
+  setChatListWebSocket: (chatListWebSocket: WebSocket | null) => set({ chatListWebSocket }),
 }));

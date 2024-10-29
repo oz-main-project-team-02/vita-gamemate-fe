@@ -1,21 +1,55 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useChatModalStore, useChatStore } from '../../config/store';
 import { IoMdClose } from 'react-icons/io';
 import { formatDate, formatTime, isToday } from '../../utils/dateUtils';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchChatLists } from '../../api/chat';
 import { ChatList } from '../../config/types';
+import useChatListWebSocket from '@/hooks/useChatListWebSocket';
 import ChatMessageModal from './ChatMessageModal';
 import ProfileImage from './ProfileImage';
+import { useWebSocketListener } from '@/hooks/useWebSocketListener';
 
 const ChatModal = () => {
+  const queryClient = useQueryClient();
   const { isChatModalOpen, setChatModalClose } = useChatModalStore();
   const { selectedRoomId, setSelectedRoomId, setOtherUserId, setOtherUserNickname, setOtherUserProfileImage } =
     useChatStore();
   const chatModalRef = useRef<HTMLDivElement | null>(null);
   const chatMessageModalRef = useRef<HTMLDivElement | null>(null);
 
+  // 채팅 목록 업데이트 시 동작 정의
+  const handleNewChatListMessage = useCallback(
+    (newChatData: ChatList) => {
+      queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
+        if (!oldChatList) return [newChatData];
+
+        // 기존 채팅방 찾기
+        const existingChatIndex = oldChatList.findIndex((chat) => chat.id === newChatData.id);
+
+        if (existingChatIndex > -1) {
+          // 기존 채팅방 업데이트
+          const updatedChat = { ...oldChatList[existingChatIndex], ...newChatData };
+          const newList = [...oldChatList];
+          newList.splice(existingChatIndex, 1); // 기존 위치에서 제거
+          return [updatedChat, ...newList]; // 업데이트된 채팅방을 맨 앞으로
+        } else {
+          // 새로운 채팅방 추가
+          return [newChatData, ...oldChatList];
+        }
+      });
+    },
+    [queryClient]
+  );
+
+  // 채팅 목록 WebSocket 연결
+  const chatListSocket = useChatListWebSocket(handleNewChatListMessage);
+
+  // WebSocket 메세지 수신 핸들러 등록
+  useWebSocketListener<ChatList>(chatListSocket, handleNewChatListMessage);
+
+  // 초기 채팅 목록 불러오기
   const {
     data: chatList,
     isLoading,
@@ -24,8 +58,10 @@ const ChatModal = () => {
   } = useQuery<ChatList[]>({
     queryKey: ['chatList'],
     queryFn: fetchChatLists,
+    enabled: isChatModalOpen,
   });
 
+  // 채팅 상대방 정보 관리
   const setOtherUserInfo = (chatInfo: ChatList) => {
     setSelectedRoomId(chatInfo.id);
     setOtherUserId(chatInfo.other_user_id);
@@ -33,12 +69,14 @@ const ChatModal = () => {
     setOtherUserProfileImage(chatInfo.other_user_profile_image || '/favicon.png');
   };
 
+  // 가장 최신 채팅방의 정보를 보여주기
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
       setOtherUserInfo(chatList[0]);
     }
   }, [isSuccess, chatList]);
 
+  // 채팅 모달 open시 root 스크롤 없애기
   useEffect(() => {
     if (isChatModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -98,9 +136,9 @@ const ChatModal = () => {
                           {chatItem.other_user_nickname}
                         </span>
                         <span className='text-xs text-gray-400'>
-                          {isToday(new Date(chatItem.updated_at))
-                            ? formatTime(chatItem.updated_at)
-                            : formatDate(chatItem.updated_at)}
+                          {isToday(new Date(chatItem.latest_message_time))
+                            ? formatTime(chatItem.latest_message_time)
+                            : formatDate(chatItem.latest_message_time)}
                         </span>
                       </div>
                       {

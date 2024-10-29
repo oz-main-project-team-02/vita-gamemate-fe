@@ -26,6 +26,8 @@ export default function RealTimeReviewsSection() {
     },
   });
 
+  console.log(data);
+
   useEffect(() => {
     const handleResize = debounce(() => {
       if (window.innerWidth >= 1280) {

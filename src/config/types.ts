@@ -4,6 +4,8 @@ export interface MateGameInfo {
   image: string;
   level: string;
   request_price: number;
+  average_rating: number;
+  review_count: number;
 }
 
 export interface User {
@@ -40,6 +42,13 @@ export interface Review {
   rating: number;
   content: string;
   created_at: Date;
+}
+
+export interface ReviewPage {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Review[];
 }
 
 export type MateRegister = {

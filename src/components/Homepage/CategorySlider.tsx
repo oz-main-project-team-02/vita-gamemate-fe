@@ -15,11 +15,22 @@ export default function CategorySlider() {
   };
 
   return (
-    <div className='relative max-w-[672px]'>
+    <div className='relative max-w-[200px] lg:max-w-[422px] xl:max-w-[672px]'>
       <Swiper
         loop={true}
-        slidesPerView={3} // 한 화면에 3개의 슬라이드 표시
-        slidesPerGroup={3} // 버튼 클릭 시 3개의 슬라이드 이동
+        slidesPerView={1} // 한 화면에 3개의 슬라이드 표시
+        slidesPerGroup={1} // 버튼 클릭 시 3개의 슬라이드 이동
+        breakpoints={{
+          1024: {
+            slidesPerView: 2,
+            slidesPerGroup: 2,
+          },
+          1280: {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+          },
+        }}
+        spaceBetween={20}
         navigation={{
           prevEl: '.category-prev',
           nextEl: '.category-next',
@@ -32,12 +43,22 @@ export default function CategorySlider() {
           <SwiperSlide key={game.id}>
             <Link
               to={`/category/${game.id}`}
-              className='relative flex h-[326px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-primary'
-              style={{ backgroundImage: `url(${game.img})`, boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
+              className='relative flex h-[286px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-primary lg:h-[306px] xl:h-[326px]'
+              // style={{
+              //   backgroundImage: `url(${game.img})`,
+              //   boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)',
+              //   backgroundRepeat: 'no-repeat',
+              //   backgroundSize: 'cover',
+              // }}
               onClick={() => handleCategoryClick(game.id)}
             >
+              <img
+                src={game.img}
+                alt={game.title}
+                className='cover absolute h-full w-full rounded-3xl' // Tailwind 유틸리티 클래스 사용
+              />
               <div className='absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent'></div>
-              <div className='relative z-10 mt-[85%] text-white'>
+              <div className='relative z-10 mt-[85%] text-center text-white'>
                 <h2 className='text-2xl font-bold'>{game.title}</h2>
                 <p>{game.subTitle}</p>
               </div>

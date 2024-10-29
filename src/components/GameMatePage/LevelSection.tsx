@@ -29,7 +29,7 @@ export default function LevelSection({ isDropdownOpen, setIsDropdownOpen, formDa
         </button>
       </div>
       {isDropdownOpen.game && isDropdownOpen.level && formData.game_id && (
-        <div className='mt-4 grid grid-cols-4 gap-y-4 rounded-xl bg-white p-4 outline outline-gray-200'>
+        <div className='mt-4 grid grid-cols-1 gap-y-4 rounded-xl bg-white p-4 outline outline-gray-200 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {getGame(formData.game_id)?.level.map((level, i) => (
             <div key={i} className='flex justify-center' onClick={() => setFormData((prev) => ({ ...prev, level }))}>
               <div

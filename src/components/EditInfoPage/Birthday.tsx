@@ -50,7 +50,7 @@ export default function Birthday({
   }, [birthYear, birthMonth]);
 
   return (
-    <div className='mb-[61px] h-[93px] w-1/2'>
+    <div className='mb-[61px] h-[93px] w-full'>
       <p className='mb-[10px] text-2xl font-bold text-gray-500'>생일</p>
       <select
         value={birthYear}

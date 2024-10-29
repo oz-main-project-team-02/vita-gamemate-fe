@@ -22,7 +22,7 @@ export default function FilterSidebar({
   setLevelValue,
 }: Props) {
   return (
-    <div className='flex w-[240px] flex-col gap-6 bg-[#e2e2e2] px-[20px] py-[30px]'>
+    <div className='flex flex-col gap-6 bg-[#e2e2e2] px-[20px] py-[30px]'>
       <RadioButtonGroup label='정렬' options={SortArr} selectedValue={sortValue} setSelectedValue={setSortValue} />
       <RadioButtonGroup
         label='성별'

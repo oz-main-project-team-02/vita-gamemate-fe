@@ -9,6 +9,7 @@ import { FailPage } from './pages/payments/FailPage';
 import { PaymentCheckoutPage } from './pages/payments/PaymentCheckout';
 import PaymentBillingPage from './pages/payments/PaymentBilling';
 import CommonLayout from './layouts/CommonLayout';
+import EventPage from './pages/EventPage';
 
 const CategoryPage = React.lazy(() => import('@/pages/CategoryPage'));
 const ErrorPage = React.lazy(() => import('@/pages/ErrorPage'));
@@ -93,6 +94,14 @@ function App() {
             element={
               <Suspense fallback={<Spinner />}>
                 <KakaoCallback />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/event'
+            element={
+              <Suspense fallback={<Spinner />}>
+                <EventPage />
               </Suspense>
             }
           />

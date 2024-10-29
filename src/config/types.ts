@@ -4,6 +4,8 @@ export interface MateGameInfo {
   image: string;
   level: string;
   request_price: number;
+  average_rating: number;
+  review_count: number;
 }
 
 export interface User {

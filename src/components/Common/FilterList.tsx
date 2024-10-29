@@ -6,10 +6,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 type Props = {
   isFilterListOpen: boolean;
-  setIsFilterListToggle: () => void;
+  setIsFilterListOpen: (state: boolean) => void;
 };
 
-export default function FilterList({ isFilterListOpen, setIsFilterListToggle }: Props) {
+export default function FilterList({ isFilterListOpen, setIsFilterListOpen }: Props) {
   const navigate = useNavigate();
   const { unSetUser } = useUserStore();
 
@@ -42,7 +42,7 @@ export default function FilterList({ isFilterListOpen, setIsFilterListToggle }: 
       } flex h-full w-[300px] min-w-[300px] flex-col items-end bg-[#e2e2e2] p-10 lg:w-[350px] xl:w-[400px]`}
     >
       <button
-        onClick={setIsFilterListToggle}
+        onClick={() => setIsFilterListOpen(!isFilterListOpen)}
         className={`absolute -right-[36px] top-0 flex items-center justify-center rounded-r-md bg-gray-800 px-2 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 ease-in-out hover:bg-gray-700`}
         aria-label={isFilterListOpen ? '필터 조건 숨기기' : '필터 조건 보이기'}
       >

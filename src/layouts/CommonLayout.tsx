@@ -14,9 +14,7 @@ export default function CommonLayout() {
   return (
     <>
       <Header />
-      <div className='min-h-screen'>
-        <Outlet />
-      </div>
+      <Outlet />
       <Footer />
       {isChatModalOpen && (
         <Suspense fallback={<Spinner />}>

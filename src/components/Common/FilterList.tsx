@@ -1,9 +1,15 @@
 import { authApi } from '@/api';
 import { useUserStore } from '@/config/store';
 import classNames from 'classnames';
+import { FiFilter, FiX } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function FilterList() {
+type Props = {
+  isFilterListOpen: boolean;
+  setIsFilterListOpen: (state: boolean) => void;
+};
+
+export default function FilterList({ isFilterListOpen, setIsFilterListOpen }: Props) {
   const navigate = useNavigate();
   const { unSetUser } = useUserStore();
 
@@ -30,7 +36,19 @@ export default function FilterList() {
   };
 
   return (
-    <div className='flex w-[300px] flex-col items-end bg-[#e2e2e2] p-10 lg:w-[350px] xl:w-[400px]'>
+    <div
+      className={`relative transform transition-transform duration-300 ease-in-out ${
+        isFilterListOpen ? 'translate-x-0' : '-translate-x-full'
+      } flex h-full w-[300px] min-w-[300px] flex-col items-end bg-[#e2e2e2] p-10 lg:w-[350px] xl:w-[400px]`}
+    >
+      <button
+        onClick={() => setIsFilterListOpen(!isFilterListOpen)}
+        className={`absolute -right-[36px] top-0 flex items-center justify-center rounded-r-md bg-gray-800 px-2 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 ease-in-out hover:bg-gray-700`}
+        aria-label={isFilterListOpen ? '필터 조건 숨기기' : '필터 조건 보이기'}
+      >
+        {isFilterListOpen ? <FiX className='h-5 w-5' /> : <FiFilter className='h-5 w-5' />}
+      </button>
+
       <div className='w-2/3'>
         <p className={getNavigateClass('/user/edit-info')} onClick={() => navigate('/user/edit-info')}>
           <big>
@@ -55,6 +73,12 @@ export default function FilterList() {
             <strong>/</strong>
           </big>{' '}
           &nbsp;내 의뢰
+        </p>
+        <p className={getNavigateClass('/user/payments')} onClick={() => navigate('/user/payments')}>
+          <big>
+            <strong>/</strong>
+          </big>{' '}
+          &nbsp;결제 내역
         </p>
         <br />
         <hr className='h-[1px] border-0 bg-[#898989]' />

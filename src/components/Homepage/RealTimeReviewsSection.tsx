@@ -7,6 +7,8 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { reviewApi } from '@/api';
 import { delay } from '@/utils/delay';
+import { useEffect, useState } from 'react';
+import debounce from '@/utils/debounce';
 // import { Review } from '@/config/types';
 // import { reviewApi } from '@/api';
 
@@ -14,6 +16,8 @@ dayjs.locale('ko');
 dayjs.extend(relativeTime);
 
 export default function RealTimeReviewsSection() {
+  const [reviewCount, setReviewCount] = useState<number>(0);
+
   const { data, isLoading } = useQuery<ReviewPage>({
     queryKey: ['review', 'new'], // 쿼리 키
     queryFn: async () => {
@@ -21,7 +25,30 @@ export default function RealTimeReviewsSection() {
       return reviewApi.fetchReviews();
     },
   });
+
   console.log(data);
+
+  useEffect(() => {
+    const handleResize = debounce(() => {
+      if (window.innerWidth >= 1280) {
+        setReviewCount(5);
+      } else if (window.innerWidth >= 1024) {
+        setReviewCount(4);
+      } else if (window.innerWidth >= 768) {
+        setReviewCount(3);
+      } else {
+        setReviewCount(2);
+      }
+      console.log('resize');
+    }, 100);
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      return window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div className='flex h-[460px] items-center justify-center gap-24 px-[100px] lg:h-[610px] xl:h-[760px] xl:gap-36'>
@@ -38,8 +65,8 @@ export default function RealTimeReviewsSection() {
       <div className='relative w-full lg:w-[500px] xl:max-w-[660px]'>
         <div className='flex flex-col gap-5'>
           {isLoading
-            ? Array.from({ length: 4 }).map((_, i) => <SkeletonReveiwCard key={i} />)
-            : data?.results?.slice(0, 4).map((review: Review, i: number) => (
+            ? Array.from({ length: reviewCount }).map((_, i) => <SkeletonReveiwCard key={i} />)
+            : data?.results?.slice(0, reviewCount).map((review: Review, i: number) => (
                 <div key={i} className='flex h-[100px] justify-between rounded-3xl bg-white px-4 py-3 shadow-lg'>
                   <div>
                     <h1 className='text-lg font-bold'>{review.game_request_id}1</h1>

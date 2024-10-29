@@ -20,7 +20,7 @@ export default function GameSection({ isDropdownOpen, setIsDropdownOpen, game_id
       </button>
       {isDropdownOpen.game && (
         <div className='mt-4 rounded-xl bg-white p-4 outline outline-gray-200'>
-          <div className='flex gap-4'>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
             {Object.values(Games).map((game, i) => (
               <div
                 key={i}
@@ -28,9 +28,15 @@ export default function GameSection({ isDropdownOpen, setIsDropdownOpen, game_id
                 className={`flex flex-1 flex-col items-center rounded-xl py-2 hover:scale-110 hover:bg-[#FFD80077] ${game_id === game.title ? 'bg-primary' : null}`}
               >
                 <div className='rounded-full bg-gray-200 p-4'>
-                  <img src={game.icon} alt={`${game.title} 로고`} className='h-16 w-16' />
+                  <img
+                    src={game.icon}
+                    alt={`${game.title} 로고`}
+                    className='h-8 min-h-8 w-8 min-w-8 lg:h-12 lg:w-12 xl:h-16 xl:w-16'
+                  />
                 </div>
-                <span className={`mt-2 text-center ${game_id === game.title ? 'font-semibold' : null}`}>
+                <span
+                  className={`// mt-2 text-center text-xs lg:text-sm xl:text-base ${game_id === game.title ? 'font-semibold' : null} `}
+                >
                   {game.title}
                 </span>
               </div>

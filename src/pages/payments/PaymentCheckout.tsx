@@ -1,4 +1,5 @@
 import { CoinPackage } from '@/config/const';
+import { useUserStore } from '@/config/store';
 import '@/toss.css';
 import { loadTossPayments, TossPaymentsPayment } from '@tosspayments/tosspayments-sdk';
 import { useEffect, useState } from 'react';
@@ -12,11 +13,6 @@ import { useLocation } from 'react-router-dom';
 const clientKey = import.meta.env.VITE_TOSS_CLIENTKEY;
 const customerKey = generateRandomString();
 
-const amount = {
-  currency: 'KRW',
-  value: 50000,
-};
-
 type PaymentMethod =
   | 'CARD'
   | 'TRANSFER'
@@ -29,10 +25,11 @@ type PaymentMethod =
 export function PaymentCheckoutPage() {
   const [payment, setPayment] = useState<TossPaymentsPayment | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
+  const user = useUserStore((state) => state.user);
 
   const location = useLocation();
   const { coinData }: { coinData: CoinPackage } = location.state || {};
-  console.log(coinData);
+  console.log('결제: ', coinData);
 
   function selectPaymentMethod(method: PaymentMethod) {
     setSelectedPaymentMethod(method);
@@ -73,13 +70,16 @@ export function PaymentCheckoutPage() {
         case 'CARD':
           await payment.requestPayment({
             method: 'CARD', // 카드 및 간편결제
-            amount,
+            amount: {
+              currency: 'KRW',
+              value: coinData.discountPrice,
+            },
             orderId: generateRandomString(), // 고유 주문번호
-            orderName: '토스 티셔츠 외 2건',
+            orderName: `비타 코인 ${coinData.coin}`,
             successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
-            failUrl: window.location.origin + '/fail', // 결제 요청이 실패하면 리다이렉트되는 URL
-            customerEmail: 'customer123@gmail.com',
-            customerName: '김토스',
+            failUrl: window.location.origin + '/fail',
+            customerEmail: `${user.email}`,
+            customerName: `${user.nickname}`,
             customerMobilePhone: '01012341234',
             card: {
               useEscrow: false,
@@ -92,13 +92,16 @@ export function PaymentCheckoutPage() {
         case 'TRANSFER':
           await payment.requestPayment({
             method: 'TRANSFER', // 계좌이체 결제
-            amount,
+            amount: {
+              currency: 'KRW',
+              value: coinData.discountPrice,
+            },
             orderId: generateRandomString(),
-            orderName: '토스 티셔츠 외 2건',
+            orderName: `비타 코인 ${coinData.coin}`,
             successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
             failUrl: window.location.origin + '/fail',
-            customerEmail: 'customer123@gmail.com',
-            customerName: '김토스',
+            customerEmail: `${user.email}`,
+            customerName: `${user.nickname}`,
             customerMobilePhone: '01012341234',
             transfer: {
               cashReceipt: {
@@ -111,13 +114,16 @@ export function PaymentCheckoutPage() {
         case 'VIRTUAL_ACCOUNT':
           await payment.requestPayment({
             method: 'VIRTUAL_ACCOUNT', // 가상계좌 결제
-            amount,
+            amount: {
+              currency: 'KRW',
+              value: coinData.discountPrice,
+            },
             orderId: generateRandomString(),
-            orderName: '토스 티셔츠 외 2건',
+            orderName: `비타 코인 ${coinData.coin}`,
             successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
             failUrl: window.location.origin + '/fail',
-            customerEmail: 'customer123@gmail.com',
-            customerName: '김토스',
+            customerEmail: `${user.email}`,
+            customerName: `${user.nickname}`,
             customerMobilePhone: '01012341234',
             virtualAccount: {
               cashReceipt: {
@@ -131,26 +137,32 @@ export function PaymentCheckoutPage() {
         case 'MOBILE_PHONE':
           await payment.requestPayment({
             method: 'MOBILE_PHONE', // 휴대폰 결제
-            amount,
+            amount: {
+              currency: 'KRW',
+              value: coinData.discountPrice,
+            },
             orderId: generateRandomString(),
-            orderName: '토스 티셔츠 외 2건',
+            orderName: `비타 코인 ${coinData.coin}`,
             successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
             failUrl: window.location.origin + '/fail',
-            customerEmail: 'customer123@gmail.com',
-            customerName: '김토스',
+            customerEmail: `${user.email}`,
+            customerName: `${user.nickname}`,
             customerMobilePhone: '01012341234',
           });
           break;
         case 'CULTURE_GIFT_CERTIFICATE':
           await payment.requestPayment({
             method: 'CULTURE_GIFT_CERTIFICATE', // 문화상품권 결제
-            amount,
+            amount: {
+              currency: 'KRW',
+              value: coinData.discountPrice,
+            },
             orderId: generateRandomString(),
-            orderName: '토스 티셔츠 외 2건',
+            orderName: `비타 코인 ${coinData.coin}`,
             successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
             failUrl: window.location.origin + '/fail',
-            customerEmail: 'customer123@gmail.com',
-            customerName: '김토스',
+            customerEmail: `${user.email}`,
+            customerName: `${user.nickname}`,
             customerMobilePhone: '01012341234',
           });
           break;
@@ -158,15 +170,15 @@ export function PaymentCheckoutPage() {
           await payment.requestPayment({
             method: 'FOREIGN_EASY_PAY', // 해외 간편결제
             amount: {
-              value: 100,
               currency: 'USD',
+              value: 100,
             },
             orderId: generateRandomString(),
-            orderName: '토스 티셔츠 외 2건',
+            orderName: `비타 코인 ${coinData.coin}`,
             successUrl: `${window.location.origin}/payment/success?${window.location.search}&coin=${coinData.coin}`,
             failUrl: window.location.origin + '/fail',
-            customerEmail: 'customer123@gmail.com',
-            customerName: '김토스',
+            customerEmail: `${user.email}`,
+            customerName: `${user.nickname}`,
             customerMobilePhone: '01012341234',
             foreignEasyPay: {
               provider: 'PAYPAL', // PayPal 결제
@@ -188,8 +200,8 @@ export function PaymentCheckoutPage() {
       method: 'CARD', // 자동결제(빌링)은 카드만 지원합니다
       successUrl: window.location.origin + '/payment/billing', // 요청이 성공하면 리다이렉트되는 URL
       failUrl: window.location.origin + '/fail', // 요청이 실패하면 리다이렉트되는 URL
-      customerEmail: 'customer123@gmail.com',
-      customerName: '김토스',
+      customerEmail: `${user.email}`,
+      customerName: `${user.nickname}`,
     });
   }
 

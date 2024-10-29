@@ -25,7 +25,7 @@ export default function ImageSection({ fileRef, setFormData, setPreviewImage, pr
         <h2 className='text-xl font-semibold'>스크린샷 업로드</h2>
         <p className='text-gray-400'>본인의 실력을 보여줄 수 있는 사진을 업로드 해주세요.</p>
       </div>
-      <div className='relative flex h-72 items-center justify-center rounded-xl bg-white outline outline-gray-200'>
+      <div className='relative flex h-36 items-center justify-center rounded-xl bg-white outline outline-gray-200 md:h-48 lg:h-60 xl:h-72'>
         <input type='file' ref={fileRef} id='file' className='hidden' onChange={handleChangeFile} />
         <label htmlFor='file' className='absolute cursor-pointer px-20 py-6 text-3xl text-gray-300'>
           +

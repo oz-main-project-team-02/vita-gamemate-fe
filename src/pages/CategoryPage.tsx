@@ -28,7 +28,7 @@ export default function CategoryPage() {
         setIsSidebarOpen(false);
       }
       console.log('resize');
-    }, 100);
+    }, 200);
 
     // 초기 실행: 현재 화면 크기에 따라 사이드바 상태 설정
     handleResize();
@@ -38,7 +38,7 @@ export default function CategoryPage() {
 
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
-      window.removeEventListener('resize', handleResize);
+      return window.removeEventListener('resize', handleResize);
     };
   }, []);
 

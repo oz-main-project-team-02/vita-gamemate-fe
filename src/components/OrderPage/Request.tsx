@@ -13,7 +13,7 @@ export default function Request() {
     queryFn: requestApi.fetchMyOrders,
   });
 
-  console.log(data);
+  console.log('주문 목록: ', data);
 
   return data?.results?.map((order: OrderRequest) => (
     <div

@@ -49,20 +49,26 @@ export default function Review({ order, showReview, setShowReview }: ReviewProps
     setReviewData({ ...reviewData, content: e.target.value });
   }, 1000);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setShowReview(false);
 
     if (!order) {
       throw new Error('주문 정보가 없습니다.');
     }
 
-    reviewApi.fetchPostReview(order?.game_request_id, reviewData);
+    try {
+      const { data } = await reviewApi.fetchPostReview(order?.game_request_id, reviewData);
+      console.log(data);
+      setShowReview(false);
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <>
-      <div className='fixed inset-0 z-30 flex items-center justify-center bg-[#000000] bg-opacity-50'>
+      <div className='fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-10'>
         <form
           onSubmit={(e) => handleSubmit(e)}
           className='absolute z-20 h-[373px] rounded-3xl bg-[#FFFFFF] px-[41px] py-[33px]'

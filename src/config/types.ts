@@ -129,6 +129,7 @@ export interface ReceivedRequest {
   status: boolean;
   request_date: Date;
   request_amount: number;
+  request_price: number;
 }
 
 export interface ReceivedRequestResponse {

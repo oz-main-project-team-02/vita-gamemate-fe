@@ -33,6 +33,7 @@ export function OrderModal({ mate }: { mate: User }) {
           amount,
         });
         console.log('주문 요청:', price, amount);
+        setOrderModalClose();
         alert('주문이 완료되었습니다.');
         return data;
       } catch (err) {

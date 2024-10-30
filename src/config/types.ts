@@ -113,6 +113,7 @@ export interface OrderRequest {
   request_date: Date;
   request_amount: number;
   request_price: number;
+  review_status: boolean;
 }
 
 export interface OrderRequestResponse {

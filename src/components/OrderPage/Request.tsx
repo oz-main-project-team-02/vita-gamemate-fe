@@ -4,14 +4,14 @@ import { OrderRequest, OrderRequestResponse } from '@/config/types';
 import Gender from '../Common/Gender';
 import Review from './Review';
 import { useState } from 'react';
-import { GiGamepad, GiTwoCoins, GiStarsStack } from 'react-icons/gi';
 import { FaCalendarAlt, FaCoins, FaHourglassHalf, FaRedo } from 'react-icons/fa';
 import dayjs from 'dayjs';
+import { RenderSectionByStatus } from './RenderSectionByStatus';
 
 dayjs.locale('ko');
 
 export default function Request() {
-  const [showReview, setShowReview] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<OrderRequest | null>(null);
 
   const { data } = useQuery<OrderRequestResponse>({
     queryKey: ['orders'],
@@ -69,50 +69,12 @@ export default function Request() {
               </div>
             </div>
           </div>
-
-          {order.status ? (
-            <div
-              className='absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl py-4'
-              style={{
-                background: 'linear-gradient(to right, rgba(128, 0, 128, 0.8), rgba(75, 0, 130, 0.8))',
-              }}
-            >
-              <div className='flex justify-center space-x-4'>
-                <GiGamepad className='h-10 w-10 animate-bounce text-yellow-300' />
-                <GiStarsStack className='h-10 w-10 animate-pulse text-yellow-300' />
-                <GiTwoCoins className='h-10 w-10 animate-bounce text-yellow-300' />
-              </div>
-              <h2 className='text-2xl font-bold text-white drop-shadow-lg'>게임 시간 어떠셨나요?</h2>
-              <p className='text-lg text-yellow-200'>함께한 순간이 특별했기를 바랍니다!</p>
-              <div className='mt-2'>
-                <button className='text-purple-900 transform rounded-full bg-yellow-400 px-6 py-2 font-semibold transition duration-300 ease-in-out hover:scale-105 hover:bg-yellow-300'>
-                  리뷰 남기기
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div
-              className='absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl py-4'
-              style={{
-                background: 'linear-gradient(to right, rgb(255, 165, 0), rgb(255, 140, 0))',
-                opacity: 0.8,
-              }}
-            >
-              <div className='flex justify-center space-x-4'>
-                <FaHourglassHalf className='h-10 w-10 animate-pulse text-white' />
-              </div>
-              <h2 className='text-2xl font-bold text-white drop-shadow-lg'>게임 요청 수락 대기 중</h2>
-              <p className='text-lg text-white'>상대방의 수락을 기다리고 있습니다.</p>
-              <div className='mt-2'>
-                <button className='transform rounded-full bg-white px-6 py-2 font-semibold text-orange-600 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100'>
-                  요청 취소하기
-                </button>
-              </div>
-            </div>
-          )}
+          <RenderSectionByStatus order={order} setSelectedOrder={setSelectedOrder} />
 
           {/* 리뷰 모달 */}
-          {showReview && <Review order={order} showReview={showReview} setShowReview={setShowReview} />}
+          {selectedOrder?.game_request_id === order.game_request_id && (
+            <Review order={order} selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder} />
+          )}
         </div>
       ))}
     </div>

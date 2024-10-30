@@ -7,7 +7,7 @@ interface RequestData {
 }
 
 export const MateRequest = (mateId: number, { game_id, price, amount }: RequestData) => {
-  return client.post(`/api/v1/game/requests/${mateId}`, {
+  return client.post(`/api/v1/game/requests/${mateId}/`, {
     game_id,
     price,
     amount,

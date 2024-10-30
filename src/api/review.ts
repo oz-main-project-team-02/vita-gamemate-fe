@@ -53,3 +53,17 @@ export const fetchPostReview = async (id: number, reviewData: ReviewData) => {
     console.error(err);
   }
 };
+
+export const fetchReviewsByGameId = async (userId: string, gameId: string, page: number) => {
+  try {
+    const { data } = await client.get(`/api/v1/reviews/${userId}/${gameId}`, {
+      params: {
+        page,
+      },
+    });
+    return data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};

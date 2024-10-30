@@ -66,6 +66,7 @@ export default function EventPage() {
           {eventData?.slice(0, 10).map((mate) => (
             <Link
               to={`/user/${mate.id}`}
+              key={mate.id}
               className='relative my-[25px] flex h-[300px] w-[200px] flex-col gap-3 rounded-3xl bg-[#FFFFFF] p-3 md:w-[300px] lg:h-[206px] lg:w-[500px] lg:flex-row xl:w-[620px]'
               style={{ boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
             >

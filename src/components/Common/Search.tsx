@@ -51,7 +51,6 @@ export default function Search() {
   return (
     <div className='relative flex items-center border-b border-b-primaryText'>
       <input
-        onMouseEnter={() => setSearchHover(true)} // 검색창에 마우스가 들어가면 목록을 열도록 설정
         onMouseLeave={() => !searchUser && setSearchHover(false)} // 검색어가 없으면 마우스가 떠날 때 목록을 닫음
         value={searchUser}
         onChange={(e) => {

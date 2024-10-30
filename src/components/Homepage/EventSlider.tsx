@@ -10,8 +10,6 @@ import tft from '@/assets/imgs/banner3.png';
 import bg from '@/assets/imgs/banner4.png';
 
 export default function EventSlider() {
-  const gameName: string[] = ['리그오브레전드', '오버워치', '전략적 팀 전투', '배틀그라운드'];
-
   const bannerImg = (img: number) => {
     switch (img) {
       case 1:
@@ -46,18 +44,7 @@ export default function EventSlider() {
               to={`/event/${i + 1}`}
               style={{ backgroundImage: `url(${bannerImg(i + 1)})`, backgroundRepeat: 'no-repeat' }}
               className='relative flex h-[240px] w-[560px] items-center justify-center gap-32 rounded-3xl bg-pink-100 shadow-lg lg:h-[300px] lg:w-[740px] xl:h-[360px] xl:w-[950px]'
-            >
-              <h1 className='absolute top-[253px] text-center text-[30px] font-extrabold text-gray-100 drop-shadow-md'>
-                - {gameName[i]} -
-              </h1>
-              {/* <div>
-                <p>함께하면 더욱 즐거운~</p>
-                <h1 className='mb-5 text-2xl font-semibold lg:text-3xl xl:text-5xl'>VITA 셀럽 존</h1>
-                <p>비타에서 게임 메이트와 즐겁게</p>
-                <p>대화하며 {gameName[i]}를 즐겨보세요 !</p>
-              </div>
-              <div className='h-[120px] w-[120px] rounded-[50%] bg-white lg:h-[160px] lg:w-[160px] xl:h-[220px] xl:w-[220px]'></div> */}
-            </Link>
+            ></Link>
           </SwiperSlide>
         ))}
       </Swiper>

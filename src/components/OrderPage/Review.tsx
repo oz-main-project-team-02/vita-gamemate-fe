@@ -1,12 +1,13 @@
 import { reviewApi } from '@/api';
-import { OrderRequest } from '@/config/types';
+import { OrderRequest, OrderRequestResponse } from '@/config/types';
 import debounce from '@/utils/debounce';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 interface ReviewProps {
   showReview: boolean;
   setShowReview: React.Dispatch<React.SetStateAction<boolean>>;
-  order?: OrderRequest;
+  order: OrderRequest;
 }
 
 type ReviewData = {
@@ -20,6 +21,32 @@ export default function Review({ order, showReview, setShowReview }: ReviewProps
     rating: 0,
     content: '',
   });
+  const queryClient = useQueryClient();
+  console.log(order);
+
+  // INFO: 리뷰 작성 mutation
+  const reviewMutation = useMutation({
+    mutationFn: async ({ game_request_id, reviewData }: { game_request_id: number; reviewData: ReviewData }) => {
+      return await reviewApi.fetchPostReview(game_request_id, reviewData);
+    },
+    onSuccess: async (response) => {
+      if (response.status === 200) {
+        const value: OrderRequestResponse | undefined = queryClient.getQueryData(['orders']);
+
+        const index = value?.results.findIndex((v) => v.game_request_id === order?.game_request_id);
+        const updateResults = value?.results.map((v, i) => (i === index ? { ...value, status: true } : v));
+        // INFO: 캐시 업데이트, 전체 객체를 불변성을 유지하면서 업데이트
+        queryClient.setQueryData(['orders'], { ...value, results: updateResults });
+      }
+    },
+  });
+
+  // INFO: 리뷰 제출 핸들러
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    reviewMutation.mutate({ game_request_id: order.game_request_id, reviewData });
+  };
 
   useEffect(() => {
     if (showReview) {
@@ -48,23 +75,6 @@ export default function Review({ order, showReview, setShowReview }: ReviewProps
   const handleContentChange = debounce((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewData({ ...reviewData, content: e.target.value });
   }, 1000);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!order) {
-      throw new Error('주문 정보가 없습니다.');
-    }
-
-    try {
-      const { data } = await reviewApi.fetchPostReview(order?.game_request_id, reviewData);
-      console.log(data);
-      setShowReview(false);
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <>

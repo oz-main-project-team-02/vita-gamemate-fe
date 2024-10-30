@@ -7,7 +7,10 @@ function useChatListWebSocket(onNewMessage: (data: ChatList) => void): WebSocket
   const { chatListWebSocket, setChatListWebSocket } = webSocketStore();
 
   useEffect(() => {
-    if (isChatModalOpen && (!chatListWebSocket || chatListWebSocket.readyState !== chatListWebSocket.OPEN)) {
+    if (isChatModalOpen) {
+      if (chatListWebSocket) {
+        chatListWebSocket.close();
+      }
       const ws = new WebSocket('wss://resdineconsulting.com/ws/chat/list/');
 
       ws.onopen = () => {
@@ -34,6 +37,9 @@ function useChatListWebSocket(onNewMessage: (data: ChatList) => void): WebSocket
         ws.close();
         setChatListWebSocket(null);
       };
+    } else if (chatListWebSocket) {
+      chatListWebSocket.close();
+      setChatListWebSocket(null);
     }
   }, [isChatModalOpen, setChatListWebSocket, onNewMessage]);
 

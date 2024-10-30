@@ -1,4 +1,6 @@
-// 메세지 전송
+/**
+ * @returns 채팅 메세지 전송
+ */
 export const sendMessage = (
   socket: WebSocket,
   {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MateGameInfo, User, ChatMessage } from '../../config/types';
 import { useChatStore, useOrderModalStore } from '../../config/store';
 import ChatSubmitForm from './ChatSubmitForm';
@@ -11,6 +11,7 @@ import { OrderModal } from './OrderModal';
 import useChatRoomWebSocket from '@/hooks/useChatRoomWebSocket';
 import ChatMateRequestInfo from './ChatMateRequestInfo';
 import { useWebSocketListener } from '@/hooks/useWebSocketListener';
+import { AxiosError } from 'axios';
 
 const ChatMessageModal = () => {
   const chatRoomWebSocket = useChatRoomWebSocket();
@@ -19,33 +20,75 @@ const ChatMessageModal = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [mate, setMate] = useState<User | null>(null);
   const [mateGameInfo, setMateGameInfo] = useState<MateGameInfo | null>(null);
-  const [page, setPage] = useState(1);
-  const [moreMessages, setMoreMessages] = useState(true);
+  const [chatRoomPages, setChatRoomPages] = useState<Record<number, number>>({});
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const prevScrollHeightRef = useRef<number>(0);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
 
-  // 초기 채팅 내역 불러오기
-  useEffect(() => {
-    const loadChatHistory = async () => {
-      if (selectedRoomId && page === 1) {
-        const fetchedMessages = await fetchChatMessages(selectedRoomId, page);
+  // 채팅방별 페이지 상태 업데이트
+  const updateChatRoomPage = useCallback((roomId: number, page: number) => {
+    setChatRoomPages((prev) => ({ ...prev, [roomId]: page }));
+  }, []);
+
+  // 채팅 메세지 초기 로딩
+  const loadInitialChatHistory = useCallback(async () => {
+    if (selectedRoomId) {
+      setIsInitialLoading(true);
+      try {
+        const fetchedMessages = await fetchChatMessages(selectedRoomId, 1);
         setChatMessages(fetchedMessages);
-      }
-    };
-    loadChatHistory();
-  }, [selectedRoomId, page]);
-
-  // 페이지네이션을 위한 추가 메세지 불러오기 함수
-  const loadMoreMessages = async () => {
-    if (selectedRoomId && moreMessages) {
-      const fetchedMessages = await fetchChatMessages(selectedRoomId, page + 1);
-      if (fetchedMessages.length > 0) {
-        setChatMessages((prevMessages) => [...fetchedMessages, ...prevMessages]);
-        setPage((prevPage) => prevPage + 1);
-      } else {
-        setMoreMessages(false);
+        updateChatRoomPage(selectedRoomId, 1);
+        setHasMoreMessages(fetchedMessages.length === 20);
+        // 초기 로드 후 스크롤을 맨 아래로
+        setTimeout(() => {
+          if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+          }
+        }, 0);
+      } catch (error) {
+        console.error('채팅방 초기 로딩 실패: ', error);
+        setChatMessages([]);
+        setHasMoreMessages(false);
+      } finally {
+        setIsInitialLoading(false);
       }
     }
-  };
+  }, [selectedRoomId, updateChatRoomPage]);
+
+  // 채팅 메세지 초기화 및 새로운 메세지 로드
+  useEffect(() => {
+    loadInitialChatHistory();
+    setMate(null);
+    setMateGameInfo(null);
+  }, [selectedRoomId, loadInitialChatHistory]);
+
+  // 페이지네이션 추가 메세지 불러오기
+  const loadMoreMessages = useCallback(async () => {
+    if (selectedRoomId && scrollRef.current && hasMoreMessages && !isInitialLoading) {
+      try {
+        prevScrollHeightRef.current = scrollRef.current.scrollHeight; // 현재 스크롤 높이 저장
+
+        const currentPage = chatRoomPages[selectedRoomId] || 1;
+        const fetchedMessages = await fetchChatMessages(selectedRoomId, currentPage + 1);
+
+        if (fetchedMessages.length > 0) {
+          setChatMessages((prevMessages) => [...fetchedMessages, ...prevMessages]);
+          updateChatRoomPage(selectedRoomId, currentPage + 1);
+          setHasMoreMessages(fetchedMessages.length === 20);
+        } else {
+          setHasMoreMessages(false);
+        }
+      } catch (error) {
+        if (error instanceof AxiosError && error.response && error.response.status === 404) {
+          console.log('메세지 추가 로드 실패 (404 error)');
+          setHasMoreMessages(false);
+        } else {
+          console.error('메세지 추가 로드 실패: ', error);
+        }
+      }
+    }
+  }, [selectedRoomId, chatRoomPages, updateChatRoomPage, hasMoreMessages, isInitialLoading]);
 
   // WebSocket을 통한 실시간 메시지 추가
   useWebSocketListener<ChatMessage>(chatRoomWebSocket, (data) => {
@@ -55,15 +98,28 @@ const ChatMessageModal = () => {
 
       setChatMessages((prevMessages) => [...prevMessages, newMessage]);
       console.log('chatMessages:', chatMessages);
+
+      // 새 메세지가 추가되면 스크롤을 맨 아래로
+      if (scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+        const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight - 20; // 20px 여유를 둠
+        if (isScrolledToBottom) {
+          setTimeout(() => {
+            if (scrollRef.current) {
+              scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+            }
+          }, 0);
+        }
+      }
     }
   });
 
   // 스크롤 이벤트 핸들러
-  const handleScroll = () => {
-    if (scrollRef.current && scrollRef.current.scrollTop === 0) {
+  const handleScroll = useCallback(() => {
+    if (scrollRef.current && scrollRef.current.scrollTop === 0 && hasMoreMessages && !isInitialLoading) {
       loadMoreMessages();
     }
-  };
+  }, [loadMoreMessages, hasMoreMessages, isInitialLoading]);
 
   // 스크롤 이벤트 등록
   useEffect(() => {
@@ -76,12 +132,14 @@ const ChatMessageModal = () => {
         scrollContainer.removeEventListener('scroll', handleScroll);
       }
     };
-  }, []);
+  }, [handleScroll, isInitialLoading]);
 
   // 채팅창 스크롤 조정
   useEffect(() => {
-    if (chatMessages.length > 0 && page === 1 && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (scrollRef.current && prevScrollHeightRef.current) {
+      const newScrollHeight = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollTop = newScrollHeight - prevScrollHeightRef.current;
+      prevScrollHeightRef.current = 0;
     }
   }, [chatMessages]);
 
@@ -91,12 +149,6 @@ const ChatMessageModal = () => {
     queryFn: () => fetchUserProfileById(otherUserId?.toString() as string).then((response) => response.data),
     enabled: !!otherUserId,
   });
-
-  // otherUserId가 변경될 때 상태 초기화
-  useEffect(() => {
-    setMate(null);
-    setMateGameInfo(null);
-  }, [otherUserId]);
 
   // 메이트 정보
   useEffect(() => {
@@ -108,6 +160,7 @@ const ChatMessageModal = () => {
 
   return (
     <div className='flex h-full max-w-[420px] flex-col shadow-sm'>
+      {/* Header */}
       {otherUserNickname && (
         <div className='flex flex-col'>
           <div className='flex items-center gap-4 px-4 py-2'>
@@ -116,6 +169,8 @@ const ChatMessageModal = () => {
           </div>
         </div>
       )}
+
+      {/* Chat Messages */}
       <div className='flex h-full max-w-[420px] flex-col overflow-y-auto' ref={scrollRef}>
         {mateGameInfo && <ChatMateRequestInfo mateGameInfo={mateGameInfo} setOrderModalOpen={setOrderModalOpen} />}
         {chatMessages.length === 0 && (
@@ -124,13 +179,13 @@ const ChatMessageModal = () => {
             <p>새로고침 후 다시 시도해주세요.</p>
           </div>
         )}
-        {chatMessages.length > 0 && (
-          <section>
-            <ChatRenderMessages chatMessages={chatMessages} />
-          </section>
-        )}
+        {chatMessages.length > 0 && <ChatRenderMessages chatMessages={chatMessages} />}
       </div>
+
+      {/* Chat Input */}
       <ChatSubmitForm />
+
+      {/* Order Modal */}
       {isOrderModalOpen && mate && <OrderModal mate={mate} />}
     </div>
   );

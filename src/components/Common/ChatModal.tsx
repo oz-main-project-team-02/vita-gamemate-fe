@@ -19,7 +19,7 @@ const ChatModal = () => {
   const chatModalRef = useRef<HTMLDivElement | null>(null);
   const chatMessageModalRef = useRef<HTMLDivElement | null>(null);
 
-  // 채팅 목록 업데이트 시 동작 정의
+  // 채팅 목록 업데이트
   const handleNewChatListMessage = useCallback(
     (newChatData: ChatList) => {
       queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
@@ -76,7 +76,6 @@ const ChatModal = () => {
     }
   }, [isSuccess, chatList]);
 
-  // 채팅 모달 open시 root 스크롤 없애기
   useEffect(() => {
     if (isChatModalOpen) {
       document.body.style.overflow = 'hidden';

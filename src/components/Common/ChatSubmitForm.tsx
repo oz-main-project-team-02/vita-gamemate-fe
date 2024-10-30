@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useChatStore, useUserStore, webSocketStore } from '../../config/store';
-import { sendMessage } from '@/api/webSocket';
+import { sendMessage } from '@/api/websocket';
 
 const ChatSubmitForm = () => {
   const chatRoomWebSocket = webSocketStore((state) => state.chatRoomWebSocket);

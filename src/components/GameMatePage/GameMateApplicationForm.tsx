@@ -8,9 +8,8 @@ import PriceSection from './PriceSection';
 import ImageSection from './ImageSection';
 import { MateRegister, UserResponse } from '@/config/types';
 import { useUserStore } from '@/config/store';
-import { client } from '@/api/client';
 import Spinner from '../Common/Spinner';
-import { useNavigate } from 'react-router-dom';
+import { mateApi } from '@/api';
 
 type Dropdown = {
   game: boolean;
@@ -37,11 +36,7 @@ export default function GameMateApplicationForm() {
   // 게임메이트 등록하기 Mutation
   const mateRegisterMutation = useMutation({
     mutationFn: async (mateInfo: FormData) => {
-      const response = await client.post('/api/v1/mates/register/', mateInfo, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await mateApi.registerGameMate(mateInfo);
       return { status: response.status, data: response.data };
     },
     onSuccess: ({ status, data }) => {

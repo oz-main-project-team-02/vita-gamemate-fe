@@ -11,19 +11,6 @@ export const registerGameMate = (mateInfo: FormData) => {
       'Content-Type': 'multipart/form-data',
     },
   });
-
-  // try {
-  //   const { data } = await client.post(`/api/v1/mates/register/`, mateInfo, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   });
-
-  //   return data;
-  // } catch (err) {
-  //   console.error(err);
-  //   return [];
-  // }
 };
 
 interface MateParams {

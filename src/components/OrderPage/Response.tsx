@@ -2,7 +2,6 @@ import { requestApi, walletApi } from '@/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ReceivedRequest, ReceivedRequestResponse } from '@/config/types';
 import Gender from '../Common/Gender';
-import { client } from '@/api/client';
 import { useUserStore } from '@/config/store';
 import { FaCalendarAlt, FaCheckCircle, FaCoins, FaRedo, FaTimesCircle } from 'react-icons/fa';
 import dayjs from 'dayjs';
@@ -32,36 +31,35 @@ export default function Response() {
       request_amount: number;
       request_price: number;
     }) => {
-      try {
-        const response = await client.post(`/api/v1/game/requests/accept/${game_request_id}/`, {
-          is_accept: true,
-        });
-
-        if (response.status === 200) {
-          try {
-            const { data: coin } = await walletApi.rechargeWalletCoin(request_price * request_amount);
-            console.log('코인 추가: ', coin);
-            setUser({ coin: coin.coin });
-
-            const value: ReceivedRequestResponse | undefined = queryClient.getQueryData(['receivedOrders']);
-
-            if (value) {
-              const index = value.results.findIndex((v) => game_request_id === v.game_request_id);
-              const updateResults = value.results.map((v, i) => (i === index ? { ...v, status: true } : v));
-              // INFO: 캐시 업데이트, 전체 객체를 불변성을 유지하면서 업데이트
-              queryClient.setQueryData(['receivedOrders'], { ...value, results: updateResults });
-            }
-
-            return data;
-          } catch (err) {
-            console.error(err);
-          }
-        }
-        return null;
-      } catch (err) {
-        console.error(err);
-        return null;
+      const response = await requestApi.updateRequestStatus(game_request_id, true);
+      if (response.status === 200) {
+        return { game_request_id, request_amount, request_price };
       }
+      throw new Error('요청을 수락하는데 실패했습니다.');
+    },
+    onSuccess: async ({ game_request_id, request_amount, request_price }) => {
+      try {
+        const { data: coin } = await walletApi.rechargeWalletCoin(request_price * request_amount);
+        setUser({ coin: coin.coin });
+        console.log('코인 추가: ', coin);
+
+        const value: ReceivedRequestResponse | undefined = queryClient.getQueryData(['receivedOrders']);
+
+        if (value) {
+          const index = value.results.findIndex((v) => game_request_id === v.game_request_id);
+          const updateResults = value.results.map((v, i) => (i === index ? { ...v, status: true } : v));
+          // INFO: 캐시 업데이트, 전체 객체를 불변성을 유지하면서 업데이트
+          queryClient.setQueryData(['receivedOrders'], { ...value, results: updateResults });
+          console.log('요청 수락 및 캐시 업데이트 완료: ', queryClient.getQueryData(['receivedOrders']));
+        }
+
+        return data;
+      } catch (err) {
+        console.error('지갑 충전 및 캐시 업데이트 중 에러: ', err);
+      }
+    },
+    onError: (error) => {
+      console.error('요청 수락 중 에러: ', error);
     },
   });
 
@@ -72,30 +70,28 @@ export default function Response() {
   // INFO: 특정 게임 요청을 취소하고 캐시에서 해당 요청을 제거하는 mutation
   const cancelMutation = useMutation({
     mutationFn: async (game_request_id: number) => {
-      try {
-        const response = await client.post(`/api/v1/game/requests/accept/${game_request_id}/`, {
-          is_accept: false,
-        });
+      const response = await requestApi.updateRequestStatus(game_request_id, false);
 
-        if (response.status === 200) {
-          const value: ReceivedRequestResponse | undefined = queryClient.getQueryData(['receivedOrders']);
-
-          if (value) {
-            const index = value.results.findIndex((v) => 30 === v.game_request_id);
-
-            const updateResults = value.results.filter((_, i) => i !== index);
-
-            // INFO: 캐시 업데이트, 전체 객체를 불변성을 유지하면서 업데이트
-            queryClient.setQueryData(['receivedOrders'], { ...value, count: value.count - 1, results: updateResults });
-          }
-        }
-
-        return data;
-      } catch (err) {
-        console.error(err);
-
-        return null;
+      if (response.status === 200) {
+        return game_request_id;
       }
+      throw new Error('요청을 취소하는데 실패했습니다.');
+    },
+    onSuccess: () => {
+      const value: ReceivedRequestResponse | undefined = queryClient.getQueryData(['receivedOrders']);
+
+      if (value) {
+        const index = value.results.findIndex((v) => 30 === v.game_request_id);
+
+        const updateResults = value.results.filter((_, i) => i !== index);
+
+        // INFO: 캐시 업데이트, 전체 객체를 불변성을 유지하면서 업데이트
+        queryClient.setQueryData(['receivedOrders'], { ...value, count: value.count - 1, results: updateResults });
+        console.log('요청 취소 및 캐시 업데이트 완료: ', queryClient.getQueryData(['receivedOrders']));
+      }
+    },
+    onError: (error) => {
+      console.error('요청 취소 중 에러: ', error);
     },
   });
 

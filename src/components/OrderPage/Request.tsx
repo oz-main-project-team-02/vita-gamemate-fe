@@ -21,11 +21,11 @@ export default function Request() {
   console.log('주문 목록: ', data);
 
   return (
-    <>
+    <div className='mt-6 space-y-6'>
       {data?.results?.map((order: OrderRequest) => (
         <div
-          key={order.mate_id}
-          className='relative mt-[38px] flex flex-col rounded-xl border border-gray-200 bg-[#FFFFFF] p-6 shadow-lg transition-all duration-300 hover:shadow-xl md:flex-row'
+          key={order.game_request_id}
+          className='relative flex flex-col rounded-xl border border-gray-200 bg-[#FFFFFF] p-6 shadow-lg transition-all duration-300 hover:shadow-xl md:flex-row'
         >
           <div className='flex w-full flex-grow items-center gap-4'>
             {/* 유저 이미지 섹션 */}
@@ -72,7 +72,7 @@ export default function Request() {
 
           {order.status ? (
             <div
-              className='absolute inset-0 z-20 flex flex-col items-center justify-center py-4'
+              className='absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl py-4'
               style={{
                 background: 'linear-gradient(to right, rgba(128, 0, 128, 0.8), rgba(75, 0, 130, 0.8))',
               }}
@@ -92,7 +92,7 @@ export default function Request() {
             </div>
           ) : (
             <div
-              className='absolute inset-0 z-20 flex flex-col items-center justify-center py-4'
+              className='absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl py-4'
               style={{
                 background: 'linear-gradient(to right, rgb(255, 165, 0), rgb(255, 140, 0))',
                 opacity: 0.8,
@@ -115,6 +115,6 @@ export default function Request() {
           {showReview && <Review order={order} showReview={showReview} setShowReview={setShowReview} />}
         </div>
       ))}
-    </>
+    </div>
   );
 }

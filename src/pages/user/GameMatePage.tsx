@@ -4,16 +4,17 @@ import { useUserStore } from '@/config/store';
 import { FaGamepad } from 'react-icons/fa';
 import { IoMdAlert } from 'react-icons/io';
 import MypageLayout from '@/layouts/MypageLayout';
+import { Games } from '@/config/const';
 
 export default function GameMatePage() {
   const user = useUserStore((state) => state.user);
-
+  console.log(Object.keys(Games).length);
   return (
     <>
       <TitleIntro titleE='VITA GAMEMATE' titleK='게임 메이트' content='당신의 재능을 보여주세요!' />
       <MypageLayout>
         <div className='m-auto mt-[140px] max-w-[800px]'>
-          {user.mate_game_info ? (
+          {user.mate_game_info?.length === Object.keys(Games).length ? (
             <div className='mx-auto w-full max-w-md overflow-hidden rounded-lg bg-white shadow-lg'>
               <div className='p-6'>
                 <div className='mb-4 flex items-center space-x-4'>
@@ -22,7 +23,6 @@ export default function GameMatePage() {
                   </div>
                   <h2 className='text-2xl font-bold text-blue-600'>게임 메이트 안내</h2>
                 </div>
-                <p className='mb-4 text-gray-600'>현재는 한 가지 게임에 대해서만 게임 메이트로 신청할 수 있습니다.</p>
                 <p className='mb-4 text-gray-600'>
                   추후 업데이트를 통해 다양한 게임에서 메이트로 활동할 수 있도록 준비 중이니 많은 기대 부탁드립니다!
                 </p>

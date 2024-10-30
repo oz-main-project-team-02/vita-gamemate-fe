@@ -44,12 +44,6 @@ export default function CategorySlider() {
             <Link
               to={`/category/${game.id}`}
               className='relative flex h-[286px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-primary lg:h-[306px] xl:h-[326px]'
-              // style={{
-              //   backgroundImage: `url(${game.img})`,
-              //   boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)',
-              //   backgroundRepeat: 'no-repeat',
-              //   backgroundSize: 'cover',
-              // }}
               onClick={() => handleCategoryClick(game.id)}
             >
               <img

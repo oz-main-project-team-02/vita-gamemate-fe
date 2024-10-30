@@ -7,7 +7,6 @@ import { useUserStore } from '@/config/store';
 import { FaCalendarAlt, FaCheckCircle, FaCoins, FaRedo, FaTimesCircle } from 'react-icons/fa';
 import dayjs from 'dayjs';
 import { GiGamepad, GiStarsStack, GiTwoCoins } from 'react-icons/gi';
-import { Link } from 'react-router-dom';
 
 dayjs.locale('ko');
 
@@ -105,13 +104,13 @@ export default function Response() {
   };
 
   return (
-    <div className='space-y-6'>
+    <div className='mt-6 space-y-6'>
       {data?.results?.map((receivedData: ReceivedRequest) => (
         <div
-          key={receivedData.user_id}
+          key={receivedData.game_request_id}
           className='relative flex flex-col items-center rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl md:flex-row'
         >
-          <div className='flex w-full flex-grow gap-4'>
+          <div className='flex w-full flex-grow justify-center gap-4'>
             {/* 유저 이미지 섹션 */}
             <div className='hidden rounded-lg border border-gray-200 bg-[#F8F8F8] lg:block lg:h-[120px] lg:w-[120px] xl:h-[160px] xl:w-[160px]'>
               <img
@@ -121,7 +120,7 @@ export default function Response() {
               />
             </div>
             {/* 유저 데이터 섹션 */}
-            <div className='flex-grow space-y-2 py-2'>
+            <div className='space-y-2 py-2 md:flex-grow'>
               <div className='flex items-center gap-2'>
                 <h2 className='text-2xl font-bold text-gray-800'>{receivedData.user_nickname}</h2>
                 <Gender gender={receivedData.user_gender} birthday={null} />
@@ -148,9 +147,29 @@ export default function Response() {
           </div>
 
           {/* 버튼 섹션 */}
-          <div className='mt-4 flex w-full justify-end md:mt-0 md:w-auto'>
+          <div className='mt-4 flex w-full justify-center md:mt-0 md:w-auto'>
             {receivedData.status ? (
-              <div className='rounded-full bg-green-500 px-4 py-2 text-sm font-semibold text-white'>완료</div>
+              <div
+                className='absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl py-4'
+                style={{
+                  background: 'linear-gradient(to right, rgb(74, 222, 128), rgb(31, 47, 172))',
+                  opacity: 0.8,
+                }}
+              >
+                <div className='flex justify-center space-x-4'>
+                  <GiGamepad className='h-10 w-10 animate-bounce text-yellow-300' />
+                  <GiStarsStack className='h-10 w-10 animate-pulse text-yellow-300' />
+                  <GiTwoCoins className='h-10 w-10 animate-bounce text-yellow-300' />
+                </div>
+                <h2 className='text-2xl font-bold text-white drop-shadow-lg'>게임 시간 어떠셨나요?</h2>
+                <p className='text-lg text-yellow-200'>함께한 순간이 특별했기를 바랍니다!</p>
+
+                <div className='mt-2'>
+                  <div className='rounded-full bg-gradient-to-r from-green-400 to-blue-500 px-6 py-2 font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105'>
+                    완료
+                  </div>
+                </div>
+              </div>
             ) : (
               <div className='flex flex-row gap-2'>
                 <button
@@ -178,33 +197,6 @@ export default function Response() {
               </div>
             )}
           </div>
-
-          {receivedData.status && (
-            <div
-              className='absolute inset-0 z-20 flex flex-col items-center justify-center py-4'
-              style={{
-                background: 'linear-gradient(to right, rgb(74, 222, 128), rgb(31, 47, 172))',
-                opacity: 0.8,
-              }}
-            >
-              <div className='flex justify-center space-x-4'>
-                <GiGamepad className='h-10 w-10 animate-bounce text-yellow-300' />
-                <GiStarsStack className='h-10 w-10 animate-pulse text-yellow-300' />
-                <GiTwoCoins className='h-10 w-10 animate-bounce text-yellow-300' />
-              </div>
-              <h2 className='text-2xl font-bold text-white drop-shadow-lg'>게임 시간 어떠셨나요?</h2>
-              <p className='text-lg text-yellow-200'>함께한 순간이 특별했기를 바랍니다!</p>
-
-              <div className='mt-2'>
-                <Link
-                  to={`/user/${receivedData.user_id}`}
-                  className='rounded-full bg-gradient-to-r from-green-400 to-blue-500 px-6 py-2 font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105'
-                >
-                  한번 더 신청하기!
-                </Link>
-              </div>
-            </div>
-          )}
         </div>
       ))}
     </div>

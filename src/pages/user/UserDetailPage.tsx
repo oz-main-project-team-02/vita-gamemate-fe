@@ -41,6 +41,31 @@ export default function UserDetailPage() {
     return <ErrorPage />;
   }
 
+  // 채팅방 생성 api 요청 후 채팅 모달 open
+  const createChatHandler = async (mateNickname: string | null) => {
+    if (!mateNickname || mateNickname === user.nickname) return;
+
+    try {
+      const response = await createChat(mateNickname);
+      console.log(response.data);
+
+      if (response.status === 200 || response.status === 201) {
+        setChatModalOpen();
+      } else {
+        console.error('채팅방 생성 실패');
+        alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('채팅방 생성 요청 실패: ', error);
+      alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    }
+  };
+
+  const handleOrdersClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setOrderModalOpen();
+  };
+
   return (
     <>
       {isOrderModalOpen && <OrderModal mate={mate} />}

@@ -1,4 +1,4 @@
-import { ChatList, Message, Participant } from '../config/types';
+import { ChatList, ChatMessage } from '../config/types';
 import { client } from '@/api/client';
 
 /**
@@ -20,47 +20,18 @@ export const fetchChatLists = async (): Promise<ChatList[]> => {
   const response = await client.get('/api/v1/chats/rooms/');
   console.log(response);
   return response.data.sort(
-    (a: ChatList, b: ChatList) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+    (a: ChatList, b: ChatList) => new Date(b.latest_message_time).getTime() - new Date(a.latest_message_time).getTime()
   );
 };
 
-// 채팅 전송
-export const sendMessage = (socket: WebSocket, { roomId, message }: { roomId: number; message: string }) => {
-  if (socket.readyState === WebSocket.OPEN) {
-    const data = JSON.stringify({ event: 'send_message', roomId, message });
-    socket.send(data);
-  } else {
-    console.error('WebSocket이 연결되지 않았습니다.');
-  }
-};
-
-// 채팅방 내역 불러오기
-export const fetchChatMessages = (
-  socket: WebSocket,
-  roomId: number,
-  callback: (data: { participants: Participant[]; messages: Message[] }) => void
-) => {
-  // WebSocket이 연결된 상태인지 확인
-  if (socket.readyState === WebSocket.OPEN) {
-    const joinRoomData = JSON.stringify({ event: 'join_room', roomId });
-    socket.send(joinRoomData);
-  } else {
-    // WebSocket이 연결되지 않았다면 onopen 이벤트에서 전송하도록 처리
-    socket.onopen = () => {
-      const joinRoomData = JSON.stringify({ event: 'join_room', roomId });
-      socket.send(joinRoomData);
-    };
-  }
-
-  // 서버에서 메시지를 받으면 callback 실행
-  const messageHandler = (event: MessageEvent) => {
-    const data = JSON.parse(event.data);
-    if (data.event === 'chat_history') {
-      callback(data);
-    }
-  };
-
-  // 중복 등록 방지를 위해 기존 이벤트 핸들러 제거 후 등록
-  socket.removeEventListener('message', messageHandler);
-  socket.addEventListener('message', messageHandler);
+/**
+ * GET /api/v1/chats/<int:room_id>/messages
+ * @returns 채팅 내역 상세 조회
+ */
+export const fetchChatMessages = async (roomId: number, page: number): Promise<ChatMessage[]> => {
+  const response = await client.get(`/api/v1/chats/${roomId}/messages?page=${page}`);
+  console.log(response);
+  return response.data.results.sort(
+    (a: ChatMessage, b: ChatMessage) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+  );
 };

@@ -1,0 +1,13 @@
+name: Deploy to S3 And Invalidate Cloudfront
+
+on:
+  push:
+    branches:
+      - feature/minhyuk
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Repository Checkout
+        uses: actions/checkout@v4

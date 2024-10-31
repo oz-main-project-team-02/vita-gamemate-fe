@@ -11,7 +11,9 @@ function useChatListWebSocket(onNewMessage: (data: ChatList) => void): WebSocket
       if (chatListWebSocket) {
         chatListWebSocket.close();
       }
-      const ws = new WebSocket('wss://resdineconsulting.com/ws/chat/list/');
+
+      const accessToken = localStorage.getItem('accessToken');
+      const ws = new WebSocket(`wss://resdineconsulting.com/ws/chat/list/?token=${accessToken}`);
 
       ws.onopen = () => {
         console.log('채팅 리스트 WebSocket 연결 성공');

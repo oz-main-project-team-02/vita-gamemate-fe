@@ -36,4 +36,4 @@ jobs:
         run: aws s3 rm --recursive s3://oz-main-vita-front
 
       - name: AWS S3 빌드 파일 재배포
-        run: aws s3 cd ./dist s3://oz-main-vita-front/ --recursive
+        run: aws s3 cp ./dist s3://oz-main-vita-front/ --recursive

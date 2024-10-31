@@ -18,6 +18,8 @@ import { useChatModalStore, useOrderModalStore, useUserStore } from '@/config/st
 import { createChat } from '@/api/chat';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect } from 'react';
+import userImage from '@/assets/imgs/user.png';
+import star from '@/assets/imgs/star.svg';
 
 export default function UserDetailPage() {
   const user = useUserStore((state) => state.user);
@@ -82,7 +84,7 @@ export default function UserDetailPage() {
             <div className='h-[70px] w-[70px] rounded-full border bg-slate-50'>
               <img
                 className='h-[70px] w-[70px] rounded-full object-cover'
-                src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
+                src={mate.profile_image ? mate.profile_image : userImage}
                 alt='user'
               />
             </div>
@@ -109,7 +111,7 @@ export default function UserDetailPage() {
             <div className='h-[610px] w-[36%] min-w-[200px] rounded-3xl border bg-[#FFFFFF]'>
               <img
                 className='h-[400px] w-full rounded-t-3xl object-cover'
-                src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
+                src={mate.profile_image ? mate.profile_image : userImage}
                 alt='user'
               />
               <h1 className='px-5 pt-5 text-xl font-bold'>소개</h1>
@@ -145,7 +147,7 @@ export default function UserDetailPage() {
                   <div className='h-[82px] w-3/5 px-4 py-1'>
                     <h1 className='pb-1 text-2xl font-bold'>{getGame(mate.mate_game_info?.[0]?.game_id)?.title}</h1>
                     <p className='flex items-center pb-1'>
-                      <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
+                      <img src={star} alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
                       &nbsp;{mate.average_rating}&nbsp;
                       <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
                     </p>
@@ -186,7 +188,7 @@ export default function UserDetailPage() {
                 {/* 리뷰 정보 */}
                 <div className='h-[350px] w-[62%] min-w-[350px] rounded-3xl border bg-[#FFFFFF] p-5'>
                   <div className='mb-2 flex items-center'>
-                    <img className='w-7' src='/src/assets/imgs/star.svg' alt='star' />
+                    <img className='w-7' src={star} alt='star' />
                     <h1 className='px-2 text-2xl font-bold'>
                       {mate.average_rating} • 사용자 의견 ({mate.amount})
                     </h1>

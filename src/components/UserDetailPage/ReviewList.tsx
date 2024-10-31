@@ -1,6 +1,8 @@
 import { reviewApi } from '@/api';
 import { Review } from '@/config/types';
 import { useQuery } from '@tanstack/react-query';
+import userImage from '@/assets/imgs/user.png';
+import star from '@/assets/imgs/star.svg';
 
 type Props = {
   userId: string;
@@ -24,12 +26,12 @@ export default function ReviewList({ userId }: Props) {
       {reviews?.map((review: Review, i) => (
         <div key={i}>
           <div className='h-10 w-10 rounded-full border bg-slate-200'>
-            <img className='h-10 w-10 rounded-full' src='/src/assets/imgs/user.png' alt='user' />
+            <img className='h-10 w-10 rounded-full' src={userImage} alt='user' />
           </div>
           <div className='ml-2 h-14 w-3/4'>
             <div className='flex'>
               {new Array(review.rating).fill(0).map((_, i) => (
-                <img key={i} src='/src/assets/imgs/star.svg' alt='star' />
+                <img key={i} src={star} alt='star' />
               ))}
             </div>
             <p className='text-sm text-gray-400'>{review.content}</p>

@@ -3,7 +3,7 @@ name: Deploy to S3 And Invalidate Cloudfront
 on:
   push:
     branches:
-      - feature/minhyuk
+      - main
 
 jobs:
   deploy:

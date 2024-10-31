@@ -6,6 +6,7 @@ import { useUserStore } from '@/config/store';
 import { FaCalendarAlt, FaCheckCircle, FaCoins, FaRedo, FaTimesCircle } from 'react-icons/fa';
 import dayjs from 'dayjs';
 import { GiGamepad, GiStarsStack, GiTwoCoins } from 'react-icons/gi';
+import userImage from '@/assets/imgs/user.png';
 
 dayjs.locale('ko');
 
@@ -111,7 +112,7 @@ export default function Response() {
             <div className='hidden rounded-lg border border-gray-200 bg-[#F8F8F8] lg:block lg:h-[120px] lg:w-[120px] xl:h-[160px] xl:w-[160px]'>
               <img
                 className='rounded-lg p-1 lg:h-[120px] lg:w-[120px] xl:h-[160px] xl:w-[160px]'
-                src={receivedData.user_profile_image || '/src/assets/imgs/user.png'}
+                src={receivedData.user_profile_image || userImage}
                 alt={receivedData.user_nickname}
               />
             </div>

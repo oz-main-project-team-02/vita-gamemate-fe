@@ -1,5 +1,6 @@
 import { CoinPackage } from '@/config/const';
 import { useNavigate } from 'react-router-dom';
+import vitaCoin from '@/assets/imgs/vitaCoin.svg';
 
 type Props = {
   coinData: CoinPackage;
@@ -30,7 +31,7 @@ export default function CoinBox({ coinData }: Props) {
         </div>
       </div>
       <div className='flex items-center'>
-        <img src='/src/assets/imgs/vitaCoin.svg' alt='vitaCoin' width={24} height={24} className='mr-2' />
+        <img src={vitaCoin} alt='vitaCoin' width={24} height={24} className='mr-2' />
         <h1 className='text-2xl font-semibold text-yellow-600'>{coinData.coin.toLocaleString()}</h1>
       </div>
       <div className='my-2 w-3/4 border-t-2 border-dashed border-gray-300'></div>

@@ -26,30 +26,32 @@ export function OrderModal({ mate }: { mate: User }) {
 
   const orderRequest = useMutation({
     mutationFn: async ({ price, amount }: { price: number; amount: number }) => {
-      const response = await requestApi.MateRequest(mate.id, {
+      const totalPrice = price * amount;
+
+      const response = await walletApi.withdrawWalletCoin(totalPrice);
+
+      if (response.status !== 200) {
+        throw new Error(`코인 차감에 실패했습니다: ${response.data.message}`);
+      }
+
+      const requestResponse = await requestApi.MateRequest(mate.id, {
         game_id: mate?.mate_game_info?.[0]?.game_id,
         price,
         amount,
       });
-      return { status: response.status, coin: price * amount };
+      return { status: requestResponse.status, coin: response.data.coin };
     },
     onSuccess: async ({ status, coin }) => {
       if (status === 201) {
-        try {
-          const response = await walletApi.withdrawWalletCoin(coin);
-
-          setUser({ coin: response.data.coin });
-          setOrderModalClose();
-          alert('주문이 완료되었습니다.');
-        } catch (error) {
-          console.error(error);
-        }
+        setUser({ coin });
+        setOrderModalClose();
+        alert('주문이 완료되었습니다.');
       } else {
         console.error(`주문실패, status: ${status}`);
       }
     },
     onError: (error) => {
-      console.error(error);
+      console.error('오류 발생: ', error);
     },
   });
 

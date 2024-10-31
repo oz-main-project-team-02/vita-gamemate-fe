@@ -25,6 +25,8 @@ export default {
         softYellow: "#FFF6B9", // 부드러운 노란색
         purple: "#811AF6", // 보라색
         mintGreen: "#16D6B5", // 민트 그린색
+        deepYellow: "#F4CE14", // 진한 노란색
+        lightSkyGray: "#F7FAFC", // 아주 연한 하늘색  
       },
 
       fontFamily: {
@@ -49,6 +51,11 @@ export default {
         lg: "1024px",
         xl: "1280px",
       },
+
+      borderRadius: {
+        'chat-me': "16px 0 16px 16px",
+        'chat-other': "0 16px 16px 16px",
+      }
     },
   },
   plugins: [],

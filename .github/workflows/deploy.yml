@@ -12,14 +12,26 @@ jobs:
       - name: Github Repository Checkout
         uses: actions/checkout@v4
 
-      - name: Install node packages
+      - name: 의존성 패키지 설치
         run: npm install
 
-      - name: Build Project
+      - name: 빌드
         run: npm run build
 
-      - name: Debuggin build Project
+      - name: 빌드 파일 디버깅
         run: |
           ls
+          echo "---------------------------------"
           cd dist
           ls
+
+      - name: AWS Resource 접근 권한 AWS 인증 설정
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secrets-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: AWS S3 기존 파일 삭제
+        run: |
+          aws s3 rm --recursive s3://oz-main-vita-front

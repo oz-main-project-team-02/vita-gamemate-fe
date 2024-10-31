@@ -1,4 +1,5 @@
-import { requestApi } from '@/api';
+import { requestApi, walletApi } from '@/api';
+import { useUserStore } from '@/config/store';
 import { OrderRequest, OrderRequestResponse } from '@/config/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaHourglassHalf, FaStar } from 'react-icons/fa';
@@ -11,6 +12,7 @@ type Props = {
 
 export const RenderSectionByStatus = ({ order, setSelectedOrder }: Props) => {
   const queryClient = useQueryClient();
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleReviewClick = (order: OrderRequest) => {
     setSelectedOrder(order);
@@ -19,21 +21,28 @@ export const RenderSectionByStatus = ({ order, setSelectedOrder }: Props) => {
   const cancelMutation = useMutation({
     mutationFn: async (game_request_id: number) => {
       const response = await requestApi.cancelRequest(game_request_id);
-      return response;
-    },
-    onSuccess: (response) => {
-      if (response.status === 204) {
-        const value: OrderRequestResponse | undefined = queryClient.getQueryData(['orders']);
-        console.log(`요청 취소 처리 완료, status: ${response.status}`);
+      if (response.status !== 204) {
+        throw new Error(`요청 취소에 실패했습니다: ${response.status}`);
+      }
 
-        if (value) {
-          const index = value.results.findIndex((v) => order.game_request_id === v.game_request_id);
-          const updateResults = value.results.filter((_, i) => i !== index);
-          queryClient.setQueryData(['orders'], { ...value, results: updateResults });
-          console.log('요청 취소 및 캐시 업데이트 완료: ', queryClient.getQueryData(['orders']));
-        }
-      } else {
-        throw new Error(`요청 취소 처리 실패, status: ${response.status}`);
+      const rechargeResponse = await walletApi.rechargeWalletCoin(order.request_price * order.request_amount);
+      console.log(rechargeResponse);
+      if (rechargeResponse.status !== 200) {
+        throw new Error(`코인 환불에 실패했습니다: ${rechargeResponse.status}`);
+      }
+
+      return { coin: rechargeResponse.data.coin };
+    },
+    onSuccess: ({ coin }) => {
+      setUser({ coin });
+
+      const value: OrderRequestResponse | undefined = queryClient.getQueryData(['orders']);
+
+      if (value) {
+        const index = value.results.findIndex((v) => order.game_request_id === v.game_request_id);
+        const updateResults = value.results.filter((_, i) => i !== index);
+        queryClient.setQueryData(['orders'], { ...value, results: updateResults });
+        console.log('요청 취소 및 캐시 업데이트 완료: ', queryClient.getQueryData(['orders']));
       }
     },
     onError: (error) => {

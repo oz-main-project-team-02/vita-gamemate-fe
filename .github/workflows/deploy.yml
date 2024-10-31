@@ -11,3 +11,12 @@ jobs:
     steps:
       - name: Github Repository Checkout
         uses: actions/checkout@v4
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Debuggin build Project
+        run: |
+          ls
+          cd dist
+          ls

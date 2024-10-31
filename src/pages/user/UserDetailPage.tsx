@@ -8,7 +8,6 @@ import { useOrderModalStore } from '@/config/store';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect, useState } from 'react';
 import userImage from '@/assets/imgs/user.png';
-import star from '@/assets/imgs/star.svg';
 import UserBar from '@/components/UserDetailPage/UserBar';
 import GameOrderSection from '@/components/UserDetailPage/GameOrderSection';
 import GameInfoSection from '@/components/UserDetailPage/GameInfoSection';

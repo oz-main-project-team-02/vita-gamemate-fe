@@ -1,6 +1,8 @@
 import { MateGameInfo, Review } from '@/config/types';
 import { useEffect, useRef, useState } from 'react';
 import { fetchReviewsByGameId } from '@/api/review';
+import star from '@/assets/imgs/star.svg';
+import userImage from '@/assets/imgs/user.png';
 
 type Props = {
   userId: string | undefined;
@@ -46,7 +48,7 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
       {selectGame !== undefined ? (
         <div className='relative right-[380px] w-[1000px] rounded-3xl border bg-[#FFFFFF] p-5'>
           <div className='mb-2 flex items-center'>
-            <img className='w-7' src='/src/assets/imgs/star.svg' alt='star' />
+            <img className='w-7' src={star} alt='star' />
             <h1 className='px-2 text-2xl font-bold'>
               {selectGame.average_rating} • 사용자 의견 ({reviewRef.current})
             </h1>
@@ -57,13 +59,13 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
                 {reviewData?.map((review, i) => (
                   <div key={i} className='my-6 ml-2 flex h-[60px] w-full items-center'>
                     <div className='w-[60px] rounded-full border bg-slate-200'>
-                      <img className='w-[60px] rounded-full' src='/src/assets/imgs/user.png' alt='user' />
+                      <img className='w-[60px] rounded-full' src={userImage} alt='user' />
                     </div>
                     <div className='ml-3 w-3/4'>
                       <p className='text-[15px]'>{review.mate_nickname}</p>
                       <div className='flex'>
                         {new Array(review.rating).fill(0).map((_, i) => (
-                          <img key={i} src='/src/assets/imgs/star.svg' alt='star' />
+                          <img key={i} src={star} alt='star' />
                         ))}
                       </div>
                       <p className='w-[700px] truncate text-sm text-gray-400'>{review.content}</p>

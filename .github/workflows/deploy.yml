@@ -45,3 +45,6 @@ jobs:
       - name: AWS S3 빌드 파일 재배포
         if: github.ref == 'refs/heads/main'
         run: aws s3 cp ./dist s3://oz-main-vita-front/ --recursive
+
+      - name: Cloudfront 캐시 무효화
+        run: aws cloudfront create-invalidation --distribution-id EQEIPG9IJRV5K --paths "/*"

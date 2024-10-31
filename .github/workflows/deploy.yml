@@ -5,7 +5,6 @@ on:
     branches:
       - develop
       - main
-      - feature/minhyuk
 
 jobs:
   deploy:
@@ -41,13 +40,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: AWS S3 기존 파일 삭제
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/minhyuk'
+        if: github.ref == 'refs/heads/main'
         run: aws s3 rm --recursive s3://oz-main-vita-front
 
       - name: AWS S3 빌드 파일 재배포
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/minhyuk'
+        if: github.ref == 'refs/heads/main'
         run: aws s3 cp ./dist s3://oz-main-vita-front/ --recursive
 
       - name: Cloudfront 캐시 무효화
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/minhyuk'
+        if: github.ref == 'refs/heads/main'
         run: aws cloudfront create-invalidation --distribution-id EQEIPG9IJRV5K --paths "/*"

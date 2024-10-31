@@ -6,33 +6,22 @@ interface RequestData {
   amount: number;
 }
 
-/**
- * POST /api/v1/game/requests/${userId}
- * @param mateId 상대방 ID
- * @param value 요청 데이터 { game_id, price, amount }
- * @returns 게임 메이트 요청
- */
-export const sendMateRequest = async (mateId: number, { game_id, price, amount }: RequestData) => {
-  try {
-    const { data }: { data: RequestData } = await client.post(`/api/v1/game/requests/${mateId}`, {
-      game_id,
-      price,
-      amount,
-    });
-
-    return data;
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-};
-
 export const MateRequest = (mateId: number, { game_id, price, amount }: RequestData) => {
-  return client.post(`/api/v1/game/requests/${mateId}`, {
+  return client.post(`/api/v1/game/requests/${mateId}/`, {
     game_id,
     price,
     amount,
   });
+};
+
+export const updateRequestStatus = (game_request_id: number, is_accept: boolean) => {
+  return client.post(`/api/v1/game/requests/accept/${game_request_id}/`, {
+    is_accept,
+  });
+};
+
+export const cancelRequest = (game_request_id: number) => {
+  return client.post(`/api/v1/game/requests/cancel/${game_request_id}/`, {});
 };
 
 /**

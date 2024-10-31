@@ -10,16 +10,12 @@ import { getGame } from '../../config/const';
 import { UserResponse } from '@/config/types';
 import { mateApi } from '@/api';
 import SkeletonTodayGameMate from '../skeleton/SkeletonTodayGameMate';
-import { delay } from '@/utils/delay';
 import { Link } from 'react-router-dom';
 
 export default function GameMateSlider() {
   const { data, isLoading } = useQuery<UserResponse>({
     queryKey: ['user', 'mate', 'recommend'],
     queryFn: async () => {
-      // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
-      // FIXME: delay 함수 제거시 async await 구문 제거
-      await delay();
       return await mateApi.fetchAllCategoryMates({ pageParam: 1 });
     },
   });

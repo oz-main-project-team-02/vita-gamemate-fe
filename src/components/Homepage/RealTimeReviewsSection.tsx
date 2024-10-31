@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { reviewApi } from '@/api';
-import { delay } from '@/utils/delay';
 import { useEffect, useState } from 'react';
 import debounce from '@/utils/debounce';
 // import { Review } from '@/config/types';
@@ -21,7 +20,6 @@ export default function RealTimeReviewsSection() {
   const { data, isLoading } = useQuery<ReviewPage>({
     queryKey: ['review', 'new'], // 쿼리 키
     queryFn: async () => {
-      await delay();
       return reviewApi.fetchReviews();
     },
   });

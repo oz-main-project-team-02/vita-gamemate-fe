@@ -75,7 +75,9 @@ export default function CategoryPage() {
         </div>
 
         {/* 카드 리스트 */}
-        <div className={`transition-all duration-300 ease-in-out ${isSidebarOpen ? 'w-[calc(100%-240px)]' : 'w-full'}`}>
+        <div
+          className={`bg-gray-100 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'w-[calc(100%-240px)]' : 'w-full'}`}
+        >
           <GameCategoryCardList
             gameId={gameId}
             sortValue={sortValue}

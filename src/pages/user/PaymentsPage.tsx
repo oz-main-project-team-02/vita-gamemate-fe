@@ -36,7 +36,7 @@ export default function PaymentsPage() {
     <>
       <TitleIntro titleE={'MY ORDER'} titleK={'나의 의뢰'} content={'즐거운 매칭을 비타와 함께하세요!'} />
       <MypageLayout>
-        <div className='mt-[140px] flex justify-center'>
+        <div className='mt-[140px] flex min-h-[calc(100dvh-597px)] justify-center'>
           <div>
             <h1 className='mb-4 text-4xl font-bold'>테스트 결제 내역</h1>
             <p className='mb-4 text-xl'>

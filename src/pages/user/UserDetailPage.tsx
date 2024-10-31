@@ -22,7 +22,7 @@ export default function UserDetailPage() {
   const navigate = useNavigate();
 
   const { data: mate } = useQuery<User>({
-    queryKey: ['user', userId],
+    queryKey: ['user', Number(userId)],
     queryFn: async () => {
       try {
         const { data } = await client.get(`/api/v1/users/${userId}/profile/`);

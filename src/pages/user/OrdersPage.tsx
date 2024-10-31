@@ -11,7 +11,7 @@ export default function OrdersPage() {
     <>
       <TitleIntro titleE={'MY ORDER'} titleK={'나의 의뢰'} content={'즐거운 매칭을 비타와 함께하세요!'} />
       <MypageLayout>
-        <div className='m-auto mt-[140px] max-w-[800px]'>
+        <div className='m-auto mt-[140px] min-h-[calc(100dvh-597px)] max-w-[800px]'>
           <div>
             <p className='pb-[26px] text-2xl font-bold text-gray-500'>닉네임</p>
             <button

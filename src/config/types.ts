@@ -39,6 +39,9 @@ export interface MateUser {
 
 export interface Review {
   game_request_id: string;
+  author_id: string;
+  author_nickname: string;
+  mate_nickname: string;
   rating: number;
   content: string;
   created_at: Date;

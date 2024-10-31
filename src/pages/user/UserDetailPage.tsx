@@ -36,7 +36,7 @@ export default function UserDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    if (mate !== undefined) {
+    if ((mate! || mate!.mate_game_info) !== undefined) {
       mate!.mate_game_info!.filter(
         (games: MateGameInfo) => games.game_id === Number(searchParams.get('game')) && setSelectGame(games)
       );
@@ -79,7 +79,7 @@ export default function UserDetailPage() {
                   <GameOrderSection mate={mate} selectGame={selectGame} />
 
                   {/* 게임 정보 */}
-                  <GameInfoSection selectGame={selectGame} />
+                  <GameInfoSection selectGame={selectGame!} />
 
                   {/* 게임 선택 */}
                   <SelectGameSection mate={mate} setSelectGame={setSelectGame} setIsReview={setIsReview} />

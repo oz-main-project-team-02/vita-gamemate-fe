@@ -1,6 +1,6 @@
 import TitleIntro from '@/components/Common/TitleIntro';
 import { MateGameInfo, User } from '@/config/types';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
 import ErrorPage from '@/pages/ErrorPage';
@@ -15,12 +15,11 @@ import SelectGameSection from '@/components/UserDetailPage/SelectGameSection';
 
 export default function UserDetailPage() {
   const { userId } = useParams();
+  const [searchParams] = useSearchParams();
   const { isOrderModalOpen } = useOrderModalStore();
-  const [selectGame, setSelectGame] = useState<MateGameInfo[]>([]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const [selectGame, setSelectGame] = useState<MateGameInfo>();
+  const [isReview, setIsReview] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const { data: mate } = useQuery<User>({
     queryKey: ['user', userId],
@@ -34,37 +33,22 @@ export default function UserDetailPage() {
     },
   });
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    if (mate !== undefined) {
+      mate!.mate_game_info!.filter(
+        (games: MateGameInfo) => games.game_id === Number(searchParams.get('game')) && setSelectGame(games)
+      );
+    }
+  }, [mate]);
+
   console.log(mate);
-  console.log(selectGame[0]);
+  console.log(selectGame);
 
   if (!mate) {
     return <ErrorPage />;
   }
-
-  // 채팅방 생성 api 요청 후 채팅 모달 open
-  const createChatHandler = async (mateNickname: string | null) => {
-    if (!mateNickname || mateNickname === user.nickname) return;
-
-    try {
-      const response = await createChat(mateNickname);
-      console.log(response.data);
-
-      if (response.status === 200 || response.status === 201) {
-        setChatModalOpen();
-      } else {
-        console.error('채팅방 생성 실패');
-        alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-      }
-    } catch (error) {
-      console.error('채팅방 생성 요청 실패: ', error);
-      alert('채팅창을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-    }
-  };
-
-  const handleOrdersClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setOrderModalOpen();
-  };
 
   return (
     <>
@@ -76,9 +60,11 @@ export default function UserDetailPage() {
           <UserBar mate={mate} userId={userId} />
 
           <div className='mb-[300px] flex w-[1000px] justify-between'>
-            <div className='h-[600px] w-[350px] rounded-3xl border bg-[#FFFFFF]'>
+            <div
+              className={`h-[560px] w-[350px] rounded-3xl border bg-[#FFFFFF] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
+            >
               <img
-                className='h-[348px] w-full rounded-t-3xl object-cover'
+                className='h-[300px] w-full rounded-t-3xl object-cover'
                 src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
                 alt='user'
               />
@@ -88,9 +74,6 @@ export default function UserDetailPage() {
 
             {mate.is_mate && mate.mate_game_info?.length !== undefined ? (
               <>
-                {/* 후원자 정보 */}
-                {/* <UserRankingSection /> */}
-
                 <div className='relative w-[620px]'>
                   {/* 게임 의뢰 정보 */}
                   <GameOrderSection mate={mate} selectGame={selectGame} />
@@ -99,16 +82,26 @@ export default function UserDetailPage() {
                   <GameInfoSection selectGame={selectGame} />
 
                   {/* 게임 선택 */}
-                  <SelectGameSection mate={mate} setSelectGame={setSelectGame} />
+                  <SelectGameSection mate={mate} setSelectGame={setSelectGame} setIsReview={setIsReview} />
 
                   {/* 리뷰 정보 */}
-                  <ReviewSection userId={userId} selectGame={selectGame} />
+                  <ReviewSection
+                    userId={userId}
+                    selectGame={selectGame}
+                    isReview={isReview}
+                    setIsReview={setIsReview}
+                  />
                 </div>
               </>
             ) : (
-              <div className='h-[193px] w-[620px] rounded-3xl border bg-[#FFFFFF] p-8'>
-                <div>이 사용자는 현재 lita 게임 메이트가 아닙니다</div>
-                <div>수정 해야됨</div>
+              <div className='flex h-[193px] w-[620px] flex-col items-center justify-around rounded-3xl border bg-[#FFFFFF] p-8'>
+                <div className='text-xl font-bold'>이 사용자는 현재 lita 게임 메이트가 아닙니다</div>
+                <button
+                  onClick={() => navigate(-1)}
+                  className='h-[40px] w-[100px] rounded-xl border-2 hover:bg-gray-200'
+                >
+                  이전 페이지
+                </button>
               </div>
             )}
           </div>

@@ -4,22 +4,22 @@ import { useState } from 'react';
 
 type Props = {
   userId: string | undefined;
-  selectGame: MateGameInfo[];
+  selectGame: MateGameInfo | undefined;
+  isReview: boolean;
+  setIsReview: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ReviewSection({ userId, selectGame }: Props) {
+export default function ReviewSection({ userId, selectGame, isReview, setIsReview }: Props) {
   const [page, setPage] = useState(1);
-  const [isPage, setIsPage] = useState<boolean>(false);
 
-  console.log(page);
   return (
     <>
-      {selectGame[0] !== undefined ? (
+      {selectGame !== undefined ? (
         <div className='relative right-[380px] w-[1000px] rounded-3xl border bg-[#FFFFFF] p-5'>
           <div className='mb-2 flex items-center'>
             <img className='w-7' src='/src/assets/imgs/star.svg' alt='star' />
             <h1 className='px-2 text-2xl font-bold'>
-              {selectGame[0].average_rating} • 사용자 의견 ({selectGame[0].review_count})
+              {selectGame.average_rating} • 사용자 의견 ({selectGame.review_count})
             </h1>
           </div>
           <ReviewList
@@ -27,14 +27,14 @@ export default function ReviewSection({ userId, selectGame }: Props) {
             page={page}
             setPage={setPage}
             selectGame={selectGame}
-            isPage={isPage}
-            setIsPage={setIsPage}
+            isReview={isReview}
+            setIsReview={setIsReview}
           />
 
           <div
             onClick={() => {
               setPage((e) => e + 1);
-              setIsPage((e) => !e);
+              setIsReview((e) => !e);
             }}
             className='flex justify-center'
           >

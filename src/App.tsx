@@ -98,7 +98,7 @@ function App() {
             }
           />
           <Route
-            path='/event/:eventId'
+            path='/event/:gameId'
             element={
               <Suspense fallback={<Spinner />}>
                 <EventPage />

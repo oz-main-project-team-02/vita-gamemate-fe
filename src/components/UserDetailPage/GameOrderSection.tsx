@@ -5,7 +5,7 @@ import { MateGameInfo, User } from '@/config/types';
 
 type Props = {
   mate: User;
-  selectGame: MateGameInfo[];
+  selectGame: MateGameInfo | undefined;
 };
 
 export default function GameOrderSection({ mate, selectGame }: Props) {
@@ -18,22 +18,22 @@ export default function GameOrderSection({ mate, selectGame }: Props) {
 
   return (
     <div className='flex h-[193px] w-full rounded-3xl border bg-[#FFFFFF] p-8'>
-      {selectGame[0] !== undefined ? (
+      {selectGame !== undefined ? (
         <>
           <div
             className='h-[130px] w-[130px] overflow-hidden rounded-3xl bg-gray-100'
             style={{
-              backgroundImage: `url(${getGame(selectGame[0].game_id)?.img})`,
+              backgroundImage: `url(${getGame(selectGame.game_id)?.img})`,
               backgroundSize: '130px 150px',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: '0px 0px',
             }}
           ></div>
           <div className='h-[82px] w-3/5 px-4 py-1'>
-            <h1 className='pb-1 text-2xl font-bold'>{getGame(selectGame[0].game_id)?.title}</h1>
+            <h1 className='pb-1 text-2xl font-bold'>{getGame(selectGame.game_id)?.title}</h1>
             <p className='flex items-center pb-1'>
               <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
-              &nbsp;{mate.average_rating}&nbsp;
+              &nbsp;{selectGame.average_rating}&nbsp;
               <span className='text-sm text-gray-300'>| 받은 의뢰수 {''}</span>
             </p>
             <VitaPrice mate={mate} />
@@ -46,7 +46,7 @@ export default function GameOrderSection({ mate, selectGame }: Props) {
           </button>
         </>
       ) : (
-        <div>게임을 골라주세요!</div>
+        <div className='my-auto w-full text-center text-xl font-bold'>게임을 골라주세요!</div>
       )}
     </div>
   );

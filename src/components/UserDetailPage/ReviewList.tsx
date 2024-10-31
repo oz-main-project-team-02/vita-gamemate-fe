@@ -10,9 +10,9 @@ type Props = {
   userId: string;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  selectGame: MateGameInfo[];
-  isPage: boolean;
-  setIsPage: React.Dispatch<React.SetStateAction<boolean>>;
+  selectGame: MateGameInfo | undefined;
+  isReview: boolean;
+  setIsReview: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 // export default function ReviewList({ userId }: Props) {
@@ -52,18 +52,18 @@ type Props = {
 //   );
 // }
 
-export default function ReviewList({ userId, page, setPage, selectGame, isPage, setIsPage }: Props) {
+export default function ReviewList({ userId, page, setPage, selectGame, isReview, setIsReview }: Props) {
   const [reviewData, setReviewData] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchReviewsByGameId(userId!, selectGame[0].game_id.toString(), page);
+        const data = await fetchReviewsByGameId(userId!, selectGame!.game_id.toString(), page);
         console.log(data);
 
-        if (isPage) {
-          setReviewData((e) => [...e, data?.results]);
-          setIsPage((e) => !e);
+        if (isReview) {
+          data?.results?.map((data) => setReviewData((e) => [...e, data]));
+          setIsReview((e) => !e);
         } else {
           setReviewData(data?.results);
           setPage(1);
@@ -77,13 +77,13 @@ export default function ReviewList({ userId, page, setPage, selectGame, isPage, 
       fetchData();
     }, 500);
     return () => clearTimeout(fetchId);
-  }, [selectGame[0].game_id, page]);
+  }, [selectGame!.game_id, page]);
 
   return (
-    <div key={selectGame[0].game_id}>
+    <div key={selectGame!.game_id}>
       {reviewData &&
-        reviewData?.map((review) => (
-          <div key={review.game_request_id} className='my-6 flex h-[60px] w-full items-center'>
+        reviewData?.map((review, i) => (
+          <div key={i} className='my-6 ml-2 flex h-[60px] w-full items-center'>
             <div className='w-[60px] rounded-full border bg-slate-200'>
               <img className='w-[60px] rounded-full' src='/src/assets/imgs/user.png' alt='user' />
             </div>

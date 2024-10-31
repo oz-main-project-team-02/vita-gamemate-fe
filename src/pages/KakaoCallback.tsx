@@ -24,7 +24,7 @@ export default function KakaoCallback() {
         navigate('/', { replace: true });
       } catch (err) {
         console.error(err);
-        navigate('/', { replace: true });
+        // navigate('/', { replace: true });
       }
     })();
   }, [kakaoCode, navigate, setUser]);

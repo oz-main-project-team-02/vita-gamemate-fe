@@ -13,8 +13,8 @@ export default function GameMatePage() {
     <>
       <TitleIntro titleE='VITA GAMEMATE' titleK='게임 메이트' content='당신의 재능을 보여주세요!' />
       <MypageLayout>
-        <div className='m-auto mt-[140px] max-w-[800px]'>
-          {user.mate_game_info?.length === Object.keys(Games).length ? (
+        <div className='m-auto mt-[140px] min-h-[calc(100dvh-597px)] max-w-[800px]'>
+          {user.mate_game_info?.length == Object.keys(Games).length ? (
             <div className='mx-auto w-full max-w-md overflow-hidden rounded-lg bg-white shadow-lg'>
               <div className='p-6'>
                 <div className='mb-4 flex items-center space-x-4'>

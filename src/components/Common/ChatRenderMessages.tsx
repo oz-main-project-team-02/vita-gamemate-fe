@@ -1,49 +1,50 @@
 import React from 'react';
 import ProfileImage from './ProfileImage';
-import { useUserStore } from '../../config/store';
+import { useChatStore, useUserStore } from '../../config/store';
 import { formatDate, formatTime, formatYear, isNewDay, isSameMinute } from '../../utils/dateUtils';
-import { Message } from '../../config/types';
+import { ChatMessage } from '../../config/types';
 
-const ChatRenderMessages = ({ chatMessages }: { chatMessages: Message[] }) => {
-  const userId = useUserStore((state) => state.user.id);
+const ChatRenderMessages = ({ chatMessages }: { chatMessages: ChatMessage[] }) => {
+  const userNickname = useUserStore((state) => state.user.nickname);
+  const otherUserProfileImage = useChatStore((state) => state.otherUserProfileImage);
 
   let lastMessageDate: string | null = null;
 
-  return chatMessages.map((message: Message, index: number) => {
-    const messageDate = formatDate(message.created_at);
-    const messageTime = formatTime(message.created_at);
+  return chatMessages.map((message: ChatMessage, index: number) => {
+    const messageDate = formatDate(message.timestamp);
+    const messageTime = formatTime(message.timestamp);
     const isDateDifferent = isNewDay(messageDate, lastMessageDate);
     const nextMessage = chatMessages[index + 1];
     const isLastMessageInTime =
       !nextMessage ||
-      nextMessage.user_id !== message.user_id ||
-      !isSameMinute(messageTime, formatTime(nextMessage.created_at));
+      nextMessage.sender_nickname !== message.sender_nickname ||
+      !isSameMinute(messageTime, formatTime(nextMessage.timestamp));
 
     lastMessageDate = messageDate;
 
     return (
-      <React.Fragment key={message.message_id}>
+      <React.Fragment key={message.id}>
         {isDateDifferent && (
           <div className='mb-5 mt-2 flex items-center justify-center'>
             <span className='rounded-xl bg-slate-200 px-3 py-1 text-xs text-gray-400'>
-              {formatYear(message.created_at)}
+              {formatYear(message.timestamp)}
             </span>
           </div>
         )}
-        <div className={`flex ${message.user_id === userId ? 'justify-end' : 'justify-start'} mb-3`}>
-          {message.user_id === userId ? (
+        <div className={`flex ${message.sender_nickname === userNickname ? 'justify-end' : 'justify-start'} mb-3`}>
+          {message.sender_nickname === userNickname ? (
             <div className='mr-3 flex'>
               {isLastMessageInTime && <span className='self-end px-2 py-1 text-xs text-gray-400'>{messageTime}</span>}
-              <p className='rounded-chat-me max-w-[280px] bg-softYellow px-4 py-3 text-justify leading-snug'>
+              <p className='max-w-[280px] rounded-chat-me bg-softYellow px-4 py-3 text-justify leading-snug'>
                 {message.message}
               </p>
             </div>
           ) : (
             <div className='flex'>
               <div className='mx-3 min-h-[49px] min-w-[49px]'>
-                <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={message.profile_image} />
+                <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={otherUserProfileImage} />
               </div>
-              <p className='rounded-chat-other max-w-[240px] bg-white px-4 py-3 text-justify leading-snug'>
+              <p className='max-w-[240px] rounded-chat-other bg-white px-4 py-3 text-justify leading-snug'>
                 {message.message}
               </p>
               {isLastMessageInTime && <span className='self-end px-2 py-1 text-xs text-gray-400'>{messageTime}</span>}

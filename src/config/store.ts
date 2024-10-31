@@ -86,24 +86,24 @@ export const useChatModalStore = create<ChatModalState>((set) => ({
 
 interface ChatState {
   selectedRoomId: number | null;
-  participantId: number | null;
-  participantNickname: string | null;
-  participantProfileImage: string | null;
+  otherUserId: number | null;
+  otherUserNickname: string | null;
+  otherUserProfileImage: string | null;
   setSelectedRoomId: (roomId: number) => void;
-  setParticipantId: (mateId: number) => void;
-  setParticipantNickname: (nickname: string) => void;
-  setParticipantProfileImage: (image: string) => void;
+  setOtherUserId: (mateId: number) => void;
+  setOtherUserNickname: (nickname: string) => void;
+  setOtherUserProfileImage: (image: string) => void;
 }
 
 export const useChatStore = create<ChatState>((set) => ({
   selectedRoomId: null,
-  participantId: null,
-  participantNickname: null,
-  participantProfileImage: null,
+  otherUserId: null,
+  otherUserNickname: null,
+  otherUserProfileImage: null,
   setSelectedRoomId: (id: number) => set({ selectedRoomId: id }),
-  setParticipantId: (id: number) => set({ participantId: id }),
-  setParticipantNickname: (nickname: string) => set({ participantNickname: nickname }),
-  setParticipantProfileImage: (image: string) => set({ participantProfileImage: image }),
+  setOtherUserId: (id: number) => set({ otherUserId: id }),
+  setOtherUserNickname: (nickname: string) => set({ otherUserNickname: nickname }),
+  setOtherUserProfileImage: (image: string) => set({ otherUserProfileImage: image }),
 }));
 
 interface OrderModalState {
@@ -118,12 +118,16 @@ export const useOrderModalStore = create<OrderModalState>((set) => ({
   setOrderModalClose: () => set({ isOrderModalOpen: false }),
 }));
 
-interface SocketState {
-  socket: WebSocket | null;
-  setSocket: (socket: WebSocket) => void;
+interface WebSocketState {
+  chatRoomWebSocket: WebSocket | null;
+  chatListWebSocket: WebSocket | null;
+  setChatRoomWebSocket: (socket: WebSocket | null) => void;
+  setChatListWebSocket: (socket: WebSocket | null) => void;
 }
 
-export const socketStore = create<SocketState>((set) => ({
-  socket: null,
-  setSocket: (socket: WebSocket) => set({ socket }),
+export const webSocketStore = create<WebSocketState>((set) => ({
+  chatRoomWebSocket: null,
+  chatListWebSocket: null,
+  setChatRoomWebSocket: (chatRoomWebSocket: WebSocket | null) => set({ chatRoomWebSocket }),
+  setChatListWebSocket: (chatListWebSocket: WebSocket | null) => set({ chatListWebSocket }),
 }));

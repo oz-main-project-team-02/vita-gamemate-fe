@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useModalStore } from '../../config/store';
+import vitaLogo300 from '@/assets/imgs/vitaLogo300.svg';
+import kakaoLogin from '@/assets/imgs/kakao_login.svg';
 
 export default function LoginModal() {
   const { setModalStatus } = useModalStore();
@@ -30,11 +32,11 @@ export default function LoginModal() {
       >
         {/* 로고 */}
         <div>
-          <img src='/src/assets/imgs/vitaLogo300.svg' alt='비타 로고' className='h-[60px] w-[60px]' />
+          <img src={vitaLogo300} alt='비타 로고' className='h-[60px] w-[60px]' />
         </div>
         <div className='mb-4 text-center font-bold'>비타에서 게임 메이트와 즐겁게 대화하며 롤 듀오를 즐겨보세요!</div>
         <button onClick={handleKakaoLoginClick}>
-          <img src='/src/assets/imgs/kakao_login.svg' alt='카카오 로그인 버튼' />
+          <img src={kakaoLogin} alt='카카오 로그인 버튼' />
         </button>
       </div>
     </div>

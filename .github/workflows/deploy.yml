@@ -1,0 +1,42 @@
+name: Deploy to S3 And Invalidate Cloudfront
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Repository Checkout
+        uses: actions/checkout@v4
+
+      - name: 의존성 패키지 설치
+        run: npm install
+
+      - name: 빌드
+        run: npm run build
+
+      - name: 빌드 파일 디버깅
+        run: |
+          ls
+          echo "---------------------------------"
+          cd dist
+          ls
+
+      - name: AWS Resource 접근 권한 AWS 인증 설정
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: AWS S3 기존 파일 삭제
+        if: github.ref == 'refs/heads/main'
+        run: aws s3 rm --recursive s3://oz-main-vita-front
+
+      - name: AWS S3 빌드 파일 재배포
+        if: github.ref == 'refs/heads/main'
+        run: aws s3 cp ./dist s3://oz-main-vita-front/ --recursive

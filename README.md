@@ -104,9 +104,6 @@
  ┣ 📂recoil
  ┣ 📂routes
  ┣ 📂types
- ┣ 📂utils
- ┣ 📜App.tsx
- ┣ 📜index.tsx
  ┗ 📜react-app-env.d.ts
 ```
 

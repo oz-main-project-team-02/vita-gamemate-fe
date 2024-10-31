@@ -48,3 +48,17 @@ interface ReviewData {
 export const fetchPostReview = (id: number, reviewData: ReviewData) => {
   return client.post(`/api/v1/reviews/${id}/write/`, reviewData);
 };
+
+export const fetchReviewsByGameId = async (userId: string, gameId: string, page: number) => {
+  try {
+    const { data } = await client.get(`/api/v1/reviews/${userId}/${gameId}`, {
+      params: {
+        page,
+      },
+    });
+    return data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};

@@ -10,17 +10,17 @@ import { User } from '@/config/types';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SkeletonTodayGameMate from '@/components/skeleton/SkeletonTodayGameMate';
+import userImage from '@/assets/imgs/user.png';
 
 export default function EventPage() {
-  const { eventId } = useParams();
+  const { gameId } = useParams();
   const [eventData, setEventData] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchGameMateProfiles({ gameId: eventId, sortValue: 'recommendation', pageParam: 1 });
-        console.log(data);
+        const data = await fetchGameMateProfiles({ gameId: gameId, sortValue: 'recommendation', pageParam: 1 });
         setEventData(data?.results);
         setIsLoading(true);
       } catch (err) {
@@ -31,10 +31,10 @@ export default function EventPage() {
       fetchData();
     }, 1000);
     return () => clearTimeout(fetchId);
-  }, [eventId]);
+  }, [gameId]);
 
-  const eventImg = (eventId: string) => {
-    switch (eventId) {
+  const eventImg = (gameId: string) => {
+    switch (gameId) {
       case '1':
         return lol;
       case '2':
@@ -48,12 +48,10 @@ export default function EventPage() {
     }
   };
 
-  console.log(eventData.slice(0, 10));
-
   return (
     <div className='flex flex-col items-center'>
       <div className='relative flex w-full flex-col items-center justify-center'>
-        <img className='mx-auto w-full object-cover' src={eventImg(eventId!)} alt='eventImg' />
+        <img className='mx-auto w-full object-cover' src={eventImg(gameId!)} alt='eventImg' />
       </div>
       {!isLoading ? (
         Array.from({ length: 10 }).map((_, index) => (
@@ -65,13 +63,14 @@ export default function EventPage() {
         <div className='mb-[100px] mt-[50px] w-[200px] md:w-[300px] lg:w-[500px] xl:w-[620px]'>
           {eventData?.slice(0, 10).map((mate) => (
             <Link
-              to={`/user/${mate.id}`}
+              to={`/user/${mate.id}/?game=${gameId}`}
+              key={mate.id}
               className='relative my-[25px] flex h-[300px] w-[200px] flex-col gap-3 rounded-3xl bg-[#FFFFFF] p-3 md:w-[300px] lg:h-[206px] lg:w-[500px] lg:flex-row xl:w-[620px]'
               style={{ boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
             >
               <div className='mx-auto h-[150px] w-[150px] overflow-hidden rounded-xl bg-blue-500 xl:h-[186px] xl:w-[186px]'>
                 <img
-                  src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
+                  src={mate.profile_image ? mate.profile_image : userImage}
                   alt='사용자 이미지'
                   className='h-[150px] w-[150px] overflow-hidden transition-transform duration-200 hover:scale-125 xl:h-[186px] xl:w-[186px]'
                 />
@@ -87,14 +86,12 @@ export default function EventPage() {
                 </div>
                 <div className='flex gap-4'>
                   <img
-                    src={getGame(mate.mate_game_info?.[0].game_id)?.img}
+                    src={getGame(Number(gameId))?.img}
                     alt='게임 이미지'
                     className='hidden h-[60px] w-[60px] rounded-xl bg-primary lg:block'
                   />
                   <div className='flex flex-col justify-center'>
-                    <h2 className='text-base font-bold xl:text-2xl'>
-                      {getGame(mate.mate_game_info?.[0].game_id)?.title}
-                    </h2>
+                    <h2 className='text-base font-bold xl:text-2xl'>{getGame(Number(gameId))?.title}</h2>
                     <VitaPrice mate={mate} />
                   </div>
                 </div>

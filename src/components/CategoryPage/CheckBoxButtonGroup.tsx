@@ -1,4 +1,6 @@
 import { getGame } from '@/config/const';
+import radioTrue from '@/assets/imgs/radioTrue.svg';
+import radioFalse from '@/assets/imgs/radioFalse.svg';
 
 type Props = {
   gameId: string;
@@ -44,10 +46,7 @@ export default function CheckBoxButtonGroup({ gameId, label, selectedValue, setS
               checked={selectedValue.includes(value)}
               hidden
             />
-            <img
-              src={selectedValue.includes(value) ? '/src/assets/imgs/radioTrue.svg' : '/src/assets/imgs/radioFalse.svg'}
-              alt='체크박스 버튼 아이콘'
-            />
+            <img src={selectedValue.includes(value) ? radioTrue : radioFalse} alt='체크박스 버튼 아이콘' />
             <span className='text-sm text-[#525566]'>{key}</span>
           </label>
         </div>

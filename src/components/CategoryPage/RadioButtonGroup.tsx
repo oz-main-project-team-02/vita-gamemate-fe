@@ -1,3 +1,6 @@
+import radioTrue from '@/assets/imgs/radioTrue.svg';
+import radioFalse from '@/assets/imgs/radioFalse.svg';
+
 type Props = {
   label: string;
   options: [string, string][];
@@ -20,10 +23,7 @@ export default function RadioButtonGroup({ label, options, selectedValue, setSel
             hidden
           />
           <label htmlFor={`${value}-${i + 1}`} className='mt-3 flex items-center gap-2'>
-            <img
-              src={selectedValue === value ? '/src/assets/imgs/radioTrue.svg' : '/src/assets/imgs/radioFalse.svg'}
-              alt='라디오 버튼 아이콘'
-            />
+            <img src={selectedValue === value ? radioTrue : radioFalse} alt='라디오 버튼 아이콘' />
             <span className='text-sm text-[#525566]'>{key}</span>
           </label>
         </div>

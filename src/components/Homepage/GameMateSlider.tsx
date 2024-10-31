@@ -11,6 +11,7 @@ import { UserResponse } from '@/config/types';
 import { mateApi } from '@/api';
 import SkeletonTodayGameMate from '../skeleton/SkeletonTodayGameMate';
 import { Link } from 'react-router-dom';
+import userImage from '@/assets/imgs/user.png';
 
 export default function GameMateSlider() {
   const { data, isLoading } = useQuery<UserResponse>({
@@ -47,7 +48,7 @@ export default function GameMateSlider() {
               >
                 <div className='mx-auto h-[150px] w-[150px] overflow-hidden rounded-xl bg-blue-500 xl:h-[186px] xl:w-[186px]'>
                   <img
-                    src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
+                    src={mate.profile_image ? mate.profile_image : userImage}
                     alt='사용자 이미지'
                     className='h-[150px] w-[150px] overflow-hidden transition-transform duration-200 hover:scale-125 xl:h-[186px] xl:w-[186px]'
                   />

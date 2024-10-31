@@ -10,6 +10,7 @@ import { User } from '@/config/types';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SkeletonTodayGameMate from '@/components/skeleton/SkeletonTodayGameMate';
+import userImage from '@/assets/imgs/user.png';
 
 export default function EventPage() {
   const { gameId } = useParams();
@@ -69,7 +70,7 @@ export default function EventPage() {
             >
               <div className='mx-auto h-[150px] w-[150px] overflow-hidden rounded-xl bg-blue-500 xl:h-[186px] xl:w-[186px]'>
                 <img
-                  src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
+                  src={mate.profile_image ? mate.profile_image : userImage}
                   alt='사용자 이미지'
                   className='h-[150px] w-[150px] overflow-hidden transition-transform duration-200 hover:scale-125 xl:h-[186px] xl:w-[186px]'
                 />

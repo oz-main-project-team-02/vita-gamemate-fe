@@ -7,6 +7,8 @@ import ErrorPage from '@/pages/ErrorPage';
 import { useOrderModalStore } from '@/config/store';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect, useState } from 'react';
+import userImage from '@/assets/imgs/user.png';
+import star from '@/assets/imgs/star.svg';
 import UserBar from '@/components/UserDetailPage/UserBar';
 import GameOrderSection from '@/components/UserDetailPage/GameOrderSection';
 import GameInfoSection from '@/components/UserDetailPage/GameInfoSection';
@@ -64,8 +66,8 @@ export default function UserDetailPage() {
               className={`h-[560px] w-[350px] rounded-3xl border bg-[#FFFFFF] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
             >
               <img
-                className='h-[300px] w-full rounded-t-3xl object-cover'
-                src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
+                className='h-[400px] w-full rounded-t-3xl object-cover'
+                src={mate.profile_image ? mate.profile_image : userImage}
                 alt='user'
               />
               <h1 className='px-5 pt-5 text-xl font-bold'>소개</h1>

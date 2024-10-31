@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import ProfileImage from './ProfileImage';
 import { useOrderModalStore, useUserStore } from '@/config/store';
+import vitaCoin from '@/assets/imgs/vitaCoin.svg';
+import star from '@/assets/imgs/star.svg';
 
 export function OrderModal({ mate }: { mate: User }) {
   const [amount, setAmount] = useState(1);
@@ -82,7 +84,7 @@ export function OrderModal({ mate }: { mate: User }) {
               <div>
                 <div className='text-3xl font-semibold'>{mate.nickname}</div>
                 <p className='flex items-center pb-1'>
-                  <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
+                  <img src={star} alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
                   &nbsp;{mate.average_rating}&nbsp;
                   <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
                 </p>
@@ -125,7 +127,7 @@ export function OrderModal({ mate }: { mate: User }) {
               <div className='flex items-center justify-between border-t border-gray-200 px-2 pt-4 shadow-sm'>
                 <span className='text-gray-600'>최종 금액:</span>
                 <div className='flex items-center gap-2'>
-                  <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
+                  <img src={vitaCoin} alt='비타코인' />
                   <span className='text-3xl font-bold text-primary'>{10 * amount}</span>
                 </div>
               </div>

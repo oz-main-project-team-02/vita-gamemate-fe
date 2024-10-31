@@ -20,6 +20,10 @@ export const updateRequestStatus = (game_request_id: number, is_accept: boolean)
   });
 };
 
+export const cancelRequest = (game_request_id: number) => {
+  return client.post(`/api/v1/game/requests/cancel/${game_request_id}/`, {});
+};
+
 /**
  * GET /api/v1/game/requests/ordered
  * @returns 나의 주문 목록

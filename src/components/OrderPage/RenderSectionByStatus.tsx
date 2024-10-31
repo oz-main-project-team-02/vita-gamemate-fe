@@ -1,4 +1,6 @@
-import { OrderRequest } from '@/config/types';
+import { requestApi } from '@/api';
+import { OrderRequest, OrderRequestResponse } from '@/config/types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaHourglassHalf, FaStar } from 'react-icons/fa';
 import { GiGamepad, GiStarsStack, GiTwoCoins } from 'react-icons/gi';
 
@@ -8,9 +10,36 @@ type Props = {
 };
 
 export const RenderSectionByStatus = ({ order, setSelectedOrder }: Props) => {
+  const queryClient = useQueryClient();
+
   const handleReviewClick = (order: OrderRequest) => {
     setSelectedOrder(order);
   };
+
+  const cancelMutation = useMutation({
+    mutationFn: async (game_request_id: number) => {
+      const response = await requestApi.cancelRequest(game_request_id);
+      return response;
+    },
+    onSuccess: (response) => {
+      if (response.status === 204) {
+        const value: OrderRequestResponse | undefined = queryClient.getQueryData(['orders']);
+        console.log(`요청 취소 처리 완료, status: ${response.status}`);
+
+        if (value) {
+          const index = value.results.findIndex((v) => order.game_request_id === v.game_request_id);
+          const updateResults = value.results.filter((_, i) => i !== index);
+          queryClient.setQueryData(['orders'], { ...value, results: updateResults });
+          console.log('요청 취소 및 캐시 업데이트 완료: ', queryClient.getQueryData(['orders']));
+        }
+      } else {
+        throw new Error(`요청 취소 처리 실패, status: ${response.status}`);
+      }
+    },
+    onError: (error) => {
+      console.error('요청 취소 중 에러: ', error);
+    },
+  });
 
   if (order.status && order.review_status) {
     return (
@@ -70,7 +99,10 @@ export const RenderSectionByStatus = ({ order, setSelectedOrder }: Props) => {
       <h2 className='text-2xl font-bold text-white drop-shadow-lg'>게임 요청 수락 대기 중</h2>
       <p className='text-lg text-white'>상대방의 수락을 기다리고 있습니다.</p>
       <div className='mt-2'>
-        <button className='transform rounded-full bg-white px-6 py-2 font-semibold text-orange-600 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100'>
+        <button
+          onClick={() => cancelMutation.mutate(order.game_request_id)}
+          className='transform rounded-full bg-white px-6 py-2 font-semibold text-orange-600 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100'
+        >
           요청 취소하기
         </button>
       </div>

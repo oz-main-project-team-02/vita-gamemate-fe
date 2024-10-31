@@ -1,16 +1,16 @@
-import { requestApi } from '@/api';
+import { requestApi, walletApi } from '@/api';
 import { User } from '@/config/types';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import ProfileImage from './ProfileImage';
-import { useOrderModalStore } from '@/config/store';
-import { getGame } from '@/config/const';
+import { useOrderModalStore, useUserStore } from '@/config/store';
 
 export function OrderModal({ mate }: { mate: User }) {
   const [amount, setAmount] = useState(1);
   const [price] = useState(mate?.mate_game_info?.[0]?.request_price || 0);
   const { isOrderModalOpen, setOrderModalClose } = useOrderModalStore();
+  const setUser = useUserStore((state) => state.setUser);
 
   useEffect(() => {
     if (isOrderModalOpen) {
@@ -26,18 +26,32 @@ export function OrderModal({ mate }: { mate: User }) {
 
   const orderRequest = useMutation({
     mutationFn: async ({ price, amount }: { price: number; amount: number }) => {
-      try {
-        const { data } = await requestApi.MateRequest(mate.id, {
-          game_id: mate?.mate_game_info?.[0]?.game_id,
-          price,
-          amount,
-        });
-        console.log('주문 요청:', price, amount);
-        alert('주문이 완료되었습니다.');
-        return data;
-      } catch (err) {
-        console.error(err);
+      const totalPrice = price * amount;
+
+      const response = await walletApi.withdrawWalletCoin(totalPrice);
+
+      if (response.status !== 200) {
+        throw new Error(`코인 차감에 실패했습니다: ${response.data.message}`);
       }
+
+      const requestResponse = await requestApi.MateRequest(mate.id, {
+        game_id: mate?.mate_game_info?.[0]?.game_id,
+        price,
+        amount,
+      });
+      return { status: requestResponse.status, coin: response.data.coin };
+    },
+    onSuccess: async ({ status, coin }) => {
+      if (status === 201) {
+        setUser({ coin });
+        setOrderModalClose();
+        alert('주문이 완료되었습니다.');
+      } else {
+        console.error(`주문실패, status: ${status}`);
+      }
+    },
+    onError: (error) => {
+      console.error('오류 발생: ', error);
     },
   });
 
@@ -45,9 +59,6 @@ export function OrderModal({ mate }: { mate: User }) {
     e.preventDefault();
     orderRequest.mutate({ price, amount });
   };
-
-  const game = getGame(mate?.mate_game_info?.[0]?.game_id);
-  console.log('game', game);
 
   return (
     <div className='fixed inset-0 z-50 bg-black/50' onClick={() => setOrderModalClose()}>

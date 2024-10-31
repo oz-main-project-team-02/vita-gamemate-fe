@@ -97,7 +97,7 @@ export default function EditInfoPage() {
       <ToastContainer />
       <TitleIntro titleE={'MY PROFILE'} titleK={'프로필 편집'} content={'멋진 실력을 자랑해주세요!'} />
       <MypageLayout>
-        <div className='m-auto mt-[140px] max-w-[800px]'>
+        <div className='m-auto mt-[140px] min-h-[calc(100dvh-597px)] max-w-[800px]'>
           <div className='w-full bg-gray-100'>
             {previewImage ? (
               <div>

@@ -18,3 +18,14 @@ export const rechargeWalletCoin = (coin: number) => {
     coin,
   });
 };
+
+/**
+ * POST /api/v1/wallets/coin/withdraw
+ * @param coin 차감할 코인
+ * @returns 차감된 코인
+ */
+export const withdrawWalletCoin = (coin: number) => {
+  return client.post('/api/v1/wallets/coin/withdraw/', {
+    coin,
+  });
+};

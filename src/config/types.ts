@@ -92,12 +92,15 @@ export interface UserResponse {
 export interface OrderRequest {
   game_request_id: number;
   mate_nickname: string;
+  mate_id: number;
   mate_profile_image: string | null;
   mate_gender: string | null;
   mate_online: boolean;
   status: boolean;
   request_date: Date;
   request_amount: number;
+  request_price: number;
+  review_status: boolean;
 }
 
 export interface OrderRequestResponse {
@@ -113,9 +116,11 @@ export interface ReceivedRequest {
   user_profile_image: string | null;
   user_gender: string | null;
   user_online: boolean;
+  user_id: number;
   status: boolean;
   request_date: Date;
   request_amount: number;
+  request_price: number;
 }
 
 export interface ReceivedRequestResponse {

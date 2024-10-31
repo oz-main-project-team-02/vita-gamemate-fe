@@ -5,19 +5,12 @@ import { client } from './client';
  * @param mateInfo 사용자 정보 { game_id, level, description, image, request_price }
  * @returns 등록된 사용자 메이트 정보
  */
-export const registerGameMate = async (mateInfo: FormData) => {
-  try {
-    const { data } = await client.post(`/api/v1/mates/register/`, mateInfo, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    return data;
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
+export const registerGameMate = (mateInfo: FormData) => {
+  return client.post(`/api/v1/mates/register/`, mateInfo, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };
 
 interface MateParams {

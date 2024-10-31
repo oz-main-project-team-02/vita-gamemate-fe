@@ -1,26 +1,45 @@
 import { useEffect, useRef, useState } from 'react';
-import { socketStore, useChatStore } from '../../config/store';
-import { sendMessage } from '../../api/chat';
+import { useChatStore, useUserStore, webSocketStore } from '../../config/store';
+import { sendMessage } from '@/api/websocket';
 
 const ChatSubmitForm = () => {
-  const socket = socketStore((state) => state.socket);
+  const chatRoomWebSocket = webSocketStore((state) => state.chatRoomWebSocket);
+  const user = useUserStore((state) => state.user);
+  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
+  const otherUserNickname = useChatStore((state) => state.otherUserNickname);
   const [messageValue, setMessageValue] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const submitHandler = (e?: React.SyntheticEvent) => {
-    e?.preventDefault();
-    if (messageValue.trim() !== '' && selectedRoomId && !isSubmitting) {
-      if (socket) {
-        setIsSubmitting(true);
-        sendMessage(socket, { roomId: selectedRoomId, message: messageValue });
-        setMessageValue('');
-        setIsSubmitting(false);
-      } else {
-        console.error('소켓이 연결되지 않았습니다. 메시지를 전송할 수 없습니다.');
-      }
+  const submitHandler = () => {
+    if (!messageValue.trim() || !selectedRoomId || isSubmitting) return;
+
+    if (!chatRoomWebSocket || chatRoomWebSocket.readyState !== WebSocket.OPEN) {
+      console.error('소켓이 연결되지 않았습니다. 메시지를 전송할 수 없습니다.');
+      return;
     }
+
+    const sender_nickname = user?.nickname ?? '';
+    if (!user.nickname || !otherUserNickname) {
+      console.error('닉네임 정보가 없습니다. 메시지를 전송할 수 없습니다.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setTimeout(async () => {
+      try {
+        await sendMessage(chatRoomWebSocket, {
+          roomId: selectedRoomId,
+          message: messageValue,
+          sender_nickname,
+        });
+        setMessageValue('');
+      } catch (error) {
+        console.error('메세지 전송 중 오류: ', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }, 0);
   };
 
   const enterKeyHandler = (e: React.KeyboardEvent) => {
@@ -37,7 +56,7 @@ const ChatSubmitForm = () => {
   }, [isSubmitting]);
 
   return (
-    <form className='flex min-h-[130px] w-[420px] items-center gap-2 bg-white px-4 py-3' onSubmit={submitHandler}>
+    <div className='flex min-h-[130px] w-[420px] items-center gap-2 bg-white px-4 py-3'>
       <textarea
         className='h-full grow resize-none bg-white outline-none'
         ref={textareaRef}
@@ -54,7 +73,7 @@ const ChatSubmitForm = () => {
       >
         전송
       </button>
-    </form>
+    </div>
   );
 };
 

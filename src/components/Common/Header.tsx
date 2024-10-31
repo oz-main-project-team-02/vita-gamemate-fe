@@ -8,6 +8,7 @@ import ProfileDropdown from './ProfileDropdown';
 import GameDropdown from './GameDropdown';
 import Search from './Search';
 import vitaCoin from '@/assets/imgs/vitaCoin.svg';
+import buttonPlus from '@/assets/imgs/button_plus.svg';
 
 export default function Header() {
   const { modalStatus, setModalStatus } = useModalStore();
@@ -54,7 +55,7 @@ export default function Header() {
                 <div className='flex items-center gap-2 rounded-md bg-slate-200 px-4 py-2'>
                   <img src={vitaCoin} alt='비타코인' />
                   <span className='font-semibold'>{user.coin}</span>
-                  <img src='/src/assets/imgs/button_plus.svg' alt='충전버튼' />
+                  <img src={buttonPlus} alt='충전버튼' />
                 </div>
               </Link>
               <button

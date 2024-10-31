@@ -8,8 +8,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { reviewApi } from '@/api';
 import { useEffect, useState } from 'react';
 import debounce from '@/utils/debounce';
-// import { Review } from '@/config/types';
-// import { reviewApi } from '@/api';
+import star from '@/assets/imgs/star.svg';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
@@ -70,7 +69,7 @@ export default function RealTimeReviewsSection() {
                     <h1 className='text-lg font-bold'>{review.game_request_id}1</h1>
                     <div className='flex'>
                       {Array.from({ length: review.rating }).map((_, i) => (
-                        <img key={i} src='/src/assets/imgs/star.svg' alt='별점' />
+                        <img key={i} src={star} alt='별점' />
                       ))}
                     </div>
                     <div>{review.content}</div>

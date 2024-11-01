@@ -64,7 +64,7 @@ export default function RealTimeReviewsSection() {
             : data?.results?.slice(0, reviewCount).map((review: Review, i: number) => (
                 <div key={i} className='flex h-[100px] justify-between rounded-3xl bg-white px-4 py-3 shadow-lg'>
                   <div>
-                    <h1 className='text-lg font-bold'>닉네임으로 교체예정</h1>
+                    <h1 className='text-lg font-bold'>{review.author_nickname}</h1>
                     <div className='flex'>
                       {Array.from({ length: review.rating }).map((_, i) => (
                         <img key={i} src={star} alt='별점' />
@@ -74,7 +74,6 @@ export default function RealTimeReviewsSection() {
                   </div>
                   <div className='flex flex-col items-end justify-between'>
                     <p className='text-gray-400'>{dayjs(review.created_at).fromNow()}</p>
-                    {/* FIXME: review에서 게임메이트의 아이디를 받아올 수 있어야함. */}
                     <Link to={`/user/${review.mate_id}`}>
                       <button className='rounded-md bg-primary px-2 py-1 font-semibold text-primaryText'>
                         메이트 정보

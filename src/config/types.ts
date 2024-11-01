@@ -6,6 +6,7 @@ export interface MateGameInfo {
   request_price: number;
   average_rating: number;
   review_count: number;
+  game_request_count: number;
 }
 
 export interface User {
@@ -23,6 +24,7 @@ export interface User {
   coin: number;
   average_rating: number;
   amount: number;
+  total_request_count: number;
 }
 
 export interface MateUser {

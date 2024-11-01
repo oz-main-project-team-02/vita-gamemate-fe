@@ -91,7 +91,7 @@ export function OrderModal({ selectGame, mate }: Props) {
                 <p className='flex items-center pb-1'>
                   <img src={star} alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
                   &nbsp;{selectGame.average_rating}&nbsp;
-                  <span className='text-sm text-gray-300'>| 받은 리뷰수 {selectGame.review_count}</span>
+                  <span className='text-sm text-gray-300'>| 받은 의뢰수 {selectGame.game_request_count}</span>
                 </p>
               </div>
             </div>

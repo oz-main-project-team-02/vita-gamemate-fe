@@ -11,13 +11,6 @@ export default function ProfileImg() {
           src={user.profile_image !== null ? user.profile_image! : '/favicon.png'}
           alt={user ? `${user.nickname}의 프로필 이미지` : '프로필 이미지'}
         />
-        <div className='mt-[100px] md:mt-[125px] lg:mt-[150px] xl:mt-[175px]'>
-          <div className='text-2xl font-bold text-gray-500'>{user.nickname}</div>
-          <div className='flex items-center text-xl font-bold text-[#898989]'>
-            <span>id:</span>
-            <span className='ml-1'>{user.id}</span>
-          </div>
-        </div>
       </div>
     </>
   );

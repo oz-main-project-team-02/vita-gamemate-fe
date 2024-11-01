@@ -21,7 +21,7 @@ const ChatMessageModal = () => {
   const [mate, setMate] = useState<User | null>(null);
   const [mateGameInfo, setMateGameInfo] = useState<MateGameInfo | null>(null);
   const [chatRoomPages, setChatRoomPages] = useState<Record<number, number>>({});
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLUListElement | null>(null);
   const prevScrollHeightRef = useRef<number>(0);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
@@ -171,7 +171,7 @@ const ChatMessageModal = () => {
       )}
 
       {/* Chat Messages */}
-      <div className='flex h-full max-w-[420px] flex-col overflow-y-auto' ref={scrollRef}>
+      <ul className='flex h-full max-w-[420px] flex-col overflow-y-auto' ref={scrollRef}>
         {mateGameInfo && <ChatMateRequestInfo mateGameInfo={mateGameInfo} setOrderModalOpen={setOrderModalOpen} />}
         {chatMessages.length === 0 && (
           <div className='my-10 flex w-full flex-col items-center justify-center text-gray-400'>
@@ -180,7 +180,7 @@ const ChatMessageModal = () => {
           </div>
         )}
         {chatMessages.length > 0 && <ChatRenderMessages chatMessages={chatMessages} />}
-      </div>
+      </ul>
 
       {/* Chat Input */}
       <ChatSubmitForm />

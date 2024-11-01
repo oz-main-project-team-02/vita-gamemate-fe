@@ -31,7 +31,7 @@ const ChatRenderMessages = ({ chatMessages }: { chatMessages: ChatMessage[] }) =
             </span>
           </div>
         )}
-        <div className={`flex ${message.sender_nickname === userNickname ? 'justify-end' : 'justify-start'} mb-3`}>
+        <li className={`flex ${message.sender_nickname === userNickname ? 'justify-end' : 'justify-start'} mb-3`}>
           {message.sender_nickname === userNickname ? (
             <div className='mr-3 flex'>
               {isLastMessageInTime && <span className='self-end px-2 py-1 text-xs text-gray-400'>{messageTime}</span>}
@@ -50,7 +50,7 @@ const ChatRenderMessages = ({ chatMessages }: { chatMessages: ChatMessage[] }) =
               {isLastMessageInTime && <span className='self-end px-2 py-1 text-xs text-gray-400'>{messageTime}</span>}
             </div>
           )}
-        </div>
+        </li>
       </React.Fragment>
     );
   });

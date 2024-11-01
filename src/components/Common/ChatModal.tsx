@@ -106,7 +106,10 @@ const ChatModal = () => {
 
   return (
     <div className='fixed inset-0 z-50 bg-black/50'>
-      <div className={`fixed ${chatModalPosition} top-0 h-full min-w-[360px] bg-white shadow-sm`} ref={chatModalRef}>
+      <section
+        className={`fixed ${chatModalPosition} top-0 h-full min-w-[360px] bg-white shadow-sm`}
+        ref={chatModalRef}
+      >
         <div className='flex h-full flex-col'>
           <div className='flex items-center gap-3 px-4 py-2'>
             <span className='cursor-pointer'>
@@ -114,11 +117,11 @@ const ChatModal = () => {
             </span>
             <span className='text-2xl font-semibold'>채팅</span>
           </div>
-          <div className='flex h-full max-w-[360px] flex-col overflow-y-auto'>
+          <ul className='flex h-full max-w-[360px] flex-col overflow-y-auto'>
             {isLoading && <div className='my-10 text-center text-gray-400'>채팅창을 불러오는 중입니다...</div>}
             {chatList && chatList.length > 0
               ? chatList.map((chatItem) => (
-                  <div
+                  <li
                     className={`flex gap-3 px-3 py-4 ${chatItem.id === selectedRoomId ? 'bg-skyGray' : 'hover:bg-lightSkyGray'}`}
                     key={chatItem.id}
                     onClick={() => chatOtherUserInfoHandler(chatItem)}
@@ -129,7 +132,7 @@ const ChatModal = () => {
                         src={chatItem.other_user_profile_image}
                       />
                     </div>
-                    <div className='flex grow flex-col gap-1'>
+                    <div className='flex grow flex-col'>
                       <div className='flex items-center justify-between'>
                         <span className='max-w-[240px] grow truncate font-semibold'>
                           {chatItem.other_user_nickname}
@@ -140,13 +143,20 @@ const ChatModal = () => {
                             : formatDate(chatItem.latest_message_time)}
                         </span>
                       </div>
-                      {
-                        <p className='max-w-[240px] truncate text-sm'>
+                      <div className='flex items-center justify-between'>
+                        <p className='max-w-[240px] grow truncate text-sm'>
                           {chatItem.latest_message ? chatItem.latest_message : ''}
                         </p>
-                      }
+                        {chatItem.unread_count && chatItem.unread_count > 0 ? (
+                          <span className='flex h-[18px] w-[18px] items-center justify-center rounded-full bg-red-600 text-xs text-white'>
+                            {chatItem.unread_count}
+                          </span>
+                        ) : (
+                          ''
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  </li>
                 ))
               : !isLoading && (
                   <div className='flex h-[300px] w-full flex-col items-center justify-center gap-8'>
@@ -154,13 +164,13 @@ const ChatModal = () => {
                     <p>비타에서 게임 메이트와 즐겁게 대화하며 즐겨보세요!</p>
                   </div>
                 )}
-          </div>
+          </ul>
         </div>
-      </div>
+      </section>
       {chatList && chatList.length > 0 && (
-        <div className='fixed right-0 top-0 h-full min-w-[420px] bg-skyGray' ref={chatMessageModalRef}>
+        <section className='fixed right-0 top-0 h-full min-w-[420px] bg-skyGray' ref={chatMessageModalRef}>
           <ChatMessageModal />
-        </div>
+        </section>
       )}
     </div>
   );

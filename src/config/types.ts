@@ -73,6 +73,7 @@ export interface ChatList {
   latest_message: string;
   latest_message_time: Date;
   updated_at: Date;
+  unread_count: number | null;
 }
 
 export interface ChatMessage {

@@ -1,5 +1,5 @@
 import { requestApi, walletApi } from '@/api';
-import { User } from '@/config/types';
+import { MateGameInfo, User } from '@/config/types';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
@@ -8,9 +8,14 @@ import { useOrderModalStore, useUserStore } from '@/config/store';
 import vitaCoin from '@/assets/imgs/vitaCoin.svg';
 import star from '@/assets/imgs/star.svg';
 
-export function OrderModal({ mate }: { mate: User }) {
+type Props = {
+  selectGame: MateGameInfo;
+  mate: User;
+};
+
+export function OrderModal({ selectGame, mate }: Props) {
   const [amount, setAmount] = useState(1);
-  const [price] = useState(mate?.mate_game_info?.[0]?.request_price || 0);
+  const [price] = useState(selectGame.request_price || 0);
   const { isOrderModalOpen, setOrderModalClose } = useOrderModalStore();
   const setUser = useUserStore((state) => state.setUser);
 
@@ -37,7 +42,7 @@ export function OrderModal({ mate }: { mate: User }) {
       }
 
       const requestResponse = await requestApi.MateRequest(mate.id, {
-        game_id: mate?.mate_game_info?.[0]?.game_id,
+        game_id: selectGame.game_id,
         price,
         amount,
       });
@@ -80,13 +85,13 @@ export function OrderModal({ mate }: { mate: User }) {
           <div className='flex flex-col gap-3 px-4'>
             {/* 사용자 정보 */}
             <div className='flex min-h-[49px] min-w-[49px] items-center gap-4 py-3'>
-              <ProfileImage className='max-h-[84px] max-w-[84px] rounded-full' src={mate?.profile_image} />
+              <ProfileImage className='max-h-[84px] max-w-[84px] rounded-full' src={mate.profile_image} />
               <div>
                 <div className='text-3xl font-semibold'>{mate.nickname}</div>
                 <p className='flex items-center pb-1'>
                   <img src={star} alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
-                  &nbsp;{mate.average_rating}&nbsp;
-                  <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
+                  &nbsp;{selectGame.average_rating}&nbsp;
+                  <span className='text-sm text-gray-300'>| 받은 리뷰수 {selectGame.review_count}</span>
                 </p>
               </div>
             </div>
@@ -100,7 +105,7 @@ export function OrderModal({ mate }: { mate: User }) {
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>단가:</span>
                 <div className='flex items-center'>
-                  <span className='text-gray-500'>950/판</span>
+                  <span className='text-gray-500'>{selectGame.request_price}/판</span>
                 </div>
               </div>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
@@ -117,7 +122,7 @@ export function OrderModal({ mate }: { mate: User }) {
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>총가격:</span>
                 <div className='flex items-center'>
-                  <span className='font-medium'>950</span>
+                  <span className='font-medium'>{selectGame.request_price * amount}</span>
                 </div>
               </div>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
@@ -128,7 +133,7 @@ export function OrderModal({ mate }: { mate: User }) {
                 <span className='text-gray-600'>최종 금액:</span>
                 <div className='flex items-center gap-2'>
                   <img src={vitaCoin} alt='비타코인' />
-                  <span className='text-3xl font-bold text-primary'>{10 * amount}</span>
+                  <span className='text-3xl font-bold text-primary'>{selectGame.request_price * amount}</span>
                 </div>
               </div>
             </div>

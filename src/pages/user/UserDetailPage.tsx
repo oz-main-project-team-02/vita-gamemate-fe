@@ -34,16 +34,6 @@ export default function UserDetailPage() {
     },
   });
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if ((mate! || mate!.mate_game_info) !== undefined) {
-      mate!.mate_game_info!.filter(
-        (games: MateGameInfo) => games.game_id === Number(searchParams.get('game')) && setSelectGame(games)
-      );
-    }
-  }, [mate]);
-
   console.log(mate);
   console.log(selectGame);
 
@@ -53,7 +43,7 @@ export default function UserDetailPage() {
 
   return (
     <>
-      {isOrderModalOpen && <OrderModal mate={mate} />}
+      {isOrderModalOpen && <OrderModal selectGame={selectGame} mate={mate} />}
       <div className='w-full'>
         <TitleIntro titleE={'Vita User'} titleK={'사용자 정보'} content={'비타 유저를 구경하세요!'} />
 

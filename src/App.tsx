@@ -45,8 +45,6 @@ function App() {
         {/* TOSS 개별 API 결제 페이지 */}
         <Route path='/payment' element={<PaymentCheckoutPage />} />
         <Route path='/payment/billing' element={<PaymentBillingPage />} />
-
-        {/* TOSS Success, Fail 페이지 */}
         <Route path='/payment/success' element={<SuccessPage />} />
         <Route path='/fail' element={<FailPage />} />
       </Routes>

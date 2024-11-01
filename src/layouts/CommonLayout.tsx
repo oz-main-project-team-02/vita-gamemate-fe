@@ -1,19 +1,24 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import Footer from '../components/Common/Footer';
 import Header from '../components/Common/Header';
 import Spinner from '@/components/Common/Spinner';
 import { useChatModalStore } from '../config/store';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const ChatModal = React.lazy(() => import('@/components/Common/ChatModal') as Promise<{ default: () => JSX.Element }>);
 
 export default function CommonLayout() {
   const isChatModalOpen = useChatModalStore((state) => state.isChatModalOpen);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div className='relative flex min-h-screen flex-col'>
       <Header />
-      <main className='relative flex-grow' style={{ minHeight: 'calc(100dvh-381px)' }}>
+      <main className='relative flex flex-grow flex-col' style={{ minHeight: 'calc(100dvh)' }}>
         <Outlet />
       </main>
       <Footer />

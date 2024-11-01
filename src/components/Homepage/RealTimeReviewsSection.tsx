@@ -7,7 +7,6 @@ import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { reviewApi } from '@/api';
 import { useEffect, useState } from 'react';
-import debounce from '@/utils/debounce';
 import star from '@/assets/imgs/star.svg';
 
 dayjs.locale('ko');
@@ -23,10 +22,9 @@ export default function RealTimeReviewsSection() {
     },
   });
 
-  console.log(data);
-
+  // FIXME: 혹시나 아래 코드에서 반응형을 유지하면서 최적화가 가능한지 알고 싶음. debounce를 사용했을때는 실시간으로 반응하지 않아서 UI가 끊기는 현상이 발생함.
   useEffect(() => {
-    const handleResize = debounce(() => {
+    const handleResize = () => {
       if (window.innerWidth >= 1280) {
         setReviewCount(5);
       } else if (window.innerWidth >= 1024) {
@@ -36,9 +34,7 @@ export default function RealTimeReviewsSection() {
       } else {
         setReviewCount(2);
       }
-      console.log('resize');
-    }, 100);
-
+    };
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -46,6 +42,8 @@ export default function RealTimeReviewsSection() {
       return window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  console.log(data);
 
   return (
     <div className='flex h-[460px] items-center justify-center gap-24 px-[100px] lg:h-[610px] xl:h-[760px] xl:gap-36'>
@@ -66,7 +64,7 @@ export default function RealTimeReviewsSection() {
             : data?.results?.slice(0, reviewCount).map((review: Review, i: number) => (
                 <div key={i} className='flex h-[100px] justify-between rounded-3xl bg-white px-4 py-3 shadow-lg'>
                   <div>
-                    <h1 className='text-lg font-bold'>{review.game_request_id}1</h1>
+                    <h1 className='text-lg font-bold'>닉네임으로 교체예정</h1>
                     <div className='flex'>
                       {Array.from({ length: review.rating }).map((_, i) => (
                         <img key={i} src={star} alt='별점' />
@@ -76,8 +74,8 @@ export default function RealTimeReviewsSection() {
                   </div>
                   <div className='flex flex-col items-end justify-between'>
                     <p className='text-gray-400'>{dayjs(review.created_at).fromNow()}</p>
-                    {/* FIX: review에서 게임메이트의 아이디를 받아올 수 있어야함. */}
-                    <Link to={`/user/${review.game_request_id}`}>
+                    {/* FIXME: review에서 게임메이트의 아이디를 받아올 수 있어야함. */}
+                    <Link to={`/user/${review.mate_id}`}>
                       <button className='rounded-md bg-primary px-2 py-1 font-semibold text-primaryText'>
                         메이트 정보
                       </button>

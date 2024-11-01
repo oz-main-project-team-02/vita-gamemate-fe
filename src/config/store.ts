@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { User } from './types';
+import { AxiosError } from 'axios';
 
 interface ModalStore {
   modalStatus: {
@@ -132,12 +133,14 @@ export const webSocketStore = create<WebSocketState>((set) => ({
   setChatListWebSocket: (chatListWebSocket: WebSocket | null) => set({ chatListWebSocket }),
 }));
 
-interface LoadingState {
-  isLoading: boolean;
-  setIsLoading: (loading: boolean) => void;
+type ErrorType = Error | AxiosError | null;
+
+interface ErrorStore {
+  error: ErrorType;
+  updateError: (error: ErrorType) => void;
 }
 
-export const useLoadingStore = create<LoadingState>((set) => ({
-  isLoading: false,
-  setIsLoading: (loading: boolean) => set({ isLoading: loading }),
+export const useErrorStore = create<ErrorStore>((set) => ({
+  error: null,
+  updateError: (error) => set({ error }),
 }));

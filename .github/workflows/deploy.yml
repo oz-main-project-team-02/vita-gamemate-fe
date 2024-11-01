@@ -19,8 +19,9 @@ jobs:
       - name: 빌드
         env:
           VITE_PUBLIC_BASE_URL: ${{ secrets.VITE_PUBLIC_BASE_URL }}
-          VITE_PUBLIC_BASE_URL_LATER: ${{ secrets.VITE_PUBLIC_BASE_URL_LATER }}
-          VITE_KAKAO_URI: ${{ secrets.VITE_KAKAO_URI }}
+          VITE_KAKAO_BASE_URL: ${{ secrets.VITE_KAKAO_BASE_URL }}
+          VITE_KAKAO_CLIENT_ID: ${{ secrets.VITE_KAKAO_CLIENT_ID }}
+          VITE_KAKAO_REDIRECT_URI: ${{ secrets.VITE_KAKAO_REDIRECT_URI }}
           VITE_TOSS_CLIENTKEY: ${{ secrets.VITE_TOSS_CLIENTKEY }}
         run: npm run build
 
@@ -47,4 +48,5 @@ jobs:
         run: aws s3 cp ./dist s3://oz-main-vita-front/ --recursive
 
       - name: Cloudfront 캐시 무효화
+        if: github.ref == 'refs/heads/main'
         run: aws cloudfront create-invalidation --distribution-id EQEIPG9IJRV5K --paths "/*"

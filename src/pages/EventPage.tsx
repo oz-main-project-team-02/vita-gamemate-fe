@@ -92,7 +92,7 @@ export default function EventPage() {
                   />
                   <div className='flex flex-col justify-center'>
                     <h2 className='text-base font-bold xl:text-2xl'>{getGame(Number(gameId))?.title}</h2>
-                    <VitaPrice mate={mate} />
+                    <VitaPrice gameId={Number(gameId)} mate={mate} />
                   </div>
                 </div>
               </div>

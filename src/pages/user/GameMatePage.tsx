@@ -40,5 +40,3 @@ export default function GameMatePage() {
     </>
   );
 }
-
-// m-auto mt-[140px] max-w-[800px]

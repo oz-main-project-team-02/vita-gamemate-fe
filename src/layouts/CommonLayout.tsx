@@ -9,20 +9,19 @@ const ChatModal = React.lazy(() => import('@/components/Common/ChatModal') as Pr
 
 export default function CommonLayout() {
   const isChatModalOpen = useChatModalStore((state) => state.isChatModalOpen);
-  // const { isOrderModalOpen } = useOrderModalStore();
 
   return (
-    <>
+    <div className='relative flex min-h-screen flex-col'>
       <Header />
-      <Outlet />
+      <main className='relative flex-grow' style={{ minHeight: 'calc(100dvh-381px)' }}>
+        <Outlet />
+      </main>
       <Footer />
       {isChatModalOpen && (
         <Suspense fallback={<Spinner />}>
           <ChatModal />
-          {/* FIXME: ChatModal 내부에서 조건부 렌더링, 의뢰하는 상대방 정보 mate를 프롭으로 받아야됨 */}
-          {/* {isOrderModalOpen && <OrderModal mate={mate} />} */}
         </Suspense>
       )}
-    </>
+    </div>
   );
 }

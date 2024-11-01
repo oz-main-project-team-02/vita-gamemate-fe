@@ -13,6 +13,7 @@ export default function KakaoCallback() {
   useEffect(() => {
     (async () => {
       try {
+        console.log(kakaoCode);
         const { data } = await authApi.kakaoLogin(kakaoCode);
         localStorage.setItem('accessToken', data.access_token);
 
@@ -24,7 +25,7 @@ export default function KakaoCallback() {
         navigate('/', { replace: true });
       } catch (err) {
         console.error(err);
-        navigate('/', { replace: true });
+        // navigate('/', { replace: true });
       }
     })();
   }, [kakaoCode, navigate, setUser]);

@@ -5,9 +5,14 @@ import { User } from '@/config/types';
 import userImage from '@/assets/imgs/user.png';
 import star from '@/assets/imgs/star.svg';
 
-export default function MateCard({ mate }: { mate: User }) {
+type Props = {
+  gameId?: number;
+  mate: User;
+};
+
+export default function MateCard({ gameId, mate }: Props) {
   return (
-    <Link to={`/user/${mate.id}`}>
+    <Link to={gameId ? `/user/${mate.id}?game=${gameId}` : `/user/${mate.id}`}>
       <div className='relative flex h-[288px] w-[206px] flex-col items-center justify-center overflow-hidden rounded-3xl leading-[1.3] shadow-lg'>
         {mate.is_online && <OnlineFlag />}
         <div className='h-[206px] w-[206px] overflow-hidden bg-blue-500'>

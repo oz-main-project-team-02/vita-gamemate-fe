@@ -3,7 +3,6 @@ import { MateGameInfo, User } from '@/config/types';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
-import ErrorPage from '@/pages/ErrorPage';
 import { useOrderModalStore } from '@/config/store';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect, useState } from 'react';
@@ -16,11 +15,11 @@ import SelectGameSection from '@/components/UserDetailPage/SelectGameSection';
 
 export default function UserDetailPage() {
   const { userId } = useParams();
-  const [searchParams] = useSearchParams();
   const { isOrderModalOpen } = useOrderModalStore();
   const [selectGame, setSelectGame] = useState<MateGameInfo>();
   const [isReview, setIsReview] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const { data: mate } = useQuery<User>({
     queryKey: ['user', Number(userId)],
@@ -34,16 +33,19 @@ export default function UserDetailPage() {
     },
   });
 
-  console.log(mate);
-  console.log(selectGame);
+  useEffect(() => {
+    if (searchParams.get('game')) {
+      const gameId = Number(searchParams.get('game'));
+      const game = mate?.mate_game_info?.find((game) => game.game_id === gameId);
+      setSelectGame(game);
+    }
+  }, [searchParams, mate]);
 
-  if (!mate) {
-    return <ErrorPage />;
-  }
+  if (mate === undefined) return;
 
   return (
     <>
-      {isOrderModalOpen && <OrderModal selectGame={selectGame} mate={mate} />}
+      {isOrderModalOpen && selectGame && <OrderModal selectGame={selectGame} mate={mate} />}
       <div className='w-full'>
         <TitleIntro titleE={'Vita User'} titleK={'사용자 정보'} content={'비타 유저를 구경하세요!'} />
 
@@ -67,10 +69,10 @@ export default function UserDetailPage() {
               <>
                 <div className='relative w-[620px]'>
                   {/* 게임 의뢰 정보 */}
-                  <GameOrderSection mate={mate} selectGame={selectGame} />
+                  <GameOrderSection mate={mate} gameId={Number(searchParams.get('game'))} />
 
                   {/* 게임 정보 */}
-                  <GameInfoSection selectGame={selectGame!} />
+                  <GameInfoSection selectGame={selectGame} />
 
                   {/* 게임 선택 */}
                   <SelectGameSection mate={mate} setSelectGame={setSelectGame} setIsReview={setIsReview} />

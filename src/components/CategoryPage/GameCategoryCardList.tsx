@@ -65,7 +65,7 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
           : data?.pages?.map((page) =>
               page?.results?.map((mate) => (
                 <div key={mate.id} className='mb-4'>
-                  <MateCard mate={mate} />
+                  <MateCard gameId={Number(gameId)} mate={mate} />
                 </div>
               ))
             )}

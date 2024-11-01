@@ -1,4 +1,5 @@
 import { User } from '@/config/types';
+import vitaCoin from '@/assets/imgs/vitaCoin.svg';
 
 type Props = {
   mate: User;

@@ -1,8 +1,10 @@
 import { CoinPackage } from '@/config/const';
 import { useUserStore } from '@/config/store';
-import '@/toss.css';
 import { loadTossPayments, TossPaymentsPayment } from '@tosspayments/tosspayments-sdk';
 import { useEffect, useState } from 'react';
+import { BiCreditCard, BiGlobe, BiWallet } from 'react-icons/bi';
+import { CgSmartphone } from 'react-icons/cg';
+import { GiBanknote, GiFoxTail } from 'react-icons/gi';
 import { useLocation } from 'react-router-dom';
 
 // ------  SDK 초기화 ------
@@ -30,10 +32,6 @@ export function PaymentCheckoutPage() {
   const location = useLocation();
   const { coinData }: { coinData: CoinPackage } = location.state || {};
   console.log('결제: ', coinData);
-
-  function selectPaymentMethod(method: PaymentMethod) {
-    setSelectedPaymentMethod(method);
-  }
 
   useEffect(() => {
     async function fetchPayment() {
@@ -205,63 +203,52 @@ export function PaymentCheckoutPage() {
     });
   }
 
+  const paymentMethods = [
+    { id: 'CARD', name: '카드', icon: BiCreditCard },
+    { id: 'TRANSFER', name: '계좌이체', icon: GiBanknote },
+    { id: 'VIRTUAL_ACCOUNT', name: '가상계좌', icon: BiWallet },
+    { id: 'MOBILE_PHONE', name: '휴대폰', icon: CgSmartphone },
+    { id: 'CULTURE_GIFT_CERTIFICATE', name: '문화상품권', icon: GiFoxTail },
+    { id: 'FOREIGN_EASY_PAY', name: '해외간편결제', icon: BiGlobe },
+  ];
+
   return (
-    <div className='wrapper'>
-      <div className='box_section'>
-        <h1 className='text-4xl font-semibold'>일반 결제</h1>
-        <div id='payment-method' style={{ display: 'flex' }}>
-          <button
-            id='CARD'
-            className={`button2 ${selectedPaymentMethod === 'CARD' ? 'active' : ''}`}
-            onClick={() => selectPaymentMethod('CARD')}
-          >
-            카드
-          </button>
-          <button
-            id='TRANSFER'
-            className={`button2 ${selectedPaymentMethod === 'TRANSFER' ? 'active' : ''}`}
-            onClick={() => selectPaymentMethod('TRANSFER')}
-          >
-            계좌이체
-          </button>
-          <button
-            id='VIRTUAL_ACCOUNT'
-            className={`button2 ${selectedPaymentMethod === 'VIRTUAL_ACCOUNT' ? 'active' : ''}`}
-            onClick={() => selectPaymentMethod('VIRTUAL_ACCOUNT')}
-          >
-            가상계좌
-          </button>
-          <button
-            id='MOBILE_PHONE'
-            className={`button2 ${selectedPaymentMethod === 'MOBILE_PHONE' ? 'active' : ''}`}
-            onClick={() => selectPaymentMethod('MOBILE_PHONE')}
-          >
-            휴대폰
-          </button>
-          <button
-            id='CULTURE_GIFT_CERTIFICATE'
-            className={`button2 ${selectedPaymentMethod === 'CULTURE_GIFT_CERTIFICATE' ? 'active' : ''}`}
-            onClick={() => selectPaymentMethod('CULTURE_GIFT_CERTIFICATE')}
-          >
-            문화상품권
-          </button>
-          <button
-            id='FOREIGN_EASY_PAY'
-            className={`button2 ${selectedPaymentMethod === 'FOREIGN_EASY_PAY' ? 'active' : ''}`}
-            onClick={() => selectPaymentMethod('FOREIGN_EASY_PAY')}
-          >
-            해외간편결제
-          </button>
+    <div className='mx-auto px-4 py-8'>
+      <div className='mx-auto w-full max-w-2xl rounded-lg border bg-white p-6 shadow-lg'>
+        <div className='mb-6'>
+          <h2 className='mb-2 text-2xl font-bold'>결제 선택</h2>
+          <p className='text-gray-600'>원하시는 결제 방법을 선택해주세요.</p>
         </div>
-        <button className='button' onClick={() => requestPayment()}>
+        <div className='mb-6 grid grid-cols-2 gap-4 md:grid-cols-3'>
+          {paymentMethods.map((method) => (
+            <button
+              key={method.id}
+              className={`flex h-24 flex-col items-center justify-center rounded-lg border p-4 transition hover:bg-gray-100 ${
+                selectedPaymentMethod === method.id ? 'bg-gray-200' : 'bg-white'
+              }`}
+              onClick={() => setSelectedPaymentMethod(method.id as PaymentMethod)}
+            >
+              <method.icon className='mb-2 h-6 w-6' />
+              <span>{method.name}</span>
+            </button>
+          ))}
+        </div>
+        <div className='mb-6 text-center'>
+          <p className='text-2xl font-bold'>{coinData.discountPrice.toLocaleString()}원</p>
+          <p className='text-sm text-gray-500'>{coinData.coin} 코인</p>
+        </div>
+        <button
+          className='w-full rounded-lg bg-blue-600 py-3 text-white transition hover:bg-blue-700'
+          onClick={requestPayment}
+          disabled={!selectedPaymentMethod}
+        >
           결제하기
         </button>
-      </div>
-      <div className='box_section'>
-        <h1 className='text-4xl font-semibold'>정기 결제</h1>
-        <button className='button' onClick={() => requestBillingAuth()}>
-          빌링키 발급하기
-        </button>
+        <div className='mt-4 flex justify-center'>
+          <button className='rounded-lg border px-4 py-2 transition hover:bg-gray-100' onClick={requestBillingAuth}>
+            정기 결제 설정
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -18,9 +18,12 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const fetchData = async () => {
+    if (selectGame === undefined) return;
+    if (userId === undefined) return;
+
+    (async () => {
       try {
-        const data = await fetchReviewsByGameId(userId!, selectGame!.game_id.toString(), page);
+        const data = await fetchReviewsByGameId(userId, selectGame.game_id.toString(), page);
         console.log(data);
         reviewRef.current = data?.count;
         setPageCount(data?.next);
@@ -35,12 +38,7 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
       } catch (err) {
         console.error('error', err);
       }
-    };
-
-    const fetchId = setTimeout(() => {
-      fetchData();
-    }, 500);
-    return () => clearTimeout(fetchId);
+    })();
   }, [selectGame, page]);
 
   return (

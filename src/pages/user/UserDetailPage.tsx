@@ -3,7 +3,6 @@ import { MateGameInfo, User } from '@/config/types';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/api/client';
-import ErrorPage from '@/pages/ErrorPage';
 import { useOrderModalStore } from '@/config/store';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect, useState } from 'react';
@@ -16,11 +15,11 @@ import SelectGameSection from '@/components/UserDetailPage/SelectGameSection';
 
 export default function UserDetailPage() {
   const { userId } = useParams();
-  const [searchParams] = useSearchParams();
   const { isOrderModalOpen } = useOrderModalStore();
   const [selectGame, setSelectGame] = useState<MateGameInfo>();
   const [isReview, setIsReview] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const { data: mate } = useQuery<User>({
     queryKey: ['user', Number(userId)],
@@ -35,25 +34,40 @@ export default function UserDetailPage() {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if ((mate! && mate!.mate_game_info) !== undefined) {
-      mate!.mate_game_info!.filter(
-        (games: MateGameInfo) => games.game_id === Number(searchParams.get('game')) && setSelectGame(games)
-      );
+    if (searchParams.get('game') && mate) {
+      const gameId = Number(searchParams.get('game'));
+      const game = mate.mate_game_info?.find((game) => game.game_id === gameId);
+      setSelectGame(game);
     }
-  }, [mate]);
-
-  console.log(mate);
-  console.log(selectGame);
+  }, [searchParams, mate]);
 
   if (!mate) {
-    return <ErrorPage />;
+    return (
+      <>
+        <div className='relative z-20 h-[226px] w-full'></div>
+        <div className='relative flex w-full flex-1 flex-col items-center bg-gray-100 pt-[50px]'>
+          <div className='relative mb-[48px] flex h-[127px] w-[1000px] rounded-3xl border bg-[#FFFFFF] px-[37px] py-[27px]'>
+            <div className='h-[70px] w-[70px] rounded-full bg-gray-200'></div>
+            <div className='mx-5 flex h-[75px] w-auto flex-col'>
+              <p className='mb-[1px] h-4 w-24 rounded-md bg-gray-200'></p>
+              <div className='relative flex h-[20px] w-full items-start'>
+                <div className='relative ml-[-8px] mt-[-9px] w-[100px]'></div>
+              </div>
+              <div className='mt-2 flex items-center'>
+                <div className='h-[20px] w-[40px] rounded-xl bg-gray-200 pl-[15px] text-sm text-[#FFFFFF]'>id</div>
+                <p className='ml-2 h-4 w-12 rounded-md bg-gray-200'></p>
+              </div>
+            </div>
+            <button className='absolute right-[40px] my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-gray-200'></button>
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (
     <>
-      {isOrderModalOpen && <OrderModal mate={mate} />}
+      {isOrderModalOpen && selectGame && <OrderModal selectGame={selectGame} mate={mate} />}
       <div className='w-full'>
         <TitleIntro titleE={'Vita User'} titleK={'사용자 정보'} content={'비타 유저를 구경하세요!'} />
 
@@ -73,11 +87,11 @@ export default function UserDetailPage() {
               <p className='px-5'>{mate.description}</p>
             </div>
 
-            {mate.is_mate && mate.mate_game_info?.length !== undefined ? (
+            {mate.is_mate && mate.mate_game_info?.length !== 0 ? (
               <>
                 <div className='relative w-[620px]'>
                   {/* 게임 의뢰 정보 */}
-                  <GameOrderSection mate={mate} selectGame={selectGame} />
+                  <GameOrderSection mate={mate} gameId={Number(searchParams.get('game'))} />
 
                   {/* 게임 정보 */}
                   {selectGame && <GameInfoSection selectGame={selectGame} />}

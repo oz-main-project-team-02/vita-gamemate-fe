@@ -41,6 +41,8 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
     },
   });
 
+  console.log('카테고리: ', data);
+
   const { ref, inView } = useInView({
     threshold: 0,
     delay: 0,
@@ -65,7 +67,7 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
           : data?.pages?.map((page) =>
               page?.results?.map((mate) => (
                 <div key={mate.id} className='mb-4'>
-                  <MateCard mate={mate} />
+                  <MateCard gameId={Number(gameId)} mate={mate} />
                 </div>
               ))
             )}

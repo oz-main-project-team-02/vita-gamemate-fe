@@ -40,11 +40,13 @@ export default function EventSlider() {
       >
         {new Array(4).fill(0).map((_, i) => (
           <SwiperSlide key={i + 1}>
-            <Link
-              to={`/event/${i + 1}`}
-              style={{ backgroundImage: `url(${bannerImg(i + 1)})`, backgroundRepeat: 'no-repeat' }}
-              className='relative flex h-[240px] w-[560px] items-center justify-center gap-32 rounded-3xl bg-pink-100 shadow-lg lg:h-[300px] lg:w-[740px] xl:h-[360px] xl:w-[950px]'
-            ></Link>
+            <Link to={`/event/${i + 1}`}>
+              <img
+                className='relative h-[240px] w-[560px] rounded-3xl object-cover shadow-lg lg:h-[300px] lg:w-[740px] xl:h-[360px] xl:w-[950px]'
+                src={bannerImg(i + 1)}
+                alt='bannerImg'
+              />
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

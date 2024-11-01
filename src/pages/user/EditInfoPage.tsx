@@ -10,6 +10,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MypageLayout from '@/layouts/MypageLayout';
 import { useUserStore } from '@/config/store';
+import axios from 'axios';
 
 export default function EditInfoPage() {
   const { user, setUser } = useUserStore();
@@ -32,7 +33,7 @@ export default function EditInfoPage() {
     nickname: user.nickname!,
     description: user.description,
     gender: user.gender,
-    birthday: birthDate === null ? null : `${birthYear}-${birthMonth}-${birthDay}`,
+    birthday: birthDate && `${birthYear}-${birthMonth}-${birthDay}`,
   });
 
   const handleChangePickedImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,16 +55,20 @@ export default function EditInfoPage() {
 
     if (profile.nickname.length < 2) {
       toast.error('최소 2자 이상입니다!', {
-        position: 'top-right',
         autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
       });
       return null;
+    }
+
+    if (profile.birthday !== birthDate && `${birthYear}-${birthMonth}-${birthDay}`) {
+      setBirthYear('');
+      setBirthMonth('');
+      setBirthDay('');
+      setProfile({ ...profile, birthday: null });
+
+      toast.error('정확한 생일 폼을 입력해주세요', {
+        autoClose: 2000,
+      });
     }
 
     const data = new FormData();
@@ -76,21 +81,23 @@ export default function EditInfoPage() {
     data.append('gender', profile.gender || '');
     data.append('birthday', profile.birthday || '');
 
-    await updateMyProfile(data);
+    try {
+      await updateMyProfile(data);
 
-    setUser(profile);
+      setUser(profile);
+      setPreviewImage(null);
 
-    toast.success('저장 되었습니다!', {
-      position: 'top-right',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
+      toast.success('저장 되었습니다!', {
+        autoClose: 2000,
+      });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data?.error);
+      }
+    }
   };
+
+  console.log('profile', profile);
 
   return (
     <>
@@ -99,19 +106,15 @@ export default function EditInfoPage() {
       <MypageLayout>
         <div className='m-auto mt-[140px] min-h-[calc(100dvh-597px)] max-w-[800px]'>
           <div className='w-full bg-gray-100'>
-            {previewImage ? (
-              <div>
-                <img
-                  className='w-min-[100px] h-[300px] w-[52.6%] rounded-full object-cover'
-                  src={previewImage}
-                  alt='이미지 미리보기'
-                />
+            {previewImage && (
+              <div className='w-[300px] bg-gray-100'>
+                <img className='scale-90 rounded-full' src={previewImage} alt='이미지 미리보기' />
               </div>
-            ) : null}
-            <form onSubmit={handleSubmit} className='flex w-full flex-col items-end'>
+            )}
+            <form onSubmit={handleSubmit} className='relative flex w-full flex-col items-end'>
               <label
                 htmlFor='fileInput'
-                className='inline-block transform cursor-pointer rounded-xl bg-primary px-3 py-2 text-[24px] font-bold hover:scale-95'
+                className='inline-block transform cursor-pointer rounded-xl bg-[#eeeeee] px-3 py-2 font-semibold hover:scale-95 lg:text-base'
               >
                 프로필 사진 올리기
                 <input id='fileInput' ref={fileRef} onChange={handleChangePickedImage} type='file' className='hidden' />

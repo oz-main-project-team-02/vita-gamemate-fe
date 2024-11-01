@@ -12,7 +12,6 @@ type Props = {
 export default function GameOrderSection({ mate, gameId }: Props) {
   const { setOrderModalOpen } = useOrderModalStore();
   const selectGame = mate.mate_game_info?.find((game) => game.game_id === gameId);
-  console.log(gameId);
 
   const handleOrdersClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

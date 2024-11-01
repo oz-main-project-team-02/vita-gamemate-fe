@@ -43,8 +43,6 @@ export default function RealTimeReviewsSection() {
     };
   }, []);
 
-  console.log(data);
-
   return (
     <div className='flex h-[460px] items-center justify-center gap-24 px-[100px] lg:h-[610px] xl:h-[760px] xl:gap-36'>
       <div>

@@ -13,7 +13,6 @@ export default function Review({ order, selectedOrder, setSelectedOrder }: Revie
   const [reviewRating, setReviewRating] = useState<number>(0);
   const reviewContentRef = useRef<HTMLTextAreaElement | null>(null);
   const queryClient = useQueryClient();
-  console.log(reviewContentRef.current?.value);
   // INFO: 리뷰 작성 mutation
   const reviewMutation = useMutation({
     mutationFn: async ({

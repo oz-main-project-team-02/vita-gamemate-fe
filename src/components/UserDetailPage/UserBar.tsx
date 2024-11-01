@@ -20,7 +20,6 @@ export default function UserBar({ mate, userId }: Props) {
 
     try {
       const response = await createChat(mateNickname);
-      console.log(response.data);
 
       if (response.status === 200 || response.status === 201) {
         setChatModalOpen();

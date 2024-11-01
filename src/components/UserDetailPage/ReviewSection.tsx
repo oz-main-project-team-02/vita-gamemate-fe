@@ -24,7 +24,6 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
     (async () => {
       try {
         const data = await fetchReviewsByGameId(userId, selectGame.game_id.toString(), page);
-        console.log(data);
         reviewRef.current = data?.count;
         setPageCount(data?.next);
 

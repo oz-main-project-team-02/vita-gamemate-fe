@@ -1,27 +1,23 @@
 import './global.css';
-import React, { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import VitaPrivateRoute from './routes/VitaPrivateRoute';
 import LoginStatusChecker from './components/Common/LoginStatusChecker';
-import Spinner from './components/Common/Spinner';
 import { SuccessPage } from './pages/payments/SuccessPage';
 import { FailPage } from './pages/payments/FailPage';
 import { PaymentCheckoutPage } from './pages/payments/PaymentCheckout';
 import PaymentBillingPage from './pages/payments/PaymentBilling';
 import CommonLayout from './layouts/CommonLayout';
 import EventPage from './pages/EventPage';
-
-const CategoryPage = React.lazy(() => import('@/pages/CategoryPage'));
-const ErrorPage = React.lazy(() => import('@/pages/ErrorPage'));
-const HomePage = React.lazy(() => import('@/pages/HomePage'));
-const KakaoCallback = React.lazy(() => import('@/pages/KakaoCallback'));
-
-const EditInfoPage = React.lazy(() => import('@/pages/user/EditInfoPage'));
-const CoinPage = React.lazy(() => import('@/pages/user/CoinPage'));
-const GameMatePage = React.lazy(() => import('@/pages/user/GameMatePage'));
-const OrdersPage = React.lazy(() => import('@/pages/user/OrdersPage'));
-const UserDetailPage = React.lazy(() => import('@/pages/user/UserDetailPage'));
-const PaymentsPage = React.lazy(() => import('@/pages/user/PaymentsPage'));
+import EditInfoPage from '@/pages/user/EditInfoPage';
+import OrdersPage from '@/pages/user/OrdersPage';
+import GameMatePage from '@/pages/user/GameMatePage';
+import PaymentsPage from '@/pages/user/PaymentsPage';
+import CategoryPage from '@/pages/CategoryPage';
+import UserDetailPage from '@/pages/user/UserDetailPage';
+import CoinPage from '@/pages/user/CoinPage';
+import KakaoCallback from '@/pages/KakaoCallback';
+import HomePage from '@/pages/HomePage';
+import ErrorPage from '@/pages/ErrorPage';
 
 function App() {
   return (
@@ -30,98 +26,22 @@ function App() {
         <Route element={<CommonLayout />}>
           {/* Private Routes */}
           <Route element={<VitaPrivateRoute />}>
-            <Route
-              path='/user/edit-info'
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <EditInfoPage />
-                </Suspense>
-              }
-            />
-            <Route
-              path='/user/orders'
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <OrdersPage />
-                </Suspense>
-              }
-            />
-            <Route
-              path='/user/gamemate'
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <GameMatePage />
-                </Suspense>
-              }
-            />
-            <Route
-              path='/user/payments'
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <PaymentsPage />
-                </Suspense>
-              }
-            />
+            <Route path='/user/edit-info' element={<EditInfoPage />} />
+            <Route path='/user/orders' element={<OrdersPage />} />
+            <Route path='/user/gamemate' element={<GameMatePage />} />
+            <Route path='/user/payments' element={<PaymentsPage />} />
           </Route>
 
           {/* Public Routes */}
-          <Route
-            path='/category/:gameId'
-            element={
-              <Suspense fallback={<Spinner />}>
-                <CategoryPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/user/:userId'
-            element={
-              <Suspense fallback={<Spinner />}>
-                <UserDetailPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/user/coin'
-            element={
-              <Suspense fallback={<Spinner />}>
-                <CoinPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/auth/kakao/callback'
-            element={
-              <Suspense fallback={<Spinner />}>
-                <KakaoCallback />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/event/:gameId'
-            element={
-              <Suspense fallback={<Spinner />}>
-                <EventPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/'
-            element={
-              <Suspense fallback={<Spinner />}>
-                <HomePage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='*'
-            element={
-              <Suspense fallback={<Spinner />}>
-                <ErrorPage />
-              </Suspense>
-            }
-          />
+          <Route path='/category/:gameId' element={<CategoryPage />} />
+          <Route path='/user/:userId' element={<UserDetailPage />} />
+          <Route path='/user/coin' element={<CoinPage />} />
+          <Route path='/auth/kakao/callback' element={<KakaoCallback />} />
+          <Route path='/event/:gameId' element={<EventPage />} />
+          <Route path='/' element={<HomePage />} />
+          <Route path='*' element={<ErrorPage />} />
         </Route>
+
         {/* TOSS 개별 API 결제 페이지 */}
         <Route path='/payment' element={<PaymentCheckoutPage />} />
         <Route path='/payment/billing' element={<PaymentBillingPage />} />

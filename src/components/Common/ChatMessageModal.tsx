@@ -19,7 +19,7 @@ const ChatMessageModal = () => {
   const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [mate, setMate] = useState<User | null>(null);
-  const [mateGameInfo, setMateGameInfo] = useState<MateGameInfo | null>(null);
+  const [mateGameInfo, setMateGameInfo] = useState<MateGameInfo[] | null>(null);
   const [chatRoomPages, setChatRoomPages] = useState<Record<number, number>>({});
   const scrollRef = useRef<HTMLUListElement | null>(null);
   const prevScrollHeightRef = useRef<number>(0);
@@ -154,7 +154,7 @@ const ChatMessageModal = () => {
   useEffect(() => {
     if (mateData?.is_mate && mateData?.mate_game_info) {
       setMate(mateData);
-      setMateGameInfo(mateData.mate_game_info[0]);
+      setMateGameInfo(mateData.mate_game_info);
     }
   }, [mateData]);
 

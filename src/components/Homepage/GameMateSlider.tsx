@@ -72,7 +72,7 @@ export default function GameMateSlider() {
                     <h2 className='text-base font-bold xl:text-2xl'>
                       {getGame(mate.mate_game_info?.[0].game_id)?.title}
                     </h2>
-                    <VitaPrice mate={mate} />
+                    <VitaPrice gameId={mate.mate_game_info?.[0].game_id} mate={mate} />
                   </div>
                 </div>
               </div>

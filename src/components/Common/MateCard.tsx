@@ -29,7 +29,7 @@ export default function MateCard({ gameId, mate }: Props) {
             &nbsp;{mate.average_rating}&nbsp;
             <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
           </p>
-          <VitaPrice mate={mate} />
+          <VitaPrice gameId={gameId} mate={mate} />
         </div>
       </div>
     </Link>

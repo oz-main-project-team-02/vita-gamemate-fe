@@ -12,8 +12,6 @@ type Props = {
 export default function GameOrderSection({ mate, gameId }: Props) {
   const { setOrderModalOpen } = useOrderModalStore();
   const selectGame = mate.mate_game_info?.find((game) => game.game_id === gameId);
-  console.log(mate);
-  console.log(selectGame);
   console.log(gameId);
 
   const handleOrdersClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,7 +39,7 @@ export default function GameOrderSection({ mate, gameId }: Props) {
               &nbsp;{selectGame.average_rating}&nbsp;
               <span className='text-sm text-gray-300'>| 받은 리뷰수 {selectGame.review_count}</span>
             </p>
-            <VitaPrice mate={mate} />
+            <VitaPrice gameId={gameId} mate={mate} />
           </div>
           <button
             onClick={(e) => handleOrdersClick(e)}

@@ -19,7 +19,6 @@ export default function MypageLayout({ children }: Props) {
       } else {
         setIsFilterListOpen(false);
       }
-      console.log('resize');
     }, 200);
 
     handleResize();

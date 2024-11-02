@@ -48,6 +48,7 @@ export interface Review {
   content: string;
   created_at: Date;
   mate_id: number;
+  game_id: number;
 }
 
 export interface ReviewPage {

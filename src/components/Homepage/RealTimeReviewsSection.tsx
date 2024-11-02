@@ -21,6 +21,7 @@ export default function RealTimeReviewsSection() {
       return reviewApi.fetchReviews();
     },
   });
+  console.log(data);
 
   // FIXME: 혹시나 아래 코드에서 반응형을 유지하면서 최적화가 가능한지 알고 싶음. debounce를 사용했을때는 실시간으로 반응하지 않아서 UI가 끊기는 현상이 발생함.
   useEffect(() => {
@@ -72,7 +73,7 @@ export default function RealTimeReviewsSection() {
                   </div>
                   <div className='flex flex-col items-end justify-between'>
                     <p className='text-gray-400'>{dayjs(review.created_at).fromNow()}</p>
-                    <Link to={`/user/${review.mate_id}`}>
+                    <Link to={`/user/${review.mate_id}?game=${review.game_id}`}>
                       <button className='rounded-md bg-primary px-2 py-1 font-semibold text-primaryText'>
                         메이트 정보
                       </button>

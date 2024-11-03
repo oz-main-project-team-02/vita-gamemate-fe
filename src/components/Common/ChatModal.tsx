@@ -14,8 +14,15 @@ import { useWebSocketListener } from '@/hooks/useWebSocketListener';
 const ChatModal = () => {
   const queryClient = useQueryClient();
   const { isChatModalOpen, setChatModalClose } = useChatModalStore();
-  const { selectedRoomId, setSelectedRoomId, setOtherUserId, setOtherUserNickname, setOtherUserProfileImage } =
-    useChatStore();
+  const {
+    selectedRoomId,
+    activeRoomId,
+    setSelectedRoomId,
+    setActiveRoomId,
+    setOtherUserId,
+    setOtherUserNickname,
+    setOtherUserProfileImage,
+  } = useChatStore();
   const chatModalRef = useRef<HTMLDivElement | null>(null);
   const chatMessageModalRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,22 +32,31 @@ const ChatModal = () => {
       queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
         if (!oldChatList) return [newChatData];
 
-        // 기존 채팅방 찾기
-        const existingChatIndex = oldChatList.findIndex((chat) => chat.id === newChatData.id);
+        const updatedList = oldChatList.map((chat) =>
+          chat.id === newChatData.id
+            ? {
+                ...chat,
+                latest_message: newChatData.latest_message,
+                latest_message_time: newChatData.latest_message_time,
+                unread_count: chat.id === activeRoomId ? 0 : newChatData.unread_count,
+              }
+            : chat
+        );
 
-        if (existingChatIndex > -1) {
-          // 기존 채팅방 업데이트
-          const updatedChat = { ...oldChatList[existingChatIndex], ...newChatData };
-          const newList = [...oldChatList];
-          newList.splice(existingChatIndex, 1); // 기존 위치에서 제거
-          return [updatedChat, ...newList]; // 업데이트된 채팅방을 맨 앞으로
-        } else {
-          // 새로운 채팅방 추가
-          return [newChatData, ...oldChatList];
+        // 새로운 채팅방인 경우 목록에 추가
+        if (!updatedList.some((chat) => chat.id === newChatData.id)) {
+          updatedList.unshift(newChatData);
+          setSelectedRoomId(newChatData.id);
+          setActiveRoomId(newChatData.id);
         }
+
+        // 최신 메시지 시간 순으로 정렬
+        return updatedList.sort(
+          (a, b) => new Date(b.latest_message_time).getTime() - new Date(a.latest_message_time).getTime()
+        );
       });
     },
-    [queryClient]
+    [queryClient, activeRoomId]
   );
 
   // 채팅 목록 WebSocket 연결
@@ -73,8 +89,10 @@ const ChatModal = () => {
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
       setOtherUserInfo(chatList[0]);
+      setSelectedRoomId(chatList[0].id);
+      setActiveRoomId(chatList[0].id);
     }
-  }, [isSuccess, chatList]);
+  }, [isSuccess]);
 
   useEffect(() => {
     if (isChatModalOpen) {
@@ -90,6 +108,15 @@ const ChatModal = () => {
 
   const chatOtherUserInfoHandler = (chatItem: ChatList) => {
     setOtherUserInfo(chatItem);
+    setSelectedRoomId(chatItem.id);
+    setActiveRoomId(chatItem.id);
+
+    // 선택된 채팅방의 unread_count 리셋
+    queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
+      if (!oldChatList) return oldChatList;
+
+      return oldChatList.map((chat) => (chat.id === chatItem.id ? { ...chat, unread_count: 0 } : chat));
+    });
   };
 
   useOnClickOutside([chatModalRef, chatMessageModalRef], setChatModalClose);

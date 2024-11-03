@@ -72,6 +72,11 @@ export default function UserDetailPage() {
     setOrderModalOpen();
   };
 
+  // 채팅 모달창 preloading
+  const chatIconMouseEnterHandler = () => {
+    import('@/components/Common/ChatModal');
+  };
+
   return (
     <>
       {isOrderModalOpen && <OrderModal mate={mate} />}
@@ -100,6 +105,7 @@ export default function UserDetailPage() {
             <button
               className='my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
               onClick={() => createChatHandler(mate.nickname)}
+              onMouseEnter={chatIconMouseEnterHandler}
             >
               <AiOutlineMessage size={24} />
             </button>

@@ -2,21 +2,21 @@ import { useChatStore, webSocketStore } from '@/config/store';
 import { useEffect } from 'react';
 
 function useChatRoomWebSocket(): WebSocket | null {
-  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
+  const activeRoomId = useChatStore((state) => state.activeRoomId);
   const { chatRoomWebSocket, setChatRoomWebSocket } = webSocketStore();
 
   useEffect(() => {
-    if (selectedRoomId) {
+    if (activeRoomId) {
       if (chatRoomWebSocket) {
         chatRoomWebSocket.close();
       }
     }
 
     const accessToken = localStorage.getItem('accessToken');
-    const ws = new WebSocket(`wss://resdineconsulting.com/ws/chat/${selectedRoomId}/?token=${accessToken}`);
+    const ws = new WebSocket(`wss://resdineconsulting.com/ws/chat/${activeRoomId}/?token=${accessToken}`);
 
     ws.onopen = () => {
-      console.log('채팅방 상세 내역 WebSocket 연결 성공, 채팅방 id: ', selectedRoomId);
+      console.log('채팅방 상세 내역 WebSocket 연결 성공, 채팅방 id: ', activeRoomId);
       setChatRoomWebSocket(ws);
     };
 
@@ -36,7 +36,7 @@ function useChatRoomWebSocket(): WebSocket | null {
       ws.close();
       setChatRoomWebSocket(null);
     };
-  }, [selectedRoomId, setChatRoomWebSocket]);
+  }, [activeRoomId, setChatRoomWebSocket]);
 
   return chatRoomWebSocket;
 }

@@ -31,6 +31,7 @@ const ChatModal = () => {
     enabled: isChatModalOpen,
     refetchOnMount: true, //컴포넌트가 마운트될 때마다 쿼리가 다시 실행
     refetchOnWindowFocus: false, //사용자가 브라우저 탭이나 창을 다시 포커스할 때 쿼리가 자동으로 다시 실행되지 않음
+    staleTime: 0, // 항상 최신 데이터를 가져오도록 설정
   });
 
   // 채팅 목록 업데이트
@@ -72,7 +73,6 @@ const ChatModal = () => {
 
   // 채팅 상대방 정보 관리
   const setOtherUserInfo = (chatInfo: ChatList) => {
-    setActiveRoomId(chatInfo.id);
     setOtherUserId(chatInfo.other_user_id);
     setOtherUserNickname(chatInfo.other_user_nickname);
     setOtherUserProfileImage(chatInfo.other_user_profile_image || '/favicon.png');
@@ -81,10 +81,10 @@ const ChatModal = () => {
   // 가장 최신 채팅방의 정보를 보여주기
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
-      const currentSelectedRoomId = activeRoomId;
-      if (currentSelectedRoomId && chatList.some((chat) => chat.id === currentSelectedRoomId)) {
-        // 이미 선택된 채팅방이 있고, 그 채팅방이 목록에 존재하면 그대로 유지
-        setOtherUserInfo(chatList.find((chat) => chat.id === currentSelectedRoomId)!);
+      const currentActiveRoom = chatList.find((chat) => chat.id === activeRoomId);
+      if (currentActiveRoom) {
+        setActiveRoomId(currentActiveRoom.id);
+        setOtherUserInfo(currentActiveRoom);
       } else {
         setActiveRoomId(chatList[0].id);
         setOtherUserInfo(chatList[0]);
@@ -152,7 +152,7 @@ const ChatModal = () => {
                   >
                     <div className='flex min-h-[49px] min-w-[49px] items-center justify-center rounded-full bg-gray-100'>
                       <ProfileImage
-                        className='max-h-[49px] max-w-[49px] rounded-full'
+                        className='h-[49px] w-[49px] rounded-full object-cover'
                         src={chatItem.other_user_profile_image}
                       />
                     </div>

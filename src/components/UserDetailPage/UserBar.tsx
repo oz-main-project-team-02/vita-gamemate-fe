@@ -2,10 +2,11 @@ import { AiOutlineMessage } from 'react-icons/ai';
 import Gender from '../Common/Gender';
 import OnlineFlag from '../Common/OnlineFlag';
 import { useChatModalStore, useChatStore, useModalStore, useUserStore } from '@/config/store';
-import { User } from '@/config/types';
+import { ChatList, User } from '@/config/types';
 import { createChat } from '@/api/chat';
 import userImage from '@/assets/imgs/user.png';
 import { AxiosError } from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   mate: User;
@@ -17,6 +18,7 @@ export default function UserBar({ mate, userId }: Props) {
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
   const setModalStatus = useModalStore((state) => state.setModalStatus);
   const setActiveRoomId = useChatStore((state) => state.setActiveRoomId);
+  const queryClient = useQueryClient();
 
   // 채팅방 생성 api 요청 후 채팅 모달 open
   const createChatHandler = async (mateNickname: string | null) => {
@@ -27,6 +29,18 @@ export default function UserBar({ mate, userId }: Props) {
       if (response.status === 200 || response.status === 201) {
         const newRoomId = response.data.id;
         setActiveRoomId(newRoomId);
+
+        // 채팅 목록 강제 리프레시
+        queryClient.invalidateQueries({ queryKey: ['chatList'] });
+
+        // 채팅 목록 수동 업데이트
+        queryClient.setQueryData(['chatList'], (oldData: ChatList[] | undefined) => {
+          if (!oldData) return [response.data];
+          return [response.data, ...oldData].sort(
+            (a, b) => new Date(b.latest_message_time).getTime() - new Date(a.latest_message_time).getTime()
+          );
+        });
+
         setChatModalOpen();
       } else {
         console.error('채팅방 생성 실패');

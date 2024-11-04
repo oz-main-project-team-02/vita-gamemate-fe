@@ -42,7 +42,7 @@ const ChatRenderMessages = ({ chatMessages }: { chatMessages: ChatMessage[] }) =
           ) : (
             <div className='flex'>
               <div className='mx-3 min-h-[49px] min-w-[49px]'>
-                <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={otherUserProfileImage} />
+                <ProfileImage className='h-[49px] w-[49px] rounded-full object-cover' src={otherUserProfileImage} />
               </div>
               <p className='max-w-[240px] rounded-chat-other bg-white px-4 py-3 text-justify leading-snug'>
                 {message.message}

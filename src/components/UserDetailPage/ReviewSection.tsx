@@ -2,7 +2,7 @@ import { MateGameInfo, Review } from '@/config/types';
 import { useEffect, useRef, useState } from 'react';
 import { fetchReviewsByGameId } from '@/api/review';
 import star from '@/assets/imgs/star.svg';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 
 type Props = {
   userId: string | undefined;
@@ -41,7 +41,7 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
   }, [selectGame, page]);
 
   return (
-    <div className='relative right-[380px] w-[1000px] rounded-3xl border bg-[#FFFFFF] p-5'>
+    <div className='relative w-[350px] rounded-3xl border bg-[#FFFFFF] p-5 sm:w-[500px] md:right-[230px] md:w-[700px] lg:right-[330px] lg:w-[900px] xl:right-[380px] xl:w-[1000px]'>
       <div className='mb-2 flex items-center'>
         <img className='w-7' src={star} alt='star' />
         <h1 className='px-2 text-2xl font-bold'>
@@ -57,15 +57,17 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
                   <img className='w-[60px] rounded-full' src={userImage} alt='user' />
                 </div>
                 <div className='ml-3 w-3/4'>
-                  <p className='text-[15px]'>{review.mate_nickname}</p>
+                  <p className='text-[15px]'>{review.author_nickname}</p>
                   <div className='flex'>
                     {new Array(review.rating).fill(0).map((_, i) => (
                       <img key={i} src={star} alt='star' />
                     ))}
                   </div>
-                  <p className='w-[700px] truncate text-sm text-gray-400'>{review.content}</p>
+                  <p className='w-[200px] truncate text-sm text-gray-400 sm:w-[350px] md:w-[430px] lg:w-[600px] xl:w-[700px]'>
+                    {review.content}
+                  </p>
                 </div>
-                <p className='ml-auto mr-3 mt-[-30px] w-auto origin-left text-xs text-gray-300'>
+                <p className='ml-auto mr-3 mt-[-30px] hidden origin-left text-xs text-gray-300 md:block md:w-[170px] lg:w-[150px] xl:w-auto'>
                   {new Date(review.created_at).toLocaleString()}
                 </p>
               </div>

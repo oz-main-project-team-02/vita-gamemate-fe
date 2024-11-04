@@ -6,7 +6,7 @@ import { client } from '@/api/client';
 import { useOrderModalStore } from '@/config/store';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect, useState } from 'react';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 import UserBar from '@/components/UserDetailPage/UserBar';
 import GameOrderSection from '@/components/UserDetailPage/GameOrderSection';
 import GameInfoSection from '@/components/UserDetailPage/GameInfoSection';
@@ -87,20 +87,30 @@ export default function UserDetailPage() {
 
           <div className='mb-[300px] flex w-[1000px] justify-between'>
             <div
-              className={`h-[560px] w-[350px] rounded-3xl border bg-[#FFFFFF] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
+              className={`relative hidden h-[560px] rounded-3xl border bg-[#FFFFFF] md:left-[150px] md:block md:w-[200px] lg:left-[50px] lg:w-[300px] xl:left-0 xl:w-[350px] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
             >
-              <img
-                className='h-[350px] w-full rounded-t-3xl object-cover'
-                src={mate?.profile_image ?? userImage}
-                alt='user'
-              />
+              <div className='h-[250px] w-full overflow-hidden rounded-t-3xl lg:h-[350px]'>
+                <img
+                  className='h-[250px] w-full rounded-t-3xl bg-primary object-cover transition-transform duration-200 hover:scale-125 lg:h-[350px]'
+                  src={mate?.profile_image ?? userImage}
+                  alt='user'
+                />
+              </div>
               <h1 className='px-5 pt-3 text-xl font-bold'>소개</h1>
-              <p className='px-5'>{mate.description}</p>
+              <p
+                className='overflow-scroll break-words px-5'
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                }}
+              >
+                {mate.description}
+              </p>
             </div>
 
             {mate.is_mate && mate.mate_game_info?.length !== 0 ? (
               <>
-                <div className='relative w-[620px]'>
+                <div className='relative left-[325px] top-[220px] w-[350px] sm:left-[250px] sm:w-[500px] md:left-[-150px] md:top-0 md:w-[470px] lg:left-[-50px] lg:w-[570px] xl:left-0 xl:w-[620px]'>
                   {/* 게임 의뢰 정보 */}
                   <GameOrderSection mate={mate} gameId={Number(searchParams.get('game'))} />
 

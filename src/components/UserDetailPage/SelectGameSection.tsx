@@ -19,21 +19,24 @@ export default function SelectGameSection({ mate, setSelectGame, setIsReview }: 
   };
 
   return (
-    <div className='absolute right-[650px] top-[-0px] h-[193px] w-[350px] rounded-3xl border bg-[#FFFFFF]'>
-      <h1 className='p-5 text-xl font-bold'>등록된 게임</h1>
-      <div className='flex justify-around px-1'>
-        {mate.mate_game_info?.map((games) => (
-          <div
-            onClick={() => clickSelectGame(getGame(games.game_id)!)}
-            key={getGame(games.game_id)!.id}
-            className='flex cursor-pointer flex-col items-center hover:scale-95'
-          >
-            <div className='h-[60px] w-[60px] rounded-full bg-[#f4f4f4]'>
-              <img className='mx-auto my-1 w-[50px]' src={getGame(games.game_id)!.icon} alt='gameIcon' />
+    <div className='absolute top-[-220px] h-[193px] w-[350px] rounded-3xl border bg-[#FFFFFF] sm:w-[500px] md:left-[-230px] md:right-[500px] md:top-[0px] md:w-[200px] lg:left-[-330px] lg:right-[600px] lg:w-[300px] xl:left-[-380px] xl:right-[650px] xl:w-[350px]'>
+      <h1 className='p-5 text-xl font-bold md:hidden lg:block'>등록된 게임</h1>
+      <div className='flex justify-around px-1 md:mt-3 md:flex-wrap lg:mt-0 lg:flex-nowrap'>
+        {mate.mate_game_info
+          ?.slice()
+          .sort((a, b) => a.game_id - b.game_id)
+          .map((games) => (
+            <div
+              onClick={() => clickSelectGame(getGame(games.game_id)!)}
+              key={getGame(games.game_id)!.id}
+              className='flex cursor-pointer flex-col items-center hover:scale-95'
+            >
+              <div className='h-[60px] w-[60px] rounded-full bg-[#f4f4f4]'>
+                <img className='mx-auto my-1 w-[50px]' src={getGame(games.game_id)!.icon} alt='gameIcon' />
+              </div>
+              <p className='mt-2 text-xs font-medium'>{getGame(games.game_id)!.title}</p>
             </div>
-            <p className='mt-2 text-xs font-medium'>{getGame(games.game_id)!.title}</p>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

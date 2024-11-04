@@ -3,7 +3,7 @@ import { useChatModalStore, useModalStore, useUserStore } from '../../config/sto
 import LoginModal from './LoginModal';
 import { useState } from 'react';
 import { AiOutlineMessage } from 'react-icons/ai';
-import { TiUser } from 'react-icons/ti';
+import userImage from '/favicon.png';
 import ProfileDropdown from './ProfileDropdown';
 import GameDropdown from './GameDropdown';
 import Search from './Search';
@@ -70,15 +70,11 @@ export default function Header() {
                 onMouseLeave={() => setProfileHover(false)}
                 className='flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'
               >
-                {user.profile_image ? (
-                  <img
-                    className='h-[36px] w-[36px] rounded-full object-cover'
-                    src={user.profile_image}
-                    alt='사용자 이미지'
-                  />
-                ) : (
-                  <TiUser size={36} />
-                )}
+                <img
+                  className='h-[36px] w-[36px] rounded-full object-cover'
+                  src={user.profile_image ?? userImage}
+                  alt='사용자 이미지'
+                />
               </button>
               {profileHover && <ProfileDropdown user={user} setProfileHover={setProfileHover} />}
             </>

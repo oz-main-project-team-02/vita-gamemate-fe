@@ -5,14 +5,14 @@ import { sendMessage } from '@/api/websocket';
 const ChatSubmitForm = () => {
   const chatRoomWebSocket = webSocketStore((state) => state.chatRoomWebSocket);
   const user = useUserStore((state) => state.user);
-  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
+  const activeRoomId = useChatStore((state) => state.activeRoomId);
   const otherUserNickname = useChatStore((state) => state.otherUserNickname);
   const [messageValue, setMessageValue] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const submitHandler = () => {
-    if (!messageValue.trim() || !selectedRoomId || isSubmitting) return;
+    if (!messageValue.trim() || !activeRoomId || isSubmitting) return;
 
     if (!chatRoomWebSocket || chatRoomWebSocket.readyState !== WebSocket.OPEN) {
       console.error('소켓이 연결되지 않았습니다. 메시지를 전송할 수 없습니다.');
@@ -29,7 +29,7 @@ const ChatSubmitForm = () => {
     setTimeout(async () => {
       try {
         await sendMessage(chatRoomWebSocket, {
-          roomId: selectedRoomId,
+          roomId: activeRoomId,
           message: messageValue,
           sender_nickname,
         });

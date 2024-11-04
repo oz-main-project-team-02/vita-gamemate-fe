@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { MateGameInfo, User, ChatMessage } from '../../config/types';
+import { MateGameInfo, User, ChatMessage, ChatList } from '../../config/types';
 import { useChatStore, useOrderModalStore } from '../../config/store';
 import ChatSubmitForm from './ChatSubmitForm';
 import ProfileImage from './ProfileImage';
 import ChatRenderMessages from './ChatRenderMessages';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchChatMessages } from '@/api/chat';
 import { fetchUserProfileById } from '@/api/user';
 import { OrderModal } from './OrderModal';
@@ -15,13 +15,14 @@ import { AxiosError } from 'axios';
 
 const ChatMessageModal = () => {
   const chatRoomWebSocket = useChatRoomWebSocket();
-  const { selectedRoomId, otherUserId, otherUserNickname, otherUserProfileImage } = useChatStore();
+  const queryClient = useQueryClient();
+  const { activeRoomId, otherUserId, otherUserNickname, otherUserProfileImage } = useChatStore();
   const { isOrderModalOpen, setOrderModalOpen } = useOrderModalStore();
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [mate, setMate] = useState<User | null>(null);
-  const [mateGameInfo, setMateGameInfo] = useState<MateGameInfo | null>(null);
+  const [mateGameInfo, setMateGameInfo] = useState<MateGameInfo[] | null>(null);
   const [chatRoomPages, setChatRoomPages] = useState<Record<number, number>>({});
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLUListElement | null>(null);
   const prevScrollHeightRef = useRef<number>(0);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
@@ -33,12 +34,12 @@ const ChatMessageModal = () => {
 
   // 채팅 메세지 초기 로딩
   const loadInitialChatHistory = useCallback(async () => {
-    if (selectedRoomId) {
+    if (activeRoomId) {
       setIsInitialLoading(true);
       try {
-        const fetchedMessages = await fetchChatMessages(selectedRoomId, 1);
+        const fetchedMessages = await fetchChatMessages(activeRoomId, 1);
         setChatMessages(fetchedMessages);
-        updateChatRoomPage(selectedRoomId, 1);
+        updateChatRoomPage(activeRoomId, 1);
         setHasMoreMessages(fetchedMessages.length === 20);
         // 초기 로드 후 스크롤을 맨 아래로
         setTimeout(() => {
@@ -54,27 +55,27 @@ const ChatMessageModal = () => {
         setIsInitialLoading(false);
       }
     }
-  }, [selectedRoomId, updateChatRoomPage]);
+  }, [activeRoomId, updateChatRoomPage]);
 
   // 채팅 메세지 초기화 및 새로운 메세지 로드
   useEffect(() => {
     loadInitialChatHistory();
     setMate(null);
     setMateGameInfo(null);
-  }, [selectedRoomId, loadInitialChatHistory]);
+  }, [activeRoomId, loadInitialChatHistory]);
 
   // 페이지네이션 추가 메세지 불러오기
   const loadMoreMessages = useCallback(async () => {
-    if (selectedRoomId && scrollRef.current && hasMoreMessages && !isInitialLoading) {
+    if (activeRoomId && scrollRef.current && hasMoreMessages && !isInitialLoading) {
       try {
         prevScrollHeightRef.current = scrollRef.current.scrollHeight; // 현재 스크롤 높이 저장
 
-        const currentPage = chatRoomPages[selectedRoomId] || 1;
-        const fetchedMessages = await fetchChatMessages(selectedRoomId, currentPage + 1);
+        const currentPage = chatRoomPages[activeRoomId] || 1;
+        const fetchedMessages = await fetchChatMessages(activeRoomId, currentPage + 1);
 
         if (fetchedMessages.length > 0) {
           setChatMessages((prevMessages) => [...fetchedMessages, ...prevMessages]);
-          updateChatRoomPage(selectedRoomId, currentPage + 1);
+          updateChatRoomPage(activeRoomId, currentPage + 1);
           setHasMoreMessages(fetchedMessages.length === 20);
         } else {
           setHasMoreMessages(false);
@@ -88,7 +89,7 @@ const ChatMessageModal = () => {
         }
       }
     }
-  }, [selectedRoomId, chatRoomPages, updateChatRoomPage, hasMoreMessages, isInitialLoading]);
+  }, [activeRoomId, chatRoomPages, updateChatRoomPage, hasMoreMessages, isInitialLoading]);
 
   // WebSocket을 통한 실시간 메시지 추가
   useWebSocketListener<ChatMessage>(chatRoomWebSocket, (data) => {
@@ -98,6 +99,25 @@ const ChatMessageModal = () => {
 
       setChatMessages((prevMessages) => [...prevMessages, newMessage]);
       console.log('chatMessages:', chatMessages);
+
+      // 채팅 목록 업데이트
+      queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
+        if (!oldChatList) return oldChatList;
+
+        const updatedList = oldChatList.map((chat) =>
+          chat.id === activeRoomId
+            ? {
+                ...chat,
+                latest_message: data.message,
+                latest_message_time: data.timestamp,
+              }
+            : chat
+        );
+
+        return updatedList.sort(
+          (a, b) => new Date(b.latest_message_time).getTime() - new Date(a.latest_message_time).getTime()
+        );
+      });
 
       // 새 메세지가 추가되면 스크롤을 맨 아래로
       if (scrollRef.current) {
@@ -154,7 +174,7 @@ const ChatMessageModal = () => {
   useEffect(() => {
     if (mateData?.is_mate && mateData?.mate_game_info) {
       setMate(mateData);
-      setMateGameInfo(mateData.mate_game_info[0]);
+      setMateGameInfo(mateData.mate_game_info);
     }
   }, [mateData]);
 
@@ -171,7 +191,7 @@ const ChatMessageModal = () => {
       )}
 
       {/* Chat Messages */}
-      <div className='flex h-full max-w-[420px] flex-col overflow-y-auto' ref={scrollRef}>
+      <ul className='flex h-full max-w-[420px] flex-col overflow-y-auto' ref={scrollRef}>
         {mateGameInfo && <ChatMateRequestInfo mateGameInfo={mateGameInfo} setOrderModalOpen={setOrderModalOpen} />}
         {chatMessages.length === 0 && (
           <div className='my-10 flex w-full flex-col items-center justify-center text-gray-400'>
@@ -180,7 +200,7 @@ const ChatMessageModal = () => {
           </div>
         )}
         {chatMessages.length > 0 && <ChatRenderMessages chatMessages={chatMessages} />}
-      </div>
+      </ul>
 
       {/* Chat Input */}
       <ChatSubmitForm />

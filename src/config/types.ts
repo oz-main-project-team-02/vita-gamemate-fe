@@ -77,6 +77,8 @@ export interface ChatList {
   latest_message: string;
   latest_message_time: Date;
   updated_at: Date;
+  unread_count: number | null;
+  is_read_update: boolean;
 }
 
 export interface ChatMessage {

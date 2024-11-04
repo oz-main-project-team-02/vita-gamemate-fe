@@ -51,10 +51,9 @@ export default function Request() {
                   신청일: {dayjs(order.request_date).format('YYYY년 MM월 DD일 HH:mm')}
                 </p>
                 <p className='flex items-center'>
-                  <FaCoins className='mr-2 text-yellow-500' />
-                  가격:{' '}
+                  <FaCoins className='mr-2 text-yellow-500' />총 가격:{' '}
                   <span className='ml-1 font-semibold text-gray-800'>
-                    {(order.request_price * order.request_amount).toLocaleString()}원
+                    {(order.request_price * order.request_amount).toLocaleString()} 코인
                   </span>
                 </p>
                 <p className='flex items-center'>

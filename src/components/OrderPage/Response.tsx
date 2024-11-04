@@ -7,6 +7,7 @@ import { FaCalendarAlt, FaCheckCircle, FaCoins, FaRedo, FaTimesCircle } from 're
 import dayjs from 'dayjs';
 import { GiGamepad, GiStarsStack, GiTwoCoins } from 'react-icons/gi';
 import userImage from '@/assets/imgs/user.png';
+import { client } from '@/api/client';
 
 dayjs.locale('ko');
 
@@ -18,6 +19,8 @@ export default function Response() {
     queryKey: ['receivedOrders'],
     queryFn: requestApi.fetchReceivedOrders,
   });
+
+  console.log(data);
 
   // INFO: 특정 게임 요청을 수락하고 캐시에서 해당 요청을 업데이트 mutation
   const aceeptMutation = useMutation({
@@ -66,8 +69,25 @@ export default function Response() {
 
   // INFO: 특정 게임 요청을 취소하고 캐시에서 해당 요청을 제거하는 mutation
   const cancelMutation = useMutation({
-    mutationFn: async (game_request_id: number) => {
+    mutationFn: async ({
+      request_amount,
+      request_price,
+      game_request_id,
+      user_id,
+    }: {
+      game_request_id: number;
+      user_id: number;
+      request_amount: number;
+      request_price: number;
+    }) => {
       const response = await requestApi.updateRequestStatus(game_request_id, false);
+      const res = await client.post(`/api/v1/wallets/coin/recharge/${user_id}/`, {
+        coin: request_amount * request_price,
+      });
+
+      if (res.status !== 200) {
+        throw new Error('코인 환불에 실패했습니다.');
+      }
 
       if (response.status === 200) {
         return game_request_id;
@@ -91,8 +111,13 @@ export default function Response() {
     },
   });
 
-  const handleCancelClick = async (game_request_id: number) => {
-    cancelMutation.mutate(game_request_id);
+  const handleCancelClick = async (
+    game_request_id: number,
+    user_id: number,
+    request_amount: number,
+    request_price: number
+  ) => {
+    cancelMutation.mutate({ game_request_id, user_id, request_amount, request_price });
   };
 
   return (
@@ -124,10 +149,9 @@ export default function Response() {
                   신청일: {dayjs(receivedData.request_date).format('YYYY년 MM월 DD일 HH:mm')}
                 </p>
                 <p className='flex items-center'>
-                  <FaCoins className='mr-2 text-yellow-500' />
-                  가격:{' '}
+                  <FaCoins className='mr-2 text-yellow-500' />총 가격:{' '}
                   <span className='ml-1 font-semibold text-gray-800'>
-                    {(receivedData.request_price * receivedData.request_amount).toLocaleString()}원
+                    {(receivedData.request_price * receivedData.request_amount).toLocaleString()} 코인
                   </span>
                 </p>
                 <p className='flex items-center'>
@@ -181,7 +205,14 @@ export default function Response() {
                 <button
                   type='button'
                   className='flex items-center rounded-full bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition duration-300 ease-in-out hover:bg-gray-300'
-                  onClick={() => handleCancelClick(receivedData.game_request_id)}
+                  onClick={() =>
+                    handleCancelClick(
+                      receivedData.game_request_id,
+                      receivedData.user_id,
+                      receivedData.request_amount,
+                      receivedData.request_price
+                    )
+                  }
                 >
                   <FaTimesCircle className='mr-2' />
                   거절하기

@@ -8,7 +8,7 @@ import { Games } from '@/config/const';
 
 export default function GameMatePage() {
   const user = useUserStore((state) => state.user);
-  console.log(Object.keys(Games).length);
+
   return (
     <>
       <TitleIntro titleE='VITA GAMEMATE' titleK='게임 메이트' content='당신의 재능을 보여주세요!' />
@@ -40,5 +40,3 @@ export default function GameMatePage() {
     </>
   );
 }
-
-// m-auto mt-[140px] max-w-[800px]

@@ -22,6 +22,7 @@ export default function GameCategorySlider({ gameId }: Props) {
     },
   });
   console.log(data);
+  console.log(gameId);
 
   return (
     <div className='relative mx-auto max-w-[200px] lg:max-w-[422px] xl:max-w-[672px]'>
@@ -53,7 +54,7 @@ export default function GameCategorySlider({ gameId }: Props) {
             ))
           : data?.results?.map((mate) => (
               <SwiperSlide key={mate.id}>
-                <MateCard mate={mate} />
+                <MateCard gameId={Number(gameId)} mate={mate} />
               </SwiperSlide>
             ))}
       </Swiper>

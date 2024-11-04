@@ -45,6 +45,7 @@ export interface Review {
   rating: number;
   content: string;
   created_at: Date;
+  mate_id: number;
 }
 
 export interface ReviewPage {

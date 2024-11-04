@@ -18,12 +18,13 @@ export default function LoginModal() {
   };
 
   const handleKakaoLoginClick = () => {
-    window.location.href = import.meta.env.VITE_KAKAO_URI;
+    const KAKAO_AUTH_URL = `${import.meta.env.VITE_KAKAO_BASE_URL}?client_id=${import.meta.env.VITE_KAKAO_CLIENT_ID}&redirect_uri=${encodeURIComponent(import.meta.env.VITE_KAKAO_REDIRECT_URI)}&response_type=code`;
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
     <div
-      className='fixed bottom-0 left-0 right-0 top-0 z-30 flex items-center justify-center bg-black bg-opacity-60'
+      className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60'
       onClick={handleBackdropClick}
     >
       <div

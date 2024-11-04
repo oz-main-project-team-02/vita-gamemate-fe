@@ -11,6 +11,8 @@ type Props = {
 };
 
 export default function MateCard({ gameId, mate }: Props) {
+  const game = mate.mate_game_info?.find((game) => game.game_id === gameId);
+
   return (
     <Link to={gameId ? `/user/${mate.id}?game=${gameId}` : `/user/${mate.id}`}>
       <div className='relative flex h-[288px] w-[206px] flex-col items-center justify-center overflow-hidden rounded-3xl leading-[1.3] shadow-lg'>
@@ -26,8 +28,8 @@ export default function MateCard({ gameId, mate }: Props) {
           <h2>{mate.nickname}</h2>
           <p className='flex items-center'>
             <img src={star} alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
-            &nbsp;{mate.average_rating}&nbsp;
-            <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
+            &nbsp;{game?.average_rating}&nbsp;
+            <span className='text-sm text-gray-300'>| 받은 의뢰수 {game?.game_request_count}</span>
           </p>
           <VitaPrice gameId={gameId} mate={mate} />
         </div>

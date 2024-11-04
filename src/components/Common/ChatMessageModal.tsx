@@ -7,7 +7,6 @@ import ChatRenderMessages from './ChatRenderMessages';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchChatMessages } from '@/api/chat';
 import { fetchUserProfileById } from '@/api/user';
-import { OrderModal } from './OrderModal';
 import useChatRoomWebSocket from '@/hooks/useChatRoomWebSocket';
 import ChatMateRequestInfo from './ChatMateRequestInfo';
 import { useWebSocketListener } from '@/hooks/useWebSocketListener';
@@ -192,7 +191,14 @@ const ChatMessageModal = () => {
 
       {/* Chat Messages */}
       <ul className='flex h-full max-w-[420px] flex-col overflow-y-auto' ref={scrollRef}>
-        {mateGameInfo && <ChatMateRequestInfo mateGameInfo={mateGameInfo} setOrderModalOpen={setOrderModalOpen} />}
+        {mateGameInfo && (
+          <ChatMateRequestInfo
+            mate={mate}
+            isOrderModalOpen={isOrderModalOpen}
+            mateGameInfo={mateGameInfo}
+            setOrderModalOpen={setOrderModalOpen}
+          />
+        )}
         {chatMessages.length === 0 && (
           <div className='my-10 flex w-full flex-col items-center justify-center text-gray-400'>
             <p>채팅방 내역을 불러오는 중 오류가 발생했습니다.</p>
@@ -207,7 +213,7 @@ const ChatMessageModal = () => {
 
       {/* Order Modal */}
       {/* FIXME: selectGame이 추가되어야함, mateGameInfo가 0번 인덱스의 값으로 설정되어 있음. 추후 모든 게임 인포를 제공하고 선택한 게임의 info를 selectGame으로 넘겨주면됨. */}
-      {isOrderModalOpen && mate && <OrderModal selectGame={mateGameInfo!} mate={mate} />}
+      {/* {isOrderModalOpen && mate && <OrderModal selectGame={mateGameInfo!} mate={mate} />} */}
     </div>
   );
 };

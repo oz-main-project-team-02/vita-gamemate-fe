@@ -31,7 +31,6 @@ export function PaymentCheckoutPage() {
 
   const location = useLocation();
   const { coinData }: { coinData: CoinPackage } = location.state || {};
-  console.log('결제: ', coinData);
 
   useEffect(() => {
     async function fetchPayment() {

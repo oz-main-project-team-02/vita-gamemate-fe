@@ -7,6 +7,7 @@ import ProfileImage from './ProfileImage';
 import { useOrderModalStore, useUserStore } from '@/config/store';
 import vitaCoin from '@/assets/imgs/vitaCoin.svg';
 import star from '@/assets/imgs/star.svg';
+import { getGame } from '@/config/const';
 
 type Props = {
   selectGame: MateGameInfo;
@@ -18,6 +19,8 @@ export function OrderModal({ selectGame, mate }: Props) {
   const [price] = useState(selectGame.request_price || 0);
   const { isOrderModalOpen, setOrderModalClose } = useOrderModalStore();
   const setUser = useUserStore((state) => state.setUser);
+
+  console.log('mate: ', mate);
 
   useEffect(() => {
     if (isOrderModalOpen) {
@@ -91,7 +94,7 @@ export function OrderModal({ selectGame, mate }: Props) {
                 <p className='flex items-center pb-1'>
                   <img src={star} alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
                   &nbsp;{selectGame.average_rating}&nbsp;
-                  <span className='text-sm text-gray-300'>| 받은 리뷰수 {selectGame.review_count}</span>
+                  <span className='text-sm text-gray-300'>| 받은 의뢰수 {selectGame.game_request_count}</span>
                 </p>
               </div>
             </div>
@@ -100,7 +103,7 @@ export function OrderModal({ selectGame, mate }: Props) {
             <div className='space-y-4 rounded-2xl bg-[#EFF5F8] p-5'>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>주문 서비스:</span>
-                <span className='font-medium'>리그오브레전드</span>
+                <span className='font-medium'>{getGame(selectGame.game_id)?.title}</span>
               </div>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>단가:</span>

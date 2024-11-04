@@ -1,16 +1,23 @@
-import { requestApi } from '@/api';
-import { User } from '@/config/types';
+import { requestApi, walletApi } from '@/api';
+import { MateGameInfo, User } from '@/config/types';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import ProfileImage from './ProfileImage';
-import { useOrderModalStore } from '@/config/store';
-import { getGame } from '@/config/const';
+import { useOrderModalStore, useUserStore } from '@/config/store';
+import vitaCoin from '@/assets/imgs/vitaCoin.svg';
+import star from '@/assets/imgs/star.svg';
 
-export function OrderModal({ mate }: { mate: User }) {
+type Props = {
+  selectGame: MateGameInfo;
+  mate: User;
+};
+
+export function OrderModal({ selectGame, mate }: Props) {
   const [amount, setAmount] = useState(1);
-  const [price] = useState(mate?.mate_game_info?.[0]?.request_price || 0);
+  const [price] = useState(selectGame.request_price || 0);
   const { isOrderModalOpen, setOrderModalClose } = useOrderModalStore();
+  const setUser = useUserStore((state) => state.setUser);
 
   useEffect(() => {
     if (isOrderModalOpen) {
@@ -26,18 +33,32 @@ export function OrderModal({ mate }: { mate: User }) {
 
   const orderRequest = useMutation({
     mutationFn: async ({ price, amount }: { price: number; amount: number }) => {
-      try {
-        const { data } = await requestApi.MateRequest(mate.id, {
-          game_id: mate?.mate_game_info?.[0]?.game_id,
-          price,
-          amount,
-        });
-        console.log('주문 요청:', price, amount);
-        alert('주문이 완료되었습니다.');
-        return data;
-      } catch (err) {
-        console.error(err);
+      const totalPrice = price * amount;
+
+      const response = await walletApi.withdrawWalletCoin(totalPrice);
+
+      if (response.status !== 200) {
+        throw new Error(`코인 차감에 실패했습니다: ${response.data.message}`);
       }
+
+      const requestResponse = await requestApi.MateRequest(mate.id, {
+        game_id: selectGame.game_id,
+        price,
+        amount,
+      });
+      return { status: requestResponse.status, coin: response.data.coin };
+    },
+    onSuccess: async ({ status, coin }) => {
+      if (status === 201) {
+        setUser({ coin });
+        setOrderModalClose();
+        alert('주문이 완료되었습니다.');
+      } else {
+        console.error(`주문실패, status: ${status}`);
+      }
+    },
+    onError: (error) => {
+      console.error('오류 발생: ', error);
     },
   });
 
@@ -45,9 +66,6 @@ export function OrderModal({ mate }: { mate: User }) {
     e.preventDefault();
     orderRequest.mutate({ price, amount });
   };
-
-  const game = getGame(mate?.mate_game_info?.[0]?.game_id);
-  console.log('game', game);
 
   return (
     <div className='fixed inset-0 z-50 bg-black/50' onClick={() => setOrderModalClose()}>
@@ -67,13 +85,13 @@ export function OrderModal({ mate }: { mate: User }) {
           <div className='flex flex-col gap-3 px-4'>
             {/* 사용자 정보 */}
             <div className='flex min-h-[49px] min-w-[49px] items-center gap-4 py-3'>
-              <ProfileImage className='max-h-[84px] max-w-[84px] rounded-full' src={mate?.profile_image} />
+              <ProfileImage className='max-h-[84px] max-w-[84px] rounded-full' src={mate.profile_image} />
               <div>
                 <div className='text-3xl font-semibold'>{mate.nickname}</div>
                 <p className='flex items-center pb-1'>
-                  <img src='/src/assets/imgs/star.svg' alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
-                  &nbsp;{mate.average_rating}&nbsp;
-                  <span className='text-sm text-gray-300'>| 받은 의뢰수 {mate.amount}</span>
+                  <img src={star} alt='리뷰 별점 아이콘' className='h-[18px] w-[18px]' />
+                  &nbsp;{selectGame.average_rating}&nbsp;
+                  <span className='text-sm text-gray-300'>| 받은 리뷰수 {selectGame.review_count}</span>
                 </p>
               </div>
             </div>
@@ -87,7 +105,7 @@ export function OrderModal({ mate }: { mate: User }) {
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>단가:</span>
                 <div className='flex items-center'>
-                  <span className='text-gray-500'>950/판</span>
+                  <span className='text-gray-500'>{selectGame.request_price}/판</span>
                 </div>
               </div>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
@@ -104,7 +122,7 @@ export function OrderModal({ mate }: { mate: User }) {
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>총가격:</span>
                 <div className='flex items-center'>
-                  <span className='font-medium'>950</span>
+                  <span className='font-medium'>{selectGame.request_price * amount}</span>
                 </div>
               </div>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
@@ -114,8 +132,8 @@ export function OrderModal({ mate }: { mate: User }) {
               <div className='flex items-center justify-between border-t border-gray-200 px-2 pt-4 shadow-sm'>
                 <span className='text-gray-600'>최종 금액:</span>
                 <div className='flex items-center gap-2'>
-                  <img src='/src/assets/imgs/vitaCoin.svg' alt='비타코인' />
-                  <span className='text-3xl font-bold text-primary'>{10 * amount}</span>
+                  <img src={vitaCoin} alt='비타코인' />
+                  <span className='text-3xl font-bold text-primary'>{selectGame.request_price * amount}</span>
                 </div>
               </div>
             </div>

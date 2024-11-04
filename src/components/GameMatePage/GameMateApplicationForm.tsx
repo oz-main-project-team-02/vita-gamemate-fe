@@ -1,12 +1,14 @@
 import { getGame } from '@/config/const';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import GameSection from './GameSection';
 import LevelSection from './LevelSection';
 import DescriptionSection from './DescriptionSection';
 import PriceSection from './PriceSection';
 import ImageSection from './ImageSection';
-import { MateRegister } from '@/config/types';
+import { MateRegister, UserResponse } from '@/config/types';
+import { useUserStore } from '@/config/store';
+import Spinner from '../Common/Spinner';
 import { mateApi } from '@/api';
 
 type Dropdown = {
@@ -28,11 +30,30 @@ export default function GameMateApplicationForm() {
   });
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  console.log(formData);
+  const queryClient = useQueryClient();
+  const user = useUserStore((state) => state.user);
 
   // 게임메이트 등록하기 Mutation
   const mateRegisterMutation = useMutation({
-    mutationFn: (mateInfo: FormData) => mateApi.registerGameMate(mateInfo),
+    mutationFn: async (mateInfo: FormData) => {
+      const response = await mateApi.registerGameMate(mateInfo);
+      return { status: response.status, data: response.data };
+    },
+    onSuccess: ({ status, data }) => {
+      console.log(`status ${status}: `, data);
+      const value: UserResponse | undefined = queryClient.getQueryData(['user', user.id]);
+
+      if (value) {
+        const shallowResults = [...value.results];
+        shallowResults.push(data); // 배열에 새 데이터 추가
+
+        queryClient.setQueryData(['user', user.id], { ...value, results: shallowResults });
+        console.log('캐시 업데이트 완료', queryClient.getQueryData(['user', user.id]));
+      }
+    },
+    onError: (error) => {
+      console.error(error);
+    },
   });
 
   // 게임메이트 등록하기 submit 함수
@@ -54,14 +75,7 @@ export default function GameMateApplicationForm() {
     data.append('description', formData.description || '');
     data.append('request_price', formData.request_price?.toString() || '');
 
-    mateRegisterMutation.mutate(data, {
-      onSuccess: (data) => {
-        console.log('성공적으로 등록되었습니다', data);
-      },
-      onError: (error) => {
-        console.error('등록 중 오류가 발생했습니다:', error);
-      },
-    });
+    mateRegisterMutation.mutate(data);
   };
 
   return (
@@ -93,9 +107,11 @@ export default function GameMateApplicationForm() {
             <button
               type='button'
               onClick={fetchMateRegister}
-              className='mt-4 h-[50px] rounded-xl bg-gradient-to-r from-[#FFD800] to-[#D5FFB7] font-semibold'
+              disabled={mateRegisterMutation.isPending}
+              className={`mt-4 flex h-[50px] items-center justify-center gap-4 rounded-xl bg-gradient-to-r from-[#FFD800] to-[#D5FFB7] font-semibold ${mateRegisterMutation.isPending ? 'opacity-50' : null}`}
             >
-              게임메이트 신청하기
+              {mateRegisterMutation.isPending ? <Spinner w={24} h={24} /> : null}
+              <span>게임메이트 신청하기</span>
             </button>
           )}
         </form>

@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import MateCard from '../Common/MateCard';
 import { mateApi } from '@/api';
 import SkeletonMateCard from '../skeleton/SkeletonMateCard';
-import { delay } from '@/utils/delay';
 
 type Props = {
   gameId: string | undefined;
@@ -34,9 +33,6 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
   >({
     queryKey: ['user', 'mate', gameId as string, sortValue, genderValue, levelValue],
     queryFn: async ({ pageParam }) => {
-      // FIXME: 실제 서비스에서는 delay 함수를 사용하지 않습니다.
-      // FIXME: delay 함수 제거시 async await 구문 제거
-      await delay();
       return mateApi.fetchGameMateProfiles({ gameId, sortValue, genderValue, levelValue, pageParam });
     },
     initialPageParam: 1,
@@ -44,6 +40,8 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
       return lastPage?.results?.length ? allPages.length + 1 : null;
     },
   });
+
+  console.log('카테고리: ', data);
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -69,7 +67,7 @@ export default function GameCategoryCardList({ gameId, sortValue, genderValue, l
           : data?.pages?.map((page) =>
               page?.results?.map((mate) => (
                 <div key={mate.id} className='mb-4'>
-                  <MateCard mate={mate} />
+                  <MateCard gameId={Number(gameId)} mate={mate} />
                 </div>
               ))
             )}

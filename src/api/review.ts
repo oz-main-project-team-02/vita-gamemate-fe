@@ -43,13 +43,22 @@ interface ReviewData {
  * POST /api/v1/reviews/${gameRequestId}/write/
  * @param id 게임 메이트 ID
  * @param reviewData 리뷰 데이터
- * @returns 리뷰 등록 정보 { rating, content }
+ * @returns 리뷰 등록 정보 { rating, content, game_request }
  */
-export const fetchPostReview = async (id: number, reviewData: ReviewData) => {
+export const fetchPostReview = (id: number, reviewData: ReviewData) => {
+  return client.post(`/api/v1/reviews/${id}/write/`, reviewData);
+};
+
+export const fetchReviewsByGameId = async (userId: string, gameId: string, page: number) => {
   try {
-    const { data } = await client.post(`/api/v1/reviews/${id}/write/`, reviewData);
+    const { data } = await client.get(`/api/v1/reviews/${userId}/${gameId}`, {
+      params: {
+        page,
+      },
+    });
     return data;
   } catch (err) {
     console.error(err);
+    return [];
   }
 };

@@ -39,9 +39,13 @@ export interface MateUser {
 
 export interface Review {
   game_request_id: string;
+  author_id: string;
+  author_nickname: string;
+  mate_nickname: string;
   rating: number;
   content: string;
   created_at: Date;
+  mate_id: number;
 }
 
 export interface ReviewPage {
@@ -94,12 +98,15 @@ export interface UserResponse {
 export interface OrderRequest {
   game_request_id: number;
   mate_nickname: string;
+  mate_id: number;
   mate_profile_image: string | null;
   mate_gender: string | null;
   mate_online: boolean;
   status: boolean;
   request_date: Date;
   request_amount: number;
+  request_price: number;
+  review_status: boolean;
 }
 
 export interface OrderRequestResponse {
@@ -115,9 +122,11 @@ export interface ReceivedRequest {
   user_profile_image: string | null;
   user_gender: string | null;
   user_online: boolean;
+  user_id: number;
   status: boolean;
   request_date: Date;
   request_amount: number;
+  request_price: number;
 }
 
 export interface ReceivedRequestResponse {

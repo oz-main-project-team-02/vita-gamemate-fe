@@ -206,7 +206,8 @@ const ChatMessageModal = () => {
       <ChatSubmitForm />
 
       {/* Order Modal */}
-      {isOrderModalOpen && mate && <OrderModal mate={mate} />}
+      {/* FIXME: selectGame이 추가되어야함, mateGameInfo가 0번 인덱스의 값으로 설정되어 있음. 추후 모든 게임 인포를 제공하고 선택한 게임의 info를 selectGame으로 넘겨주면됨. */}
+      {isOrderModalOpen && mate && <OrderModal selectGame={mateGameInfo!} mate={mate} />}
     </div>
   );
 };

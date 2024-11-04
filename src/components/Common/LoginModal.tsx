@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useModalStore } from '../../config/store';
+import vitaLogo300 from '@/assets/imgs/vitaLogo300.svg';
+import kakaoLogin from '@/assets/imgs/kakao_login.svg';
 
 export default function LoginModal() {
   const { setModalStatus } = useModalStore();
@@ -16,12 +18,13 @@ export default function LoginModal() {
   };
 
   const handleKakaoLoginClick = () => {
-    window.location.href = import.meta.env.VITE_KAKAO_URI;
+    const KAKAO_AUTH_URL = `${import.meta.env.VITE_KAKAO_BASE_URL}?client_id=${import.meta.env.VITE_KAKAO_CLIENT_ID}&redirect_uri=${encodeURIComponent(import.meta.env.VITE_KAKAO_REDIRECT_URI)}&response_type=code`;
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
     <div
-      className='fixed bottom-0 left-0 right-0 top-0 z-30 flex items-center justify-center bg-black bg-opacity-60'
+      className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60'
       onClick={handleBackdropClick}
     >
       <div
@@ -30,11 +33,11 @@ export default function LoginModal() {
       >
         {/* 로고 */}
         <div>
-          <img src='/src/assets/imgs/vitaLogo300.svg' alt='비타 로고' className='h-[60px] w-[60px]' />
+          <img src={vitaLogo300} alt='비타 로고' className='h-[60px] w-[60px]' />
         </div>
         <div className='mb-4 text-center font-bold'>비타에서 게임 메이트와 즐겁게 대화하며 롤 듀오를 즐겨보세요!</div>
         <button onClick={handleKakaoLoginClick}>
-          <img src='/src/assets/imgs/kakao_login.svg' alt='카카오 로그인 버튼' />
+          <img src={kakaoLogin} alt='카카오 로그인 버튼' />
         </button>
       </div>
     </div>

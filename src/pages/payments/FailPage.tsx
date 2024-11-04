@@ -6,7 +6,7 @@ export function FailPage() {
   const code = searchParams.get('code');
 
   return (
-    <div id='info' className='box_section max-w-[640px]'>
+    <div id='info' className='max-w-[640px]'>
       <div className='flex flex-col items-center'>
         <img width='100px' src='https://static.toss.im/lotties/error-spot-no-loop-space-apng.png' alt='에러 이미지' />
         <h2 className='text-2xl font-semibold'>결제를 실패했어요</h2>

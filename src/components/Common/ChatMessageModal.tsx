@@ -183,7 +183,10 @@ const ChatMessageModal = () => {
       {otherUserNickname && (
         <div className='flex flex-col'>
           <div className='flex items-center gap-4 px-4 py-2'>
-            <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={otherUserProfileImage} />
+            <ProfileImage
+              className='rounded-ful h-[49px] w-[49px] rounded-full object-cover'
+              src={otherUserProfileImage}
+            />
             <span className='max-w-[323px] grow truncate text-lg font-semibold'>{otherUserNickname}</span>
           </div>
         </div>

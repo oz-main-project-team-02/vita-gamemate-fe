@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import OnlineFlag from './OnlineFlag';
 import VitaPrice from './VitaPrice';
 import { User } from '@/config/types';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 import star from '@/assets/imgs/star.svg';
 
 type Props = {
@@ -17,11 +17,11 @@ export default function MateCard({ gameId, mate }: Props) {
     <Link to={gameId ? `/user/${mate.id}?game=${gameId}` : `/user/${mate.id}`}>
       <div className='relative flex h-[288px] w-[206px] flex-col items-center justify-center overflow-hidden rounded-3xl leading-[1.3] shadow-lg'>
         {mate.is_online && <OnlineFlag />}
-        <div className='h-[206px] w-[206px] overflow-hidden bg-blue-500'>
+        <div className='h-[206px] w-[206px] overflow-hidden bg-primary'>
           <img
-            src={mate.profile_image ? mate.profile_image : userImage}
+            src={mate.profile_image ?? userImage}
             alt='사용자 이미지'
-            className='w-[206px] overflow-hidden transition-transform duration-200 hover:scale-125'
+            className='h-[206px] w-[206px] overflow-hidden object-cover transition-transform duration-200 hover:scale-125'
           />
         </div>
         <div className='h-[82px] w-[206px] px-4 py-2'>

@@ -11,7 +11,7 @@ import { UserResponse } from '@/config/types';
 import { mateApi } from '@/api';
 import SkeletonTodayGameMate from '../skeleton/SkeletonTodayGameMate';
 import { Link } from 'react-router-dom';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 
 export default function GameMateSlider() {
   const { data, isLoading } = useQuery<UserResponse>({
@@ -47,14 +47,14 @@ export default function GameMateSlider() {
                   ? `/user/${mate.id}?game=${mate.mate_game_info[0].game_id}`
                   : `/user/${mate.id}`
               }
-              className='relative flex h-full w-full flex-col gap-3 rounded-3xl bg-[#293883] p-3 lg:flex-row'
+              className='relative flex h-full w-full flex-col gap-3 rounded-3xl bg-[#4958a2] p-3 lg:flex-row'
               style={{ boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.4)' }}
             >
-              <div className='mx-auto h-[150px] w-[150px] overflow-hidden rounded-xl bg-blue-500 xl:h-[186px] xl:w-[186px]'>
+              <div className='mx-auto h-[150px] w-[150px] overflow-hidden rounded-xl bg-primary object-cover xl:h-[186px] xl:w-[186px]'>
                 <img
-                  src={mate.profile_image ? mate.profile_image : userImage}
+                  src={mate.profile_image ?? userImage}
                   alt='사용자 이미지'
-                  className='h-[150px] w-[150px] overflow-hidden transition-transform duration-200 hover:scale-125 xl:h-[186px] xl:w-[186px]'
+                  className='h-[150px] w-[150px] overflow-hidden object-cover transition-transform duration-200 hover:scale-125 xl:h-[186px] xl:w-[186px]'
                 />
               </div>
               <div className='flex flex-1 flex-col text-white lg:py-3'>

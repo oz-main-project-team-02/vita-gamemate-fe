@@ -2,7 +2,7 @@ import { MateGameInfo, Review } from '@/config/types';
 import { useEffect, useRef, useState } from 'react';
 import { fetchReviewsByGameId } from '@/api/review';
 import star from '@/assets/imgs/star.svg';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 
 type Props = {
   userId: string | undefined;

@@ -14,17 +14,25 @@ import { useWebSocketListener } from '@/hooks/useWebSocketListener';
 const ChatModal = () => {
   const queryClient = useQueryClient();
   const { isChatModalOpen, setChatModalClose } = useChatModalStore();
-  const {
-    selectedRoomId,
-    activeRoomId,
-    setSelectedRoomId,
-    setActiveRoomId,
-    setOtherUserId,
-    setOtherUserNickname,
-    setOtherUserProfileImage,
-  } = useChatStore();
+  const { activeRoomId, setActiveRoomId, setOtherUserId, setOtherUserNickname, setOtherUserProfileImage } =
+    useChatStore();
   const chatModalRef = useRef<HTMLDivElement | null>(null);
   const chatMessageModalRef = useRef<HTMLDivElement | null>(null);
+
+  // 초기 채팅 목록 불러오기
+  const {
+    data: chatList,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery<ChatList[]>({
+    queryKey: ['chatList'],
+    queryFn: fetchChatLists,
+    enabled: isChatModalOpen,
+    refetchOnMount: true, //컴포넌트가 마운트될 때마다 쿼리가 다시 실행
+    refetchOnWindowFocus: false, //사용자가 브라우저 탭이나 창을 다시 포커스할 때 쿼리가 자동으로 다시 실행되지 않음
+    staleTime: 0, // 항상 최신 데이터를 가져오도록 설정
+  });
 
   // 채팅 목록 업데이트
   const handleNewChatListMessage = useCallback(
@@ -46,8 +54,6 @@ const ChatModal = () => {
         // 새로운 채팅방인 경우 목록에 추가
         if (!updatedList.some((chat) => chat.id === newChatData.id)) {
           updatedList.unshift(newChatData);
-          setSelectedRoomId(newChatData.id);
-          setActiveRoomId(newChatData.id);
         }
 
         // 최신 메시지 시간 순으로 정렬
@@ -65,21 +71,8 @@ const ChatModal = () => {
   // WebSocket 메세지 수신 핸들러 등록
   useWebSocketListener<ChatList>(chatListSocket, handleNewChatListMessage);
 
-  // 초기 채팅 목록 불러오기
-  const {
-    data: chatList,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useQuery<ChatList[]>({
-    queryKey: ['chatList'],
-    queryFn: fetchChatLists,
-    enabled: isChatModalOpen,
-  });
-
   // 채팅 상대방 정보 관리
   const setOtherUserInfo = (chatInfo: ChatList) => {
-    setSelectedRoomId(chatInfo.id);
     setOtherUserId(chatInfo.other_user_id);
     setOtherUserNickname(chatInfo.other_user_nickname);
     setOtherUserProfileImage(chatInfo.other_user_profile_image || '/favicon.png');
@@ -88,9 +81,14 @@ const ChatModal = () => {
   // 가장 최신 채팅방의 정보를 보여주기
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
-      setOtherUserInfo(chatList[0]);
-      setSelectedRoomId(chatList[0].id);
-      setActiveRoomId(chatList[0].id);
+      const currentActiveRoom = chatList.find((chat) => chat.id === activeRoomId);
+      if (currentActiveRoom) {
+        setActiveRoomId(currentActiveRoom.id);
+        setOtherUserInfo(currentActiveRoom);
+      } else {
+        setActiveRoomId(chatList[0].id);
+        setOtherUserInfo(chatList[0]);
+      }
     }
   }, [isSuccess]);
 
@@ -106,10 +104,9 @@ const ChatModal = () => {
     };
   }, [isChatModalOpen]);
 
-  const chatOtherUserInfoHandler = (chatItem: ChatList) => {
-    setOtherUserInfo(chatItem);
-    setSelectedRoomId(chatItem.id);
+  const chatActiveHandler = (chatItem: ChatList) => {
     setActiveRoomId(chatItem.id);
+    setOtherUserInfo(chatItem);
 
     // 선택된 채팅방의 unread_count 리셋
     queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
@@ -149,13 +146,13 @@ const ChatModal = () => {
             {chatList && chatList.length > 0
               ? chatList.map((chatItem) => (
                   <li
-                    className={`flex gap-3 px-3 py-4 ${chatItem.id === selectedRoomId ? 'bg-skyGray' : 'hover:bg-lightSkyGray'}`}
+                    className={`flex gap-3 px-3 py-4 ${chatItem.id === activeRoomId ? 'bg-skyGray' : 'hover:bg-lightSkyGray'}`}
                     key={chatItem.id}
-                    onClick={() => chatOtherUserInfoHandler(chatItem)}
+                    onClick={() => chatActiveHandler(chatItem)}
                   >
                     <div className='flex min-h-[49px] min-w-[49px] items-center justify-center rounded-full bg-gray-100'>
                       <ProfileImage
-                        className='max-h-[49px] max-w-[49px] rounded-full'
+                        className='h-[49px] w-[49px] rounded-full object-cover'
                         src={chatItem.other_user_profile_image}
                       />
                     </div>

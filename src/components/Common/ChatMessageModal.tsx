@@ -97,7 +97,6 @@ const ChatMessageModal = () => {
       const newMessage = { ...data, id: newId };
 
       setChatMessages((prevMessages) => [...prevMessages, newMessage]);
-      console.log('chatMessages:', chatMessages);
 
       // 채팅 목록 업데이트
       queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {

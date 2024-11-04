@@ -47,6 +47,7 @@ export const useUserStore = create<UserStore>((set) => ({
     amount: 0,
     coin: 0,
     mate_game_info: [],
+    total_request_count: 0,
   },
   setUser: (newUserData) =>
     set((state) => ({
@@ -69,6 +70,7 @@ export const useUserStore = create<UserStore>((set) => ({
         average_rating: 0,
         amount: 0,
         mate_game_info: [],
+        total_request_count: 0,
       },
     }),
 }));
@@ -86,22 +88,22 @@ export const useChatModalStore = create<ChatModalState>((set) => ({
 }));
 
 interface ChatState {
-  selectedRoomId: number | null;
+  activeRoomId: number | null;
   otherUserId: number | null;
   otherUserNickname: string | null;
   otherUserProfileImage: string | null;
-  setSelectedRoomId: (roomId: number) => void;
+  setActiveRoomId: (roomId: number) => void;
   setOtherUserId: (mateId: number) => void;
   setOtherUserNickname: (nickname: string) => void;
   setOtherUserProfileImage: (image: string) => void;
 }
 
 export const useChatStore = create<ChatState>((set) => ({
-  selectedRoomId: null,
+  activeRoomId: null,
   otherUserId: null,
   otherUserNickname: null,
   otherUserProfileImage: null,
-  setSelectedRoomId: (id: number) => set({ selectedRoomId: id }),
+  setActiveRoomId: (id: number) => set({ activeRoomId: id }),
   setOtherUserId: (id: number) => set({ otherUserId: id }),
   setOtherUserNickname: (nickname: string) => set({ otherUserNickname: nickname }),
   setOtherUserProfileImage: (image: string) => set({ otherUserProfileImage: image }),

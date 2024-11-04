@@ -23,7 +23,6 @@ export default function PaymentsPage() {
       try {
         // FIX: 타입 지정 해야합니다.
         const { data }: { data: PaymentResponse[] } = await client.get('api/v1/payments/my/');
-        console.log('결제: ', data);
         setPayments(data);
         return data;
       } catch (err) {

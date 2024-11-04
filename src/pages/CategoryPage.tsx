@@ -27,7 +27,6 @@ export default function CategoryPage() {
       } else {
         setIsSidebarOpen(false);
       }
-      console.log('resize');
     }, 200);
 
     // 초기 실행: 현재 화면 크기에 따라 사이드바 상태 설정

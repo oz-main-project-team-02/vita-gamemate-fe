@@ -6,7 +6,7 @@ import { client } from '@/api/client';
 import { useOrderModalStore } from '@/config/store';
 import { OrderModal } from '@/components/Common/OrderModal';
 import { useEffect, useState } from 'react';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 import UserBar from '@/components/UserDetailPage/UserBar';
 import GameOrderSection from '@/components/UserDetailPage/GameOrderSection';
 import GameInfoSection from '@/components/UserDetailPage/GameInfoSection';
@@ -44,22 +44,33 @@ export default function UserDetailPage() {
   if (!mate) {
     return (
       <>
-        <div className='relative z-20 h-[226px] w-full'></div>
-        <div className='relative flex w-full flex-1 flex-col items-center bg-gray-100 pt-[50px]'>
-          <div className='relative mb-[48px] flex h-[127px] w-[1000px] rounded-3xl border bg-[#FFFFFF] px-[37px] py-[27px]'>
-            <div className='h-[70px] w-[70px] rounded-full bg-gray-200'></div>
+        <div className='relative z-20 h-[226px] w-full'>
+          <div className='absolute bottom-[20%] left-[10%] lg:left-[15%] xl:left-[20%]'>
+            <div className='flex flex-col gap-3'>
+              <div className='skeleton-shimmer h-[14px] w-[160px] rounded-lg bg-gray-200 text-sm lg:h-[16px] lg:w-[180px] lg:text-base xl:h-[18px] xl:w-[200px] xl:text-lg'></div>
+              <div className='skeleton-shimmer h-[30px] w-[240px] rounded-2xl bg-gray-200 text-3xl leading-none lg:h-[36px] lg:w-[270px] lg:text-4xl xl:h-[48px] xl:w-[300px] xl:text-5xl'></div>
+              <div className='skeleton-shimmer h-[14px] w-[60px] rounded-lg bg-gray-200 text-sm lg:h-[16px] lg:w-[80px] lg:text-base xl:h-[18px] xl:w-[100px] xl:text-lg'></div>
+            </div>
+          </div>
+        </div>
+        <div className='h- relative flex w-full flex-1 flex-col items-center bg-gray-100 pt-[50px]'>
+          <div className='relative mb-[48px] flex h-[127px] w-full max-w-[1000px] rounded-3xl border bg-[#FFFFFF] px-[37px] py-[27px]'>
+            <div className='skeleton-shimmer h-[70px] w-[70px] rounded-full bg-gray-200'></div>
             <div className='mx-5 flex h-[75px] w-auto flex-col'>
-              <p className='mb-[1px] h-4 w-24 rounded-md bg-gray-200'></p>
+              <p className='skeleton-shimmer mb-[1px] h-4 w-24 rounded-md bg-gray-200'></p>
               <div className='relative flex h-[20px] w-full items-start'>
                 <div className='relative ml-[-8px] mt-[-9px] w-[100px]'></div>
               </div>
               <div className='mt-2 flex items-center'>
-                <div className='h-[20px] w-[40px] rounded-xl bg-gray-200 pl-[15px] text-sm text-[#FFFFFF]'>id</div>
-                <p className='ml-2 h-4 w-12 rounded-md bg-gray-200'></p>
+                <div className='skeleton-shimmer h-[20px] w-[40px] rounded-xl bg-gray-200 pl-[15px] text-sm text-[#FFFFFF]'>
+                  id
+                </div>
+                <p className='skeleton-shimmer ml-2 h-4 w-12 rounded-md bg-gray-200'></p>
               </div>
             </div>
-            <button className='absolute right-[40px] my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-gray-200'></button>
+            <button className='skeleton-shimmer absolute right-[40px] my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-gray-200'></button>
           </div>
+          <div className='h-[800px] w-full max-w-[1000px] rounded-3xl border bg-[#FFFFFF]'></div>
         </div>
       </>
     );
@@ -78,13 +89,23 @@ export default function UserDetailPage() {
             <div
               className={`h-[560px] w-[350px] rounded-3xl border bg-[#FFFFFF] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
             >
-              <img
-                className='h-[350px] w-full rounded-t-3xl object-cover'
-                src={mate?.profile_image ?? userImage}
-                alt='user'
-              />
+              <div className='h-[350px] w-full overflow-hidden rounded-t-3xl'>
+                <img
+                  className='h-[350px] w-full rounded-t-3xl bg-primary object-cover transition-transform duration-200 hover:scale-125'
+                  src={mate?.profile_image ?? userImage}
+                  alt='user'
+                />
+              </div>
               <h1 className='px-5 pt-3 text-xl font-bold'>소개</h1>
-              <p className='px-5'>{mate.description}</p>
+              <p
+                className='overflow-scroll break-words px-5'
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                }}
+              >
+                {mate.description}
+              </p>
             </div>
 
             {mate.is_mate && mate.mate_game_info?.length !== 0 ? (

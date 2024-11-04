@@ -2,7 +2,7 @@ import { MateGameInfo, Review } from '@/config/types';
 import { useEffect, useRef, useState } from 'react';
 import { fetchReviewsByGameId } from '@/api/review';
 import star from '@/assets/imgs/star.svg';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 
 type Props = {
   userId: string | undefined;
@@ -24,7 +24,6 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
     (async () => {
       try {
         const data = await fetchReviewsByGameId(userId, selectGame.game_id.toString(), page);
-        console.log(data);
         reviewRef.current = data?.count;
         setPageCount(data?.next);
 
@@ -58,7 +57,7 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
                   <img className='w-[60px] rounded-full' src={userImage} alt='user' />
                 </div>
                 <div className='ml-3 w-3/4'>
-                  <p className='text-[15px]'>{review.mate_nickname}</p>
+                  <p className='text-[15px]'>{review.author_nickname}</p>
                   <div className='flex'>
                     {new Array(review.rating).fill(0).map((_, i) => (
                       <img key={i} src={star} alt='star' />

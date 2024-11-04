@@ -31,7 +31,7 @@ const ChatRenderMessages = ({ chatMessages }: { chatMessages: ChatMessage[] }) =
             </span>
           </div>
         )}
-        <div className={`flex ${message.sender_nickname === userNickname ? 'justify-end' : 'justify-start'} mb-3`}>
+        <li className={`flex ${message.sender_nickname === userNickname ? 'justify-end' : 'justify-start'} mb-3`}>
           {message.sender_nickname === userNickname ? (
             <div className='mr-3 flex'>
               {isLastMessageInTime && <span className='self-end px-2 py-1 text-xs text-gray-400'>{messageTime}</span>}
@@ -42,7 +42,7 @@ const ChatRenderMessages = ({ chatMessages }: { chatMessages: ChatMessage[] }) =
           ) : (
             <div className='flex'>
               <div className='mx-3 min-h-[49px] min-w-[49px]'>
-                <ProfileImage className='max-h-[49px] max-w-[49px] rounded-full' src={otherUserProfileImage} />
+                <ProfileImage className='h-[49px] w-[49px] rounded-full object-cover' src={otherUserProfileImage} />
               </div>
               <p className='max-w-[240px] rounded-chat-other bg-white px-4 py-3 text-justify leading-snug'>
                 {message.message}
@@ -50,7 +50,7 @@ const ChatRenderMessages = ({ chatMessages }: { chatMessages: ChatMessage[] }) =
               {isLastMessageInTime && <span className='self-end px-2 py-1 text-xs text-gray-400'>{messageTime}</span>}
             </div>
           )}
-        </div>
+        </li>
       </React.Fragment>
     );
   });

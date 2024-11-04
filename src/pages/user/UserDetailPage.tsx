@@ -87,11 +87,11 @@ export default function UserDetailPage() {
 
           <div className='mb-[300px] flex w-[1000px] justify-between'>
             <div
-              className={`h-[560px] w-[350px] rounded-3xl border bg-[#FFFFFF] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
+              className={`relative hidden h-[560px] rounded-3xl border bg-[#FFFFFF] md:left-[150px] md:block md:w-[200px] lg:left-[50px] lg:w-[300px] xl:left-0 xl:w-[350px] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
             >
-              <div className='h-[350px] w-full overflow-hidden rounded-t-3xl'>
+              <div className='h-[250px] w-full overflow-hidden rounded-t-3xl lg:h-[350px]'>
                 <img
-                  className='h-[350px] w-full rounded-t-3xl bg-primary object-cover transition-transform duration-200 hover:scale-125'
+                  className='h-[250px] w-full rounded-t-3xl bg-primary object-cover transition-transform duration-200 hover:scale-125 lg:h-[350px]'
                   src={mate?.profile_image ?? userImage}
                   alt='user'
                 />
@@ -110,7 +110,7 @@ export default function UserDetailPage() {
 
             {mate.is_mate && mate.mate_game_info?.length !== 0 ? (
               <>
-                <div className='relative w-[620px]'>
+                <div className='relative left-[325px] top-[220px] w-[350px] sm:left-[250px] sm:w-[500px] md:left-[-150px] md:top-0 md:w-[470px] lg:left-[-50px] lg:w-[570px] xl:left-0 xl:w-[620px]'>
                   {/* 게임 의뢰 정보 */}
                   <GameOrderSection mate={mate} gameId={Number(searchParams.get('game'))} />
 

@@ -1,6 +1,4 @@
 import FilterList from '@/components/Common/FilterList';
-import ProfileImg from '@/components/Common/ProfileImg';
-import { useUserStore } from '@/config/store';
 import debounce from '@/utils/debounce';
 import { useEffect, useState } from 'react';
 
@@ -10,7 +8,6 @@ type Props = {
 
 export default function MypageLayout({ children }: Props) {
   const [isFilterListOpen, setIsFilterListOpen] = useState<boolean>(false);
-  const { user } = useUserStore();
 
   useEffect(() => {
     const handleResize = debounce(() => {
@@ -41,14 +38,7 @@ export default function MypageLayout({ children }: Props) {
         <FilterList isFilterListOpen={isFilterListOpen} setIsFilterListOpen={setIsFilterListOpen} />
       </div>
       {/* 메인 섹션 */}
-      <div className={`relative flex-grow bg-gray-100 p-20 transition-all duration-300 ease-in-out`}>
-        <ProfileImg />
-        <div className='absolute right-[15%] lg:right-[20%] xl:right-[25%]'>
-          <div className='text-2xl font-bold text-gray-500'>{user.nickname}</div>
-          <div className='flex items-center text-xl font-bold text-[#898989]'>id: {user.id}</div>
-        </div>
-        {children}
-      </div>
+      <div className={`relative flex-grow bg-gray-100 p-20 transition-all duration-300 ease-in-out`}>{children}</div>
     </div>
   );
 }

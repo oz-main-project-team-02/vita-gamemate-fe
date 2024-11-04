@@ -19,8 +19,6 @@ export default function Response() {
     queryFn: requestApi.fetchReceivedOrders,
   });
 
-  console.log('받은 주문 목록: ', data);
-
   // INFO: 특정 게임 요청을 수락하고 캐시에서 해당 요청을 업데이트 mutation
   const aceeptMutation = useMutation({
     mutationFn: async ({
@@ -42,7 +40,6 @@ export default function Response() {
       try {
         const { data: coin } = await walletApi.rechargeWalletCoin(request_price * request_amount);
         setUser({ coin: coin.coin });
-        console.log('코인 추가: ', coin);
 
         const value: ReceivedRequestResponse | undefined = queryClient.getQueryData(['receivedOrders']);
 
@@ -51,7 +48,6 @@ export default function Response() {
           const updateResults = value.results.map((v, i) => (i === index ? { ...v, status: true } : v));
           // INFO: 캐시 업데이트, 전체 객체를 불변성을 유지하면서 업데이트
           queryClient.setQueryData(['receivedOrders'], { ...value, results: updateResults });
-          console.log('요청 수락 및 캐시 업데이트 완료: ', queryClient.getQueryData(['receivedOrders']));
         }
 
         return data;
@@ -88,7 +84,6 @@ export default function Response() {
 
         // INFO: 캐시 업데이트, 전체 객체를 불변성을 유지하면서 업데이트
         queryClient.setQueryData(['receivedOrders'], { ...value, count: value.count - 1, results: updateResults });
-        console.log('요청 취소 및 캐시 업데이트 완료: ', queryClient.getQueryData(['receivedOrders']));
       }
     },
     onError: (error) => {

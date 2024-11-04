@@ -19,8 +19,6 @@ export default function Request() {
     queryFn: requestApi.fetchMyOrders,
   });
 
-  console.log('주문 목록: ', data);
-
   return (
     <div className='mt-6 space-y-6'>
       {data?.results?.map((order: OrderRequest) => (

@@ -1,5 +1,4 @@
 import FilterList from '@/components/Common/FilterList';
-import ProfileImg from '@/components/Common/ProfileImg';
 import debounce from '@/utils/debounce';
 import { useEffect, useState } from 'react';
 
@@ -17,7 +16,6 @@ export default function MypageLayout({ children }: Props) {
       } else {
         setIsFilterListOpen(false);
       }
-      console.log('resize');
     }, 200);
 
     handleResize();
@@ -40,10 +38,7 @@ export default function MypageLayout({ children }: Props) {
         <FilterList isFilterListOpen={isFilterListOpen} setIsFilterListOpen={setIsFilterListOpen} />
       </div>
       {/* 메인 섹션 */}
-      <div className={`relative flex-grow bg-gray-100 p-20 transition-all duration-300 ease-in-out`}>
-        <ProfileImg />
-        {children}
-      </div>
+      <div className={`relative flex-grow bg-gray-100 p-20 transition-all duration-300 ease-in-out`}>{children}</div>
     </div>
   );
 }

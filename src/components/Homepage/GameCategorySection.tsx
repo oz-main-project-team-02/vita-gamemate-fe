@@ -7,7 +7,6 @@ export default function GameCategorySection() {
 
   const handleGameChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     setSelectedGameId(event.target.value);
-    console.log(event.target.value);
   };
 
   return (

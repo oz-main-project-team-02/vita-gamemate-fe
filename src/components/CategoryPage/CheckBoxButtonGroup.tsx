@@ -20,14 +20,11 @@ export default function CheckBoxButtonGroup({ gameId, label, selectedValue, setS
     return [korValue, korValue];
   });
 
-  console.log(levelOptions);
 
   const handleCheckboxChange = (value: string) => {
     if (selectedValue.includes(value)) {
-      console.log(selectedValue.filter((v) => v !== value));
       setSelectedValue(selectedValue.filter((v) => v !== value));
     } else {
-      console.log([...selectedValue, value]);
       setSelectedValue([...selectedValue, value]);
     }
   };

@@ -69,12 +69,14 @@ export default function RealTimeReviewsSection() {
                         <img key={i} src={star} alt='별점' />
                       ))}
                     </div>
-                    <div>{review.content}</div>
+                    <div className='hidden truncate sm:block sm:w-[100px] md:w-[180px] lg:w-[300px] xl:w-[360px]'>
+                      {review.content}
+                    </div>
                   </div>
                   <div className='flex flex-col items-end justify-between'>
-                    <p className='text-gray-400'>{dayjs(review.created_at).fromNow()}</p>
+                    <p className='hidden text-gray-400 sm:block'>{dayjs(review.created_at).fromNow()}</p>
                     <Link to={`/user/${review.mate_id}?game=${review.game_id}`}>
-                      <button className='rounded-md bg-primary px-2 py-1 font-semibold text-primaryText'>
+                      <button className='hidden rounded-md bg-primary py-1 font-semibold text-primaryText sm:block sm:px-2'>
                         메이트 정보
                       </button>
                     </Link>

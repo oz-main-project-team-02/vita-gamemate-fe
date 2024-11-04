@@ -7,9 +7,9 @@ import { TbLogout2 } from 'react-icons/tb';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/config/store';
 import { User } from '@/config/types';
-import { TiUser } from 'react-icons/ti';
 import { authApi } from '@/api';
 import { MdOutlinePayment } from 'react-icons/md';
+import userImage from '/favicon.png';
 
 type HoverProps = {
   user: User;
@@ -47,15 +47,11 @@ export default function ProfileDropdown({ user, setProfileHover }: HoverProps) {
           className='mb-3 flex h-[60px] w-full cursor-pointer items-center rounded-full hover:bg-slate-50'
         >
           <div className='h-[50px] w-[50px] rounded-full bg-slate-200'>
-            {user.profile_image ? (
-              <img
-                className='h-[50px] w-[50px] rounded-full object-cover'
-                src={user.profile_image}
-                alt='사용자 이미지'
-              />
-            ) : (
-              <TiUser size={50} />
-            )}
+            <img
+              className='h-[50px] w-[50px] rounded-full object-cover'
+              src={user.profile_image ?? userImage}
+              alt='사용자 이미지'
+            />
           </div>
           <div className='ml-2 h-[50px] w-[230px] pt-1'>
             <p className='text-[15px]'>{user.nickname}</p>

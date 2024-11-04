@@ -4,7 +4,7 @@ import OnlineFlag from '../Common/OnlineFlag';
 import { useChatModalStore, useChatStore, useModalStore, useUserStore } from '@/config/store';
 import { ChatList, User } from '@/config/types';
 import { createChat } from '@/api/chat';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 import { AxiosError } from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 

@@ -6,7 +6,6 @@ export const useWebSocketListener = <T>(socket: WebSocket | null, onMessage: (da
 
     const messageHandler = (event: MessageEvent) => {
       const data = JSON.parse(event.data) as T;
-      console.log('수신된 WebSocket 데이터:', data);
       onMessage(data);
     };
 

@@ -16,7 +16,6 @@ function useChatListWebSocket(onNewMessage: (data: ChatList) => void): WebSocket
       const ws = new WebSocket(`wss://resdineconsulting.com/ws/chat/list/?token=${accessToken}`);
 
       ws.onopen = () => {
-        console.log('채팅 리스트 WebSocket 연결 성공');
         setChatListWebSocket(ws);
       };
 
@@ -26,7 +25,6 @@ function useChatListWebSocket(onNewMessage: (data: ChatList) => void): WebSocket
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log('채팅 리스트 업데이트 데이터:', data);
         onNewMessage(data);
       };
 

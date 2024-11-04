@@ -57,7 +57,7 @@ export default function ReviewSection({ userId, selectGame, isReview, setIsRevie
                   <img className='w-[60px] rounded-full' src={userImage} alt='user' />
                 </div>
                 <div className='ml-3 w-3/4'>
-                  <p className='text-[15px]'>{review.mate_nickname}</p>
+                  <p className='text-[15px]'>{review.author_nickname}</p>
                   <div className='flex'>
                     {new Array(review.rating).fill(0).map((_, i) => (
                       <img key={i} src={star} alt='star' />

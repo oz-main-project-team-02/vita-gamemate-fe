@@ -4,7 +4,7 @@ import OnlineFlag from '../Common/OnlineFlag';
 import { useChatModalStore, useModalStore, useUserStore } from '@/config/store';
 import { User } from '@/config/types';
 import { createChat } from '@/api/chat';
-import userImage from '@/assets/imgs/user.png';
+import userImage from '/favicon.png';
 import { AxiosError } from 'axios';
 
 type Props = {

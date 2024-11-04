@@ -89,13 +89,23 @@ export default function UserDetailPage() {
             <div
               className={`h-[560px] w-[350px] rounded-3xl border bg-[#FFFFFF] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
             >
-              <img
-                className='h-[350px] w-full rounded-t-3xl object-cover'
-                src={mate?.profile_image ?? userImage}
-                alt='user'
-              />
+              <div className='h-[350px] w-full overflow-hidden rounded-t-3xl'>
+                <img
+                  className='h-[350px] w-full rounded-t-3xl bg-primary object-cover transition-transform duration-200 hover:scale-125'
+                  src={mate?.profile_image ?? userImage}
+                  alt='user'
+                />
+              </div>
               <h1 className='px-5 pt-3 text-xl font-bold'>소개</h1>
-              <p className='px-5'>{mate.description}</p>
+              <p
+                className='overflow-scroll break-words px-5'
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                }}
+              >
+                {mate.description}
+              </p>
             </div>
 
             {mate.is_mate && mate.mate_game_info?.length !== 0 ? (

@@ -1,7 +1,7 @@
 import { AiOutlineMessage } from 'react-icons/ai';
 import Gender from '../Common/Gender';
 import OnlineFlag from '../Common/OnlineFlag';
-import { useChatModalStore, useModalStore, useUserStore } from '@/config/store';
+import { useChatModalStore, useChatStore, useModalStore, useUserStore } from '@/config/store';
 import { User } from '@/config/types';
 import { createChat } from '@/api/chat';
 import userImage from '@/assets/imgs/user.png';
@@ -15,7 +15,8 @@ type Props = {
 export default function UserBar({ mate, userId }: Props) {
   const user = useUserStore((state) => state.user);
   const setChatModalOpen = useChatModalStore((state) => state.setChatModalOpen);
-  const { setModalStatus } = useModalStore();
+  const setModalStatus = useModalStore((state) => state.setModalStatus);
+  const setActiveRoomId = useChatStore((state) => state.setActiveRoomId);
 
   // 채팅방 생성 api 요청 후 채팅 모달 open
   const createChatHandler = async (mateNickname: string | null) => {
@@ -23,9 +24,9 @@ export default function UserBar({ mate, userId }: Props) {
 
     try {
       const response = await createChat(mateNickname);
-      console.log(response.data);
-
       if (response.status === 200 || response.status === 201) {
+        const newRoomId = response.data.id;
+        setActiveRoomId(newRoomId);
         setChatModalOpen();
       } else {
         console.error('채팅방 생성 실패');

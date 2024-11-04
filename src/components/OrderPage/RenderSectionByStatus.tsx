@@ -26,7 +26,6 @@ export const RenderSectionByStatus = ({ order, setSelectedOrder }: Props) => {
       }
 
       const rechargeResponse = await walletApi.rechargeWalletCoin(order.request_price * order.request_amount);
-      console.log(rechargeResponse);
       if (rechargeResponse.status !== 200) {
         throw new Error(`코인 환불에 실패했습니다: ${rechargeResponse.status}`);
       }
@@ -42,7 +41,6 @@ export const RenderSectionByStatus = ({ order, setSelectedOrder }: Props) => {
         const index = value.results.findIndex((v) => order.game_request_id === v.game_request_id);
         const updateResults = value.results.filter((_, i) => i !== index);
         queryClient.setQueryData(['orders'], { ...value, results: updateResults });
-        console.log('요청 취소 및 캐시 업데이트 완료: ', queryClient.getQueryData(['orders']));
       }
     },
     onError: (error) => {

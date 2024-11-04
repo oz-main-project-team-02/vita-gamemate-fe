@@ -43,10 +43,8 @@ client.interceptors.response.use(
     if ((status === 400 || status === 401) && !request._retry && request._retryCount < 3) {
       request._retry = true;
       request._retryCount += 1;
-      console.log('request', request);
       try {
         const { data } = await authApi.refreshToken();
-        console.log('토큰 재발급 성공', data);
         localStorage.setItem('accessToken', data.access_token);
         request.headers['Authorization'] = `Bearer ${data.access_token}`;
 

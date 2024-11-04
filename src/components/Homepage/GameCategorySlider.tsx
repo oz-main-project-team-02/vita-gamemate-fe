@@ -21,8 +21,6 @@ export default function GameCategorySlider({ gameId }: Props) {
       return await mateApi.fetchGameMateProfiles({ gameId, pageParam: 1 });
     },
   });
-  console.log(data);
-  console.log(gameId);
 
   return (
     <div className='relative mx-auto max-w-[200px] lg:max-w-[422px] xl:max-w-[672px]'>

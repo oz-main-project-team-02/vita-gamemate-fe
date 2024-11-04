@@ -10,7 +10,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MypageLayout from '@/layouts/MypageLayout';
 import { useUserStore } from '@/config/store';
-import axios from 'axios';
 
 export default function EditInfoPage() {
   const { user, setUser } = useUserStore();
@@ -26,14 +25,14 @@ export default function EditInfoPage() {
   const [birthDay, setBirthDay] = useState(dateStr && Number(dateStr) < 10 ? `0${dateStr}` : dateStr);
 
   const fileRef = useRef<HTMLInputElement>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(user.profile_image || '/favicon.png');
 
   const [profile, setProfile] = useState<UserProfileUpdateData>({
     profile_image: user.profile_image,
     nickname: user.nickname!,
     description: user.description,
     gender: user.gender,
-    birthday: birthDate && `${birthYear}-${birthMonth}-${birthDay}`,
+    birthday: birthDate === null ? null : `${birthYear}-${birthMonth}-${birthDay}`,
   });
 
   const handleChangePickedImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,20 +54,16 @@ export default function EditInfoPage() {
 
     if (profile.nickname.length < 2) {
       toast.error('최소 2자 이상입니다!', {
+        position: 'top-right',
         autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
       });
       return null;
-    }
-
-    if (profile.birthday !== birthDate && `${birthYear}-${birthMonth}-${birthDay}`) {
-      setBirthYear('');
-      setBirthMonth('');
-      setBirthDay('');
-      setProfile({ ...profile, birthday: null });
-
-      toast.error('정확한 생일 폼을 입력해주세요', {
-        autoClose: 2000,
-      });
     }
 
     const data = new FormData();
@@ -81,23 +76,21 @@ export default function EditInfoPage() {
     data.append('gender', profile.gender || '');
     data.append('birthday', profile.birthday || '');
 
-    try {
-      await updateMyProfile(data);
+    await updateMyProfile(data);
 
-      setUser(profile);
-      setPreviewImage(null);
+    setUser(profile);
 
-      toast.success('저장 되었습니다!', {
-        autoClose: 2000,
-      });
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error(err.response?.data?.error);
-      }
-    }
+    toast.success('저장 되었습니다!', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
-
-  console.log('profile', profile);
 
   return (
     <>
@@ -106,15 +99,18 @@ export default function EditInfoPage() {
       <MypageLayout>
         <div className='m-auto mt-[140px] min-h-[calc(100dvh-597px)] max-w-[800px]'>
           <div className='w-full bg-gray-100'>
-            {previewImage && (
-              <div className='w-[300px] bg-gray-100'>
-                <img className='scale-90 rounded-full' src={previewImage} alt='이미지 미리보기' />
-              </div>
-            )}
-            <form onSubmit={handleSubmit} className='relative flex w-full flex-col items-end'>
+            <div className='absolute -top-[75px] right-[30%] flex h-[150px] w-[150px] gap-10 rounded-full bg-gray-100 md:-top-[100px] md:h-[200px] md:w-[200px] lg:-top-[125px] lg:h-[250px] lg:w-[250px] xl:-top-[150px] xl:h-[300px] xl:w-[300px]'>
+              <img
+                className='scale-90 rounded-full object-cover'
+                src={previewImage ? previewImage : '/favicon.png'}
+                alt='이미지 미리보기'
+              />
+            </div>
+
+            <form onSubmit={handleSubmit} className='flex w-full flex-col items-end'>
               <label
                 htmlFor='fileInput'
-                className='inline-block transform cursor-pointer rounded-xl bg-[#eeeeee] px-3 py-2 font-semibold hover:scale-95 lg:text-base'
+                className='inline-block transform cursor-pointer rounded-xl bg-primary px-3 py-2 text-[24px] font-bold hover:scale-95'
               >
                 프로필 사진 올리기
                 <input id='fileInput' ref={fileRef} onChange={handleChangePickedImage} type='file' className='hidden' />

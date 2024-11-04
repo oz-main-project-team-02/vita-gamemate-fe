@@ -10,6 +10,7 @@ import { MateRegister, UserResponse } from '@/config/types';
 import { useUserStore } from '@/config/store';
 import Spinner from '../Common/Spinner';
 import { mateApi } from '@/api';
+import { toast } from 'react-toastify';
 
 type Dropdown = {
   game: boolean;
@@ -37,18 +38,16 @@ export default function GameMateApplicationForm() {
   const mateRegisterMutation = useMutation({
     mutationFn: async (mateInfo: FormData) => {
       const response = await mateApi.registerGameMate(mateInfo);
-      return { status: response.status, data: response.data };
+      return { data: response.data };
     },
-    onSuccess: ({ status, data }) => {
-      console.log(`status ${status}: `, data);
+    onSuccess: ({ data }) => {
       const value: UserResponse | undefined = queryClient.getQueryData(['user', user.id]);
+      toast.success('게임메이트 신청이 완료되었습니다.');
 
       if (value) {
         const shallowResults = [...value.results];
         shallowResults.push(data); // 배열에 새 데이터 추가
-
         queryClient.setQueryData(['user', user.id], { ...value, results: shallowResults });
-        console.log('캐시 업데이트 완료', queryClient.getQueryData(['user', user.id]));
       }
     },
     onError: (error) => {

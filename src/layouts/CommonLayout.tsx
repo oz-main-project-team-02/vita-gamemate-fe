@@ -18,7 +18,7 @@ export default function CommonLayout() {
   return (
     <div className='relative flex min-h-screen flex-col'>
       <Header />
-      <main className='relative flex flex-grow flex-col' style={{ minHeight: 'calc(100dvh)' }}>
+      <main className='relative flex flex-grow flex-col'>
         <Outlet />
       </main>
       <Footer />

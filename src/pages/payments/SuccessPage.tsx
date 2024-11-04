@@ -12,7 +12,6 @@ export function SuccessPage() {
   const coin = searchParams.get('coin'); // string
   const { setUser } = useUserStore();
   const navigate = useNavigate();
-  console.log(coin);
 
   const rechargeMutation = useMutation({
     mutationFn: async (coin: number) => {
@@ -20,7 +19,6 @@ export function SuccessPage() {
       return data;
     },
     onSuccess: (data) => {
-      console.log(data);
       setUser({ coin: data.coin });
     },
   });
@@ -55,7 +53,6 @@ export function SuccessPage() {
 
         if (response.ok) {
           const parsedCoin = parseInt(coin);
-          console.log(parsedCoin);
 
           if (typeof parsedCoin !== 'number') {
             console.error('코인 값이 숫자가 아닙니다.');

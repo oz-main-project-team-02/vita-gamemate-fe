@@ -20,6 +20,8 @@ export function OrderModal({ selectGame, mate }: Props) {
   const { isOrderModalOpen, setOrderModalClose } = useOrderModalStore();
   const setUser = useUserStore((state) => state.setUser);
 
+  console.log('mate: ', mate);
+
   useEffect(() => {
     if (isOrderModalOpen) {
       document.body.style.overflow = 'hidden';

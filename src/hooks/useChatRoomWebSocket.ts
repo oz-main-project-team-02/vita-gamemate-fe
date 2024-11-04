@@ -1,10 +1,9 @@
-import { useChatStore, useErrorStore, webSocketStore } from '@/config/store';
+import { useChatStore, webSocketStore } from '@/config/store';
 import { useEffect } from 'react';
 
 function useChatRoomWebSocket(): WebSocket | null {
   const activeRoomId = useChatStore((state) => state.activeRoomId);
   const { chatRoomWebSocket, setChatRoomWebSocket } = webSocketStore();
-  const { updateError } = useErrorStore();
 
   useEffect(() => {
     if (activeRoomId) {
@@ -23,7 +22,6 @@ function useChatRoomWebSocket(): WebSocket | null {
 
     ws.onerror = (error) => {
       console.error('채팅방 상세 내역 WebSocket 오류:', error);
-      updateError(new Error('채팅방 연결 오류가 발생했습니다.'));
     };
 
     // WebSocket 연결 해제 시
@@ -31,7 +29,6 @@ function useChatRoomWebSocket(): WebSocket | null {
       console.log('채팅방 상세 내역 WebSocket 연결 해제. 코드:', event.code, '이유:', event.reason);
       if (!event.wasClean) {
         console.error('채팅방 상세 내역 WebSocket 연결이 비정상적으로 종료되었습니다.');
-        updateError(new Error('채팅방 연결이 비정상적으로 종료되었습니다.'));
       }
     };
 

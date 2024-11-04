@@ -53,7 +53,7 @@ export default function UserBar({ mate, userId }: Props) {
   };
 
   return (
-    <div className='relative mb-[48px] flex h-[127px] w-[1000px] rounded-3xl border bg-[#FFFFFF] px-[37px] py-[27px]'>
+    <div className='relative mb-[48px] flex h-[127px] w-[350px] rounded-3xl border bg-[#FFFFFF] px-[37px] py-[27px] sm:w-[500px] md:w-[700px] lg:w-[900px] xl:w-[1000px]'>
       <div className='h-[70px] w-[70px] rounded-full border bg-slate-50'>
         <img className='h-[70px] w-[70px] rounded-full object-cover' src={mate.profile_image ?? userImage} alt='user' />
       </div>

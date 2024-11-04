@@ -14,8 +14,15 @@ import { useWebSocketListener } from '@/hooks/useWebSocketListener';
 const ChatModal = () => {
   const queryClient = useQueryClient();
   const { isChatModalOpen, setChatModalClose } = useChatModalStore();
-  const { selectedRoomId, setSelectedRoomId, setOtherUserId, setOtherUserNickname, setOtherUserProfileImage } =
-    useChatStore();
+  const {
+    selectedRoomId,
+    activeRoomId,
+    setSelectedRoomId,
+    setActiveRoomId,
+    setOtherUserId,
+    setOtherUserNickname,
+    setOtherUserProfileImage,
+  } = useChatStore();
   const chatModalRef = useRef<HTMLDivElement | null>(null);
   const chatMessageModalRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,22 +32,31 @@ const ChatModal = () => {
       queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
         if (!oldChatList) return [newChatData];
 
-        // 기존 채팅방 찾기
-        const existingChatIndex = oldChatList.findIndex((chat) => chat.id === newChatData.id);
+        const updatedList = oldChatList.map((chat) =>
+          chat.id === newChatData.id
+            ? {
+                ...chat,
+                latest_message: newChatData.latest_message,
+                latest_message_time: newChatData.latest_message_time,
+                unread_count: chat.id === activeRoomId ? 0 : newChatData.unread_count,
+              }
+            : chat
+        );
 
-        if (existingChatIndex > -1) {
-          // 기존 채팅방 업데이트
-          const updatedChat = { ...oldChatList[existingChatIndex], ...newChatData };
-          const newList = [...oldChatList];
-          newList.splice(existingChatIndex, 1); // 기존 위치에서 제거
-          return [updatedChat, ...newList]; // 업데이트된 채팅방을 맨 앞으로
-        } else {
-          // 새로운 채팅방 추가
-          return [newChatData, ...oldChatList];
+        // 새로운 채팅방인 경우 목록에 추가
+        if (!updatedList.some((chat) => chat.id === newChatData.id)) {
+          updatedList.unshift(newChatData);
+          setSelectedRoomId(newChatData.id);
+          setActiveRoomId(newChatData.id);
         }
+
+        // 최신 메시지 시간 순으로 정렬
+        return updatedList.sort(
+          (a, b) => new Date(b.latest_message_time).getTime() - new Date(a.latest_message_time).getTime()
+        );
       });
     },
-    [queryClient]
+    [queryClient, activeRoomId]
   );
 
   // 채팅 목록 WebSocket 연결
@@ -73,8 +89,10 @@ const ChatModal = () => {
   useEffect(() => {
     if (isSuccess && chatList && chatList.length > 0) {
       setOtherUserInfo(chatList[0]);
+      setSelectedRoomId(chatList[0].id);
+      setActiveRoomId(chatList[0].id);
     }
-  }, [isSuccess, chatList]);
+  }, [isSuccess]);
 
   useEffect(() => {
     if (isChatModalOpen) {
@@ -90,6 +108,15 @@ const ChatModal = () => {
 
   const chatOtherUserInfoHandler = (chatItem: ChatList) => {
     setOtherUserInfo(chatItem);
+    setSelectedRoomId(chatItem.id);
+    setActiveRoomId(chatItem.id);
+
+    // 선택된 채팅방의 unread_count 리셋
+    queryClient.setQueryData(['chatList'], (oldChatList: ChatList[] | undefined) => {
+      if (!oldChatList) return oldChatList;
+
+      return oldChatList.map((chat) => (chat.id === chatItem.id ? { ...chat, unread_count: 0 } : chat));
+    });
   };
 
   useOnClickOutside([chatModalRef, chatMessageModalRef], setChatModalClose);
@@ -106,7 +133,10 @@ const ChatModal = () => {
 
   return (
     <div className='fixed inset-0 z-50 bg-black/50'>
-      <div className={`fixed ${chatModalPosition} top-0 h-full min-w-[360px] bg-white shadow-sm`} ref={chatModalRef}>
+      <section
+        className={`fixed ${chatModalPosition} top-0 h-full min-w-[360px] bg-white shadow-sm`}
+        ref={chatModalRef}
+      >
         <div className='flex h-full flex-col'>
           <div className='flex items-center gap-3 px-4 py-2'>
             <span className='cursor-pointer'>
@@ -114,11 +144,11 @@ const ChatModal = () => {
             </span>
             <span className='text-2xl font-semibold'>채팅</span>
           </div>
-          <div className='flex h-full max-w-[360px] flex-col overflow-y-auto'>
+          <ul className='flex h-full max-w-[360px] flex-col overflow-y-auto'>
             {isLoading && <div className='my-10 text-center text-gray-400'>채팅창을 불러오는 중입니다...</div>}
             {chatList && chatList.length > 0
               ? chatList.map((chatItem) => (
-                  <div
+                  <li
                     className={`flex gap-3 px-3 py-4 ${chatItem.id === selectedRoomId ? 'bg-skyGray' : 'hover:bg-lightSkyGray'}`}
                     key={chatItem.id}
                     onClick={() => chatOtherUserInfoHandler(chatItem)}
@@ -129,7 +159,7 @@ const ChatModal = () => {
                         src={chatItem.other_user_profile_image}
                       />
                     </div>
-                    <div className='flex grow flex-col gap-1'>
+                    <div className='flex grow flex-col'>
                       <div className='flex items-center justify-between'>
                         <span className='max-w-[240px] grow truncate font-semibold'>
                           {chatItem.other_user_nickname}
@@ -140,13 +170,20 @@ const ChatModal = () => {
                             : formatDate(chatItem.latest_message_time)}
                         </span>
                       </div>
-                      {
-                        <p className='max-w-[240px] truncate text-sm'>
+                      <div className='flex items-center justify-between'>
+                        <p className='max-w-[240px] grow truncate text-sm'>
                           {chatItem.latest_message ? chatItem.latest_message : ''}
                         </p>
-                      }
+                        {chatItem.unread_count && chatItem.unread_count > 0 ? (
+                          <span className='flex h-[18px] w-[18px] items-center justify-center rounded-full bg-red-600 text-xs text-white'>
+                            {chatItem.unread_count}
+                          </span>
+                        ) : (
+                          ''
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  </li>
                 ))
               : !isLoading && (
                   <div className='flex h-[300px] w-full flex-col items-center justify-center gap-8'>
@@ -154,13 +191,13 @@ const ChatModal = () => {
                     <p>비타에서 게임 메이트와 즐겁게 대화하며 즐겨보세요!</p>
                   </div>
                 )}
-          </div>
+          </ul>
         </div>
-      </div>
+      </section>
       {chatList && chatList.length > 0 && (
-        <div className='fixed right-0 top-0 h-full min-w-[420px] bg-skyGray' ref={chatMessageModalRef}>
+        <section className='fixed right-0 top-0 h-full min-w-[420px] bg-skyGray' ref={chatMessageModalRef}>
           <ChatMessageModal />
-        </div>
+        </section>
       )}
     </div>
   );

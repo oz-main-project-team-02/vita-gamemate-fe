@@ -4,6 +4,7 @@ import OnlineFlag from '../Common/OnlineFlag';
 import { useChatModalStore, useUserStore } from '@/config/store';
 import { User } from '@/config/types';
 import { createChat } from '@/api/chat';
+import userImage from '@/assets/imgs/user.png';
 
 type Props = {
   mate: User;
@@ -36,28 +37,24 @@ export default function UserBar({ mate, userId }: Props) {
   return (
     <div className='relative mb-[48px] flex h-[127px] w-[1000px] rounded-3xl border bg-[#FFFFFF] px-[37px] py-[27px]'>
       <div className='h-[70px] w-[70px] rounded-full border bg-slate-50'>
-        <img
-          className='h-[70px] w-[70px] rounded-full object-cover'
-          src={mate.profile_image ? mate.profile_image : '/src/assets/imgs/user.png'}
-          alt='user'
-        />
+        <img className='h-[70px] w-[70px] rounded-full object-cover' src={mate.profile_image ?? userImage} alt='user' />
       </div>
       <div className='mx-5 flex h-[75px] w-auto flex-col'>
         <p className='mb-[1px] font-medium'>{mate.nickname}</p>
         <div className='relative flex h-[20px] w-full items-start'>
-          {mate.gender ? <Gender gender={mate.gender!} birthday={mate.birthday} /> : null}
-          <div className='relative ml-[-8px] mt-[-9px] w-[100px]'>{mate.is_online ? <OnlineFlag /> : null}</div>
+          {mate.gender && <Gender gender={mate.gender!} birthday={mate.birthday} />}
+          <div className='relative ml-[-8px] mt-[-9px] w-[100px]'>{mate.is_online && <OnlineFlag />}</div>
         </div>
         <div className='mt-2 flex items-center'>
           <div className='h-[20px] w-[40px] rounded-xl bg-gray-200 pl-[15px] text-sm text-[#FFFFFF]'>id</div>
           <p className='ml-2 text-sm text-gray-200'>{mate.id}</p>
         </div>
       </div>
-      {user.id !== Number(userId) ? (
+      {user.id !== Number(userId) && (
         <button className='absolute right-[40px] my-4 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-slate-200'>
           {<AiOutlineMessage size={24} onClick={() => createChatHandler(mate.nickname)} />}
         </button>
-      ) : null}
+      )}
     </div>
   );
 }

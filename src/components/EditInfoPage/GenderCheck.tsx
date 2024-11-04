@@ -1,6 +1,4 @@
 import { UserProfileUpdateData } from '@/config/types';
-import Female from './Female';
-import Male from './Male';
 
 type ProfileProps = {
   profile: UserProfileUpdateData;
@@ -11,17 +9,18 @@ export default function GenderCheck({ profile, setProfile }: ProfileProps) {
   return (
     <div className='mb-[61px] h-[148px] w-full'>
       <p className='mb-[10px] text-2xl font-bold text-gray-500'>성별</p>
-      {profile.gender === null ? (
-        <>
-          <Male profile={profile} setProfile={setProfile} />
-          <Female profile={profile} setProfile={setProfile} />
-        </>
-      ) : profile.gender === 'male' ? (
-        <Male profile={profile} setProfile={setProfile} />
-      ) : (
-        <Female profile={profile} setProfile={setProfile} />
-      )}
-      <p className='mt-[13px] text-base text-error'>성별은 수정이 불가합니다.</p>
+      <input
+        onClick={() => setProfile({ ...profile, gender: 'male' })}
+        className={`mr-3 h-[50px] w-[120px] cursor-pointer rounded-xl text-[18px] font-bold hover:scale-95 lg:h-[55px] lg:w-[155px] lg:text-[24px] ${profile.gender === 'male' ? 'bg-skyGray' : 'bg-primary'}`}
+        type='button'
+        value='남성'
+      />
+      <input
+        onClick={() => setProfile({ ...profile, gender: 'female' })}
+        className={`h-[50px] w-[120px] cursor-pointer rounded-xl text-[18px] font-bold hover:scale-95 lg:h-[55px] lg:w-[155px] lg:text-[24px] ${profile.gender === 'female' ? 'bg-softPink' : 'bg-primary'}`}
+        type='button'
+        value='여성'
+      />
     </div>
   );
 }

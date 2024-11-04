@@ -90,12 +90,12 @@ export default function UserDetailPage() {
               className={`h-[560px] w-[350px] rounded-3xl border bg-[#FFFFFF] ${mate.is_mate && mate.mate_game_info?.length !== undefined ? 'mt-[220px]' : ''}`}
             >
               <img
-                className='h-[400px] w-full rounded-t-3xl object-cover'
-                src={mate.profile_image ? mate.profile_image : userImage}
+                className='h-[350px] w-full rounded-t-3xl object-cover'
+                src={mate?.profile_image ?? userImage}
                 alt='user'
               />
-              <h1 className='px-5 pt-5 text-xl font-bold'>소개</h1>
-              <p className='px-5 py-3'>{mate.description}</p>
+              <h1 className='px-5 pt-3 text-xl font-bold'>소개</h1>
+              <p className='px-5'>{mate.description}</p>
             </div>
 
             {mate.is_mate && mate.mate_game_info?.length !== 0 ? (
@@ -105,18 +105,20 @@ export default function UserDetailPage() {
                   <GameOrderSection mate={mate} gameId={Number(searchParams.get('game'))} />
 
                   {/* 게임 정보 */}
-                  <GameInfoSection selectGame={selectGame} />
+                  {selectGame && <GameInfoSection selectGame={selectGame} />}
 
                   {/* 게임 선택 */}
                   <SelectGameSection mate={mate} setSelectGame={setSelectGame} setIsReview={setIsReview} />
 
                   {/* 리뷰 정보 */}
-                  <ReviewSection
-                    userId={userId}
-                    selectGame={selectGame}
-                    isReview={isReview}
-                    setIsReview={setIsReview}
-                  />
+                  {selectGame && (
+                    <ReviewSection
+                      userId={userId}
+                      selectGame={selectGame}
+                      isReview={isReview}
+                      setIsReview={setIsReview}
+                    />
+                  )}
                 </div>
               </>
             ) : (

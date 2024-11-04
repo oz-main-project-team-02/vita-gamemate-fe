@@ -7,6 +7,7 @@ import ProfileImage from './ProfileImage';
 import { useOrderModalStore, useUserStore } from '@/config/store';
 import vitaCoin from '@/assets/imgs/vitaCoin.svg';
 import star from '@/assets/imgs/star.svg';
+import { getGame } from '@/config/const';
 
 type Props = {
   selectGame: MateGameInfo;
@@ -100,7 +101,7 @@ export function OrderModal({ selectGame, mate }: Props) {
             <div className='space-y-4 rounded-2xl bg-[#EFF5F8] p-5'>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>주문 서비스:</span>
-                <span className='font-medium'>리그오브레전드</span>
+                <span className='font-medium'>{getGame(selectGame.game_id)?.title}</span>
               </div>
               <div className='flex items-center justify-between rounded-xl bg-white px-4 py-2 shadow-sm'>
                 <span className='text-gray-600'>단가:</span>

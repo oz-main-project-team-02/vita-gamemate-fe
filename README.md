@@ -1,4 +1,4 @@
-# 비타 - 게임 메이트 소중한 시간을 함께하세요
+# 비타 - 나만의 게임 파트너를 찾는 새로운 방법
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/5f5d4b77-ff66-4d95-93de-a2afd5e77907" alt="vita_thumbnail">

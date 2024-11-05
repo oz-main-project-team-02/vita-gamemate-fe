@@ -1,6 +1,6 @@
 import { getGame } from '@/config/const';
 import VitaPrice from '../Common/VitaPrice';
-import { useOrderModalStore } from '@/config/store';
+import { useErrorStore, useOrderModalStore } from '@/config/store';
 import { User } from '@/config/types';
 import star from '@/assets/imgs/star.svg';
 
@@ -12,9 +12,16 @@ type Props = {
 export default function GameOrderSection({ mate, gameId }: Props) {
   const { setOrderModalOpen } = useOrderModalStore();
   const selectGame = mate.mate_game_info?.find((game) => game.game_id === gameId);
+  const { updateError } = useErrorStore();
 
   const handleOrdersClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null) {
+      return updateError(new Error('로그인이 필요합니다.'));
+    }
+
     setOrderModalOpen();
   };
 

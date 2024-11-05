@@ -16,7 +16,7 @@ function useChatRoomWebSocket(): WebSocket | null {
     const ws = new WebSocket(`wss://resdineconsulting.com/ws/chat/${activeRoomId}/?token=${accessToken}`);
 
     ws.onopen = () => {
-      console.log('채팅방 상세 내역 WebSocket 연결 성공, 채팅방 id: ', activeRoomId);
+      //console.log('채팅방 상세 내역 WebSocket 연결 성공, 채팅방 id: ', activeRoomId);
       setChatRoomWebSocket(ws);
     };
 
@@ -26,7 +26,7 @@ function useChatRoomWebSocket(): WebSocket | null {
 
     // WebSocket 연결 해제 시
     ws.onclose = (event) => {
-      console.log('채팅방 상세 내역 WebSocket 연결 해제. 코드:', event.code, '이유:', event.reason);
+      //console.log('채팅방 상세 내역 WebSocket 연결 해제. 코드:', event.code, '이유:', event.reason);
       if (!event.wasClean) {
         console.error('채팅방 상세 내역 WebSocket 연결이 비정상적으로 종료되었습니다.');
       }

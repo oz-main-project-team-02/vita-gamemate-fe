@@ -30,3 +30,6 @@ dist-ssr
 
 # yaml
 .yaml
+
+# md
+*.md

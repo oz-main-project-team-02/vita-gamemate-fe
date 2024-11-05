@@ -18,28 +18,37 @@ export const RenderSectionByStatus = ({ order, setSelectedOrder }: Props) => {
     setSelectedOrder(order);
   };
 
+  // INFO: 의뢰를 신청했지만, 상대방이 수락하지 않은 경우 의뢰를 취소할 수 있습니다.
   const cancelMutation = useMutation({
     mutationFn: async (game_request_id: number) => {
+      // 1. 의뢰 취소 API 호출
       const response = await requestApi.cancelRequest(game_request_id);
       if (response.status !== 204) {
         throw new Error(`요청 취소에 실패했습니다: ${response.status}`);
       }
-
+      // 2. 코인 환불 API 호출
       const rechargeResponse = await walletApi.rechargeWalletCoin(order.request_price * order.request_amount);
       if (rechargeResponse.status !== 200) {
         throw new Error(`코인 환불에 실패했습니다: ${rechargeResponse.status}`);
       }
-
+      // 3. 의뢰 취소 및 코인 환불 성공 시, 코인 정보를 반환
       return { coin: rechargeResponse.data.coin };
     },
     onSuccess: ({ coin }) => {
+      // 4. 사용자의 코인 정보를 업데이트 ( 헤더 )
       setUser({ coin });
 
+      // INFO: 사용자의 지갑은 업데이트 했지만, 사용자의 의뢰 페이지에는 아직 기록이 남아있어 그 기록을 지우기 위해 캐시를 업데이트합니다.
+
+      // 5. 저장되어 있는 캐시 데이터를 가져옵니다.
       const value: OrderRequestResponse | undefined = queryClient.getQueryData(['orders']);
 
       if (value) {
+        // 6. 캐시 데이터에서 해당 의뢰의 인덱스를 찾아줍니다.
         const index = value.results.findIndex((v) => order.game_request_id === v.game_request_id);
+        // 7. 찾은 인덱스를 통해 해당 의뢰를 제외한 나머지 의뢰를 새로운 배열로 만들어 React의 불변성을 유지합니다.
         const updateResults = value.results.filter((_, i) => i !== index);
+        // 8. 업데이트 된 결과물로 기존 데이터를 복사하고, 복사한 데이터 위에 교체할 데이터를 채워줍니다.
         queryClient.setQueryData(['orders'], { ...value, results: updateResults });
       }
     },

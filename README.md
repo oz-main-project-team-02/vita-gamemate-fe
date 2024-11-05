@@ -63,12 +63,13 @@
 <br/>
 <br/>
 
- ## 🙌 팀원 소개
+## 🙌 팀원 소개
 
-| Leader | Member | Member |
-| ------ | ------ | ------ |
-| FE 신민혁 | FE 박미선 | FE 이희주 |
+| Leader       | Member       | Member       |
+| :---:        | :---:        | :---:        |
+| FE 신민혁    | FE 박미선    | FE 이희주    |
 | <a href="https://github.com/shin-minhyuk"><img src="https://avatars.githubusercontent.com/u/174288486?v=4" alt="shin-minhyuk" width="100px" height="100px"></a> | <a href="https://github.com/mi-suni"><img src="https://avatars.githubusercontent.com/u/175471571?v=4" alt="mi-suni" width="100px" height="100px"></a> | <a href="https://github.com/h22jul22"><img src="https://avatars.githubusercontent.com/u/164333745?v=4" alt="h22jul22" width="100px" height="100px"></a> |
+
 
 
 ## 📅 프로젝트 일정

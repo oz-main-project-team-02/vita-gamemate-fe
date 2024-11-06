@@ -11,6 +11,7 @@ import { useUserStore } from '@/config/store';
 import Spinner from '../Common/Spinner';
 import { mateApi } from '@/api';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 type Dropdown = {
   game: boolean;
@@ -33,6 +34,7 @@ export default function GameMateApplicationForm() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const user = useUserStore((state) => state.user);
+  const navigate = useNavigate();
 
   // 게임메이트 등록하기 Mutation
   const mateRegisterMutation = useMutation({
@@ -49,6 +51,8 @@ export default function GameMateApplicationForm() {
         shallowResults.push(data); // 배열에 새 데이터 추가
         queryClient.setQueryData(['user', user.id], { ...value, results: shallowResults });
       }
+
+      navigate('/', { replace: true });
     },
     onError: (error) => {
       console.error(error);

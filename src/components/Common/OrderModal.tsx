@@ -19,8 +19,10 @@ export function OrderModal({ selectGame, mate }: Props) {
   const [price] = useState(selectGame.request_price || 0);
   const { isOrderModalOpen, setOrderModalClose } = useOrderModalStore();
   const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state) => state.user);
 
   console.log('mate: ', mate);
+  console.log('user', user);
 
   useEffect(() => {
     if (isOrderModalOpen) {
@@ -38,6 +40,10 @@ export function OrderModal({ selectGame, mate }: Props) {
     mutationFn: async ({ price, amount }: { price: number; amount: number }) => {
       const totalPrice = price * amount;
 
+      if (user.id === mate.id) {
+        throw new Error('자신에게 주문할 수 없습니다.');
+      }
+
       const response = await walletApi.withdrawWalletCoin(totalPrice);
 
       if (response.status !== 200) {
@@ -52,13 +58,10 @@ export function OrderModal({ selectGame, mate }: Props) {
       return { status: requestResponse.status, coin: response.data.coin };
     },
     onSuccess: async ({ status, coin }) => {
-      if (status === 201) {
-        setUser({ coin });
-        setOrderModalClose();
-        alert('주문이 완료되었습니다.');
-      } else {
-        console.error(`주문실패, status: ${status}`);
-      }
+      setUser({ coin });
+      setOrderModalClose();
+      alert('주문이 완료되었습니다.');
+      console.error(`주문실패, status: ${status}`);
     },
     onError: (error) => {
       console.error('오류 발생: ', error);

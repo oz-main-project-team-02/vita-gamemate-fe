@@ -73,6 +73,10 @@ export function OrderModal({ selectGame, mate }: Props) {
     orderRequest.mutate({ price, amount });
   };
 
+  const handleBackClick = () => {
+    setOrderModalClose();
+  };
+
   return (
     <div className='fixed inset-0 z-50 bg-black/50' onClick={() => setOrderModalClose()}>
       <div
@@ -82,7 +86,7 @@ export function OrderModal({ selectGame, mate }: Props) {
         {/* X 버튼, 채팅 */}
         <div className='flex h-full flex-col gap-7'>
           <div className='flex items-center gap-3'>
-            <span className='cursor-pointer'>
+            <span onClick={handleBackClick} className='cursor-pointer'>
               <IoMdClose size={20} />
             </span>
             <span className='text-2xl font-semibold'>주문 확인</span>
@@ -146,10 +150,18 @@ export function OrderModal({ selectGame, mate }: Props) {
 
             {/* 취소, 의뢰 */}
             <div className='flex justify-end gap-4 px-4 py-4'>
-              <button className='rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
+              <button
+                type='button'
+                onClick={handleBackClick}
+                className='rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+              >
                 취소
               </button>
-              <button className='rounded-md bg-blue-500 px-4 py-2 text-white' onClick={(e) => handleOrderClick(e)}>
+              <button
+                type='button'
+                className='rounded-md bg-blue-500 px-4 py-2 text-white'
+                onClick={(e) => handleOrderClick(e)}
+              >
                 지금 의뢰하기
               </button>
             </div>

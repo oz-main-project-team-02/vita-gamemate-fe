@@ -13,7 +13,7 @@ function useChatRoomWebSocket(): WebSocket | null {
     }
 
     const accessToken = localStorage.getItem('accessToken');
-    const ws = new WebSocket(`wss://resdineconsulting.com/ws/chat/${activeRoomId}/?token=${accessToken}`);
+    const ws = new WebSocket(`wss://jangsalicense.com/ws/chat/${activeRoomId}/?token=${accessToken}`);
 
     ws.onopen = () => {
       //console.log('채팅방 상세 내역 WebSocket 연결 성공, 채팅방 id: ', activeRoomId);

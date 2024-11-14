@@ -19,6 +19,7 @@ export const ErrorCatcher = () => {
     if (axios.isAxiosError(error) && error.response) {
       // 서버에서 내려주는 에러 메시지 추출
       const serverMessage = String(Object.values(error.response.data)[0]) || '알 수 없는 서버 에러입니다.';
+
       showToastError(serverMessage, 3000);
     } else if (error instanceof Error) {
       // 예측 불가능한 일반 에러

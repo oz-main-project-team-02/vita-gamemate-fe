@@ -49,4 +49,4 @@ jobs:
 
       - name: Cloudfront 캐시 무효화
         if: github.ref == 'refs/heads/main'
-        run: aws cloudfront create-invalidation --distribution-id EQEIPG9IJRV5K --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id E3KGAAFFL6BV4D --paths "/*"

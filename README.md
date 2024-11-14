@@ -6,7 +6,7 @@
 
 **프로젝트 기간** : 2024.10.10 ~ 2024.11.06
 
-🔗 [VITA 서비스 둘러보기](https://vita.resdineconsulting.com/)
+🔗 [VITA 서비스 둘러보기](https://vita.jangsalicense.com/)
 
 <br/>
 

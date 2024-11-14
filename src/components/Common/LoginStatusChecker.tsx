@@ -15,7 +15,7 @@ export default function LoginStatusChecker({ children }: Props) {
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    const socket: WebSocket = new WebSocket(`wss://resdineconsulting.com/ws/status/?token=${accessToken}`);
+    const socket: WebSocket = new WebSocket(`wss://jangsalicense.com/ws/status/?token=${accessToken}`);
 
     socket.onopen = () => {
       console.log('소켓 연결 성공');
